@@ -2,7 +2,7 @@ import React from 'react'
 import { useRef, useEffect, useState, useContext } from "react";
 import AuthContext from "./context/AuthProvider";
 import axios from '../api/axios';
-const Login_URL = 'https://bulkify-back-end.vercel.app/api/v1/customers/login';
+const Login_URL = 'https://bulkify-back-end.vercel.app';
 export default function Login() {
     const {setAuth} = useContext(AuthContext);
     const userRef=useRef();
