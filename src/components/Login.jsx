@@ -20,41 +20,48 @@ export default function Login() {
     },[user,pwd]);
   
     const handleSubmit = async (e) => {
-      e.preventDefault();
+        e.preventDefault();
         try {
-            const response = await axios.post(Login_URL,JSON.stringify({user,pwd}),
+          const response = await axios.get(Login_URL, 
+            JSON.stringify({ user, pwd }), 
             {
-                headers: {'Content-Type': 'application/json'},
-                withCredentials: true
+              headers: { 'Content-Type': 'application/json' },
+              withCredentials: true,
             }
-        );
-            console.log(JSON.stringify(response?.data)); 
-            const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
-            setAuth(user,pwd,roles,accessToken);
-            console.log(user,pwd);
-            setUser('');
-            setPwd('');
-            setSuccess(true);
-            
+          );
+      
+          console.log(JSON.stringify(response?.data)); 
+          const accessToken = response?.data?.accessToken;
+          const roles = response?.data?.roles;
+          setAuth(user, pwd, roles, accessToken);
+          console.log(user, pwd);
+          setUser('');
+          setPwd('');
+          setSuccess(true);
+      
         } catch (err) {
-           if(err.response){
-               setErrMsg(err.response.data.message);
-
-        }
-        else if(err.status === 400){
-            setErrMsg('Invalid credentials');
-        }
-        else if(err.status === 401){
-            setErrMsg('unsuthorized');
+          if (err.response) {
+            // The request was made, and the server responded with a status code
+            // that falls out of the range of 2xx
+            if (err.response.status === 400) {
+              setErrMsg('Invalid credentials');
+            } else if (err.response.status === 401) {
+              setErrMsg('Unauthorized');
+            } else {
+              setErrMsg(err.response.data?.message || 'An error occurred');
+            }
+          } else if (err.request) {
+            // The request was made, but no response was received (network error)
             setErrMsg('Network Error');
-        }
-        else{
+          } else {
+            // Something happened in setting up the request that triggered an Error
             setErrMsg('An error occurred');
-    }
-    errRef.current.focus();
-}
-}
+          }
+      
+          errRef.current.focus();
+        }
+      };
+      
   
 return (
     <>
