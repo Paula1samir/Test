@@ -78,11 +78,11 @@ return (
                  </div>
                  <div className="input-container">
                      <input
-                         type="text"
+                         type="email"
                          ref={userRef}
                          value={user}
                          onChange={(e)=>setUser(e.target.value)}
-                         placeholder="Username"
+                         placeholder="Email"
                      />
                      <input
                          type="password"
