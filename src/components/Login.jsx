@@ -21,8 +21,9 @@ export default function Login() {
   
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         try {
-          const response = await axios.get(Login_URL, 
+          const response = await axios.post(Login_URL, 
             JSON.stringify({ user, pwd }), 
             {
               headers: { 'Content-Type': 'application/json' },
@@ -33,7 +34,8 @@ export default function Login() {
           console.log(JSON.stringify(response?.data)); 
           const accessToken = response?.data?.accessToken;
           const roles = response?.data?.roles;
-          setAuth(user, pwd, roles, accessToken);
+          setAuth({ user, pwd, roles, accessToken });
+          console.log(accessToken);
           console.log(user, pwd);
           setUser('');
           setPwd('');
