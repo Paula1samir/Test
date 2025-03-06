@@ -1,14 +1,14 @@
 import React from 'react'
 import { useRef, useEffect, useState, useContext } from "react";
 import AuthContext from "./context/AuthProvider";
-import axios from '../api/axios';
-const Login_URL = 'https://bulkify-back-end.vercel.app';
+import axios from 'axios';
+const Login_URL = 'https://bulkify-back-end.vercel.app/api/v1/customers/login';
 export default function Login() {
     const {setAuth} = useContext(AuthContext);
     const userRef=useRef();
     const errRef=useRef();
-    const [user,setUser] = useState('');
-    const [pwd,setPwd] = useState('');
+    const [email,setUser] = useState('');
+    const [password,setPwd] = useState('');
     const [errMsg,setErrMsg] = useState('');
     const [success,setSuccess] = useState(false);
   
@@ -17,26 +17,25 @@ export default function Login() {
     },[]);
     useEffect(()=>{
       setErrMsg('');
-    },[user,pwd]);
+    },[email,password]);
   
     const handleSubmit = async (e) => {
         e.preventDefault();
         
         try {
           const response = await axios.post(Login_URL, 
-            JSON.stringify({ user, pwd }), 
+            { email, password },
             {
-              headers: { 'Content-Type': 'application/json' },
-              withCredentials: true,
+              headers: { 'Content-Type': 'application/json' }
             }
           );
       
           console.log(JSON.stringify(response?.data)); 
-          const accessToken = response?.data?.accessToken;
+          const token = response?.data?.token;
           const roles = response?.data?.roles;
-          setAuth({ user, pwd, roles, accessToken });
-          console.log(accessToken);
-          console.log(user, pwd);
+          setAuth({ email, password, roles, token });
+          console.log(token);
+          console.log(email, password);
           setUser('');
           setPwd('');
           setSuccess(true);
@@ -69,7 +68,7 @@ return (
     <>
      {success ?(
          <section>
-             <h1>Congratulations {user}, You're logged in!</h1>
+             <h1>Congratulations {email}, You're logged in!</h1>
              <br/>
              <p>
                  <a href="#">Go to Home</a>
@@ -89,13 +88,13 @@ return (
                      <input
                          type="email"
                          ref={userRef}
-                         value={user}
+                         value={email}
                          onChange={(e)=>setUser(e.target.value)}
                          placeholder="Email"
                      />
                      <input
                          type="password"
-                         value={pwd}
+                         value={password}
                          onChange={(e)=>setPwd(e.target.value)}
                          placeholder="Password"
                      />
