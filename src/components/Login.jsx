@@ -1,4 +1,5 @@
 import React from 'react'
+import  './Login.css'
 import { useRef, useEffect, useState, useContext } from "react";
 import AuthContext from "./context/AuthProvider";
 import axios from 'axios';
@@ -77,6 +78,7 @@ return (
      ):(
          <>
              <p ref={errRef} className={errMsg ? "errMsg" : "offScreen"} aria-live="assertive">{errMsg}</p>
+             <div className="login-register">
              <form className="form" onSubmit={handleSubmit}>
                  <div className="button-container">
                      <button className="button-top active" disabled>
@@ -84,21 +86,47 @@ return (
                      </button>
                      <button className="button-top">Sign Up</button>
                  </div>
-                 <div className="input-container">
+                 <div className="flex-column">
+                    <label>Email </label>
+                  </div>
+                 <div className="input-group">
                      <input
                          type="email"
+                         className='input'
+                         placeholder="Enter your Email"
                          ref={userRef}
                          value={email}
                          onChange={(e)=>setUser(e.target.value)}
-                         placeholder="Email"
                      />
+                     <br />
+                 </div>
+                 <div className="flex-column">
+                    <label>Password </label>
+                  </div>
+                  <div className="inputForm">
+
                      <input
                          type="password"
+                         className='input'
                          value={password}
                          onChange={(e)=>setPwd(e.target.value)}
-                         placeholder="Password"
+                         placeholder="Enter your Password"
                      />
-                 </div>
+
+                  </div>
+                  <div className="flex-row">
+                    <div>
+                      <input type="checkbox"></input>
+                      <label>Remember me </label>
+                    </div>
+                    <span
+                      className="span"
+                      style={{ cursor: "pointer" }}
+                    >
+                      Forget Password
+                    </span>
+                  </div>
+                     
                  <button className="button-bottom" type="submit">
                      Sign In
                  </button>
@@ -106,6 +134,7 @@ return (
                      Forget Password
                  </button>   
              </form>
+              </div>
          </>
      )}
     </>
