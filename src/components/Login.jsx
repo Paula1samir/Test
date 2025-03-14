@@ -1,6 +1,5 @@
 import React from "react"
 import "./Login.css"
-import "./SignUp.css"
 import "./Login"
 import ForgetPassword from "./forgetPass/forgetPassword"
 import "bootstrap/dist/css/bootstrap.min.css";
