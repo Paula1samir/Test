@@ -16,7 +16,7 @@ const Register = () => {
     // const [validPwd, setValidPwd] = useState(false);
     // const [pwdFocus, setPwdFocus] = useState(false);
     
-    const [gender,setGender] = useState('Male');
+    const [gender,setGender] = useState('');
     const [email,setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [nationalId, setNationalId] = useState('');

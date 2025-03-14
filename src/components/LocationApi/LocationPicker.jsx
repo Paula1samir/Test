@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useRef, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { LatLng, Icon } from 'leaflet';
@@ -7,7 +8,7 @@ import { MapPin, Search } from 'lucide-react';
 const customIcon = new Icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
   iconSize: [25, 41],
-  iconAnchor: [12, 41]
+  iconAnchor: [12, 41],
 });
 
 function MapEvents({ onLocationSelect }) {
@@ -19,7 +20,7 @@ function MapEvents({ onLocationSelect }) {
   return null;
 }
 
-export default function LocationPicker() {
+const LocationPicker = ({ setValue1, setValue2 }) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -27,7 +28,7 @@ export default function LocationPicker() {
 
   const defaultCenter = {
     lat: 29.999572,
-    lng: 32.495359
+    lng: 32.495359,
   };
 
   const handleSearch = async () => {
@@ -46,14 +47,22 @@ export default function LocationPicker() {
 
   const handleLocationSelect = (location) => {
     setSelectedLocation(location);
+    // Set the latitude and longitude using setValue1 and setValue2 if they are valid functions
+    if (typeof setValue1 === 'function' && typeof setValue2 === 'function') {
+      setValue1(location.lat);
+      setValue2(location.lng);
+      console.log(location.lat, location.lng);
+    } else {
+      // console.error('setValue1 or setValue2 is not a function');
+    }
   };
 
   const handleSearchResultClick = (result) => {
     const location = {
       lat: parseFloat(result.lat),
-      lng: parseFloat(result.lon)
+      lng: parseFloat(result.lon),
     };
-    setSelectedLocation(location);
+    handleLocationSelect(location); // Update selected location and pass lat/lng to parent
     setSearchResults([]);
     setSearchQuery(result.display_name);
   };
@@ -68,7 +77,6 @@ export default function LocationPicker() {
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
   return (
@@ -112,7 +120,7 @@ export default function LocationPicker() {
           />
           <MapEvents onLocationSelect={handleLocationSelect} />
           {selectedLocation && (
-            <Marker 
+            <Marker
               position={new LatLng(selectedLocation.lat, selectedLocation.lng)}
               icon={customIcon}
             />
@@ -129,4 +137,6 @@ export default function LocationPicker() {
       )}
     </div>
   );
-}
+};
+
+export default LocationPicker;

@@ -2,6 +2,7 @@ import React from "react"
 import "./Login.css"
 import "./SignUp.css"
 import "./Login"
+import ForgetPassword from "./forgetPass/forgetPassword"
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Signup from "./SignUp";
@@ -10,24 +11,27 @@ import AuthContext from "./context/AuthProvider";
 import axios from "axios";
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/login";
 export default function Login() {
-  const { setAuth } = useContext(AuthContext);
-  const userRef = useRef();
-  const errRef = useRef();
+   const [showForgetPass, setForgetPass] = useState(false);
+  
+   const { setAuth } = useContext(AuthContext);
+   const userRef = useRef();
+   const errRef = useRef();
   const [email, setUser] = useState("");
   const [password, setPwd] = useState("");
+
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
-
+  
   useEffect(() => {
     userRef.current.focus();
   }, []);
   useEffect(() => {
     setErrMsg("");
   }, [email, password]);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     try {
       const response = await axios.post(
         Login_URL,
@@ -36,7 +40,7 @@ export default function Login() {
           headers: { "Content-Type": "application/json" },
         }
       );
-
+      
       console.log(JSON.stringify(response?.data));
       const token = response?.data?.token;
       const roles = response?.data?.roles;
@@ -64,11 +68,14 @@ export default function Login() {
         // Something happened in setting up the request that triggered an Error
         setErrMsg(alert("An error occurred"));
       }
-
+      
       errRef.current.focus();
     }
   };
-
+  
+  if (showForgetPass) {
+    return < ForgetPassword/>;
+  }
   return (
     <>
       {success ? (
@@ -123,7 +130,7 @@ export default function Login() {
                     <input type="checkbox"></input>
                     <label>Remember me </label>
                   </div>
-                  <span className="span" style={{ cursor: "pointer" }}>
+                  <span className="span" style={{ cursor: "pointer" }} onClick={() => setForgetPass(true)}> 
                     Forget Password
                   </span>
                 </div>

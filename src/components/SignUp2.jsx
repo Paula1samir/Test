@@ -1,30 +1,87 @@
+/* eslint-disable no-unused-vars */
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import LocationPicker from '../components/LocationApi/LocationPicker';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { useState } from "react";
+import axios from "axios";
+const REGISTER_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/register";
 
-export default function SignUp2() {
+
+export default function SignUp2({ firstName, lastName, gender, email, password ,lat, lang}) {
+  const [errMsg, setErrMsg] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [nationalId, setNationalId] = useState('');
+  const [city, setCity] = useState('');
+  const [street, setStreet] = useState('');
+  const [homeNumber, setHomeNumber] = useState('');
+  const errRef = React.useRef(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+    const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+    const v1 = USER_REGEX.test(firstName);
+    const v2 = PWD_REGEX.test(password);
+    if (!v1 || !v2) {
+      setErrMsg("Invalid Entry");
+      return;
+    }
+    try {
+      const response = await axios.post(REGISTER_URL, {
+        firstName,
+        lastName,
+        email,
+        password,
+        gender,
+        phoneNumber,
+        nationalId,
+        address: {
+          city,
+          street,
+          homeNumber,
+          coordinates: {
+        lat,
+        lang
+          }
+        }
+      });
+      console.log(response?.data);
+          } catch (err) {
+      if (!err?.response) {
+        setErrMsg('No Server Response');
+      } else if (err.response?.status === 409) {
+        setErrMsg('Username Taken');
+      } else {
+        setErrMsg('Registration Failed');
+      }
+      errRef.current.focus();
+    }
+  };
 
   return (
     <>
+    
         <div className="signup-container">
-        <form>
+        <p>Welcome, {firstName} {lastName}!</p>
+        <p>Gender: {gender}</p>
+        <p>Email: {email}</p>
+        <form onSubmit={handleSubmit}>
             <div className="mt-3">
                 <label>Phone</label>
-                <input type="tel" className="form-control" required />
+                <input type="tel" className="form-control" required  onChange={(e)=>setPhoneNumber(e.target.value)}/>
             </div>
             <div className="mt-3">
                 <label>City</label>
-                <input type="text" className="form-control" required/>
+                <input type="text" className="form-control" required onChange={(e)=>setCity(e.target.value)}/>
             </div>
             <div className="row mt-3">
                 <div className="col-md-6">
                     <label>Street</label>
-                    <input type="text" className="form-control" required/>
+                    <input type="text" className="form-control" required onChange={(e)=>setStreet(e.target.value)}/>
                 </div>
                 <div className="col-md-6">
                     <label>Home Number</label>
-                    <input type="text" className="form-control" required/>
+                    <input type="text" className="form-control" required onChange={(e)=>setHomeNumber(e.target.value)}/>
                 </div>
             </div>
             <div className="map-container mt-3">
