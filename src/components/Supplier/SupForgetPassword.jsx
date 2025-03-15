@@ -1,11 +1,11 @@
 import React, { useState , useRef } from "react";
-import "./forgetPassword.css";
-import Login from "../Login";
-import SignUp from "../SignUp";
+import "../forgetPass/ForgetPassword.css";
+import Login from "./supLogin";
+import SignUp from "./supSignUp";
 import axios from "axios";
 import ResetPass from "../OTP/ResetPass";
 
-const ForgetPass_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/forgot-password";
+const ForgetPass_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/forgot-password";
 function ForgetPassword() {
   const [showLogin, setLogin] = useState(false);
   const [showSignUp, setshowSignUp] = useState(false);
@@ -50,8 +50,12 @@ function ForgetPassword() {
   
   return (
     <>
+        <p className="error-message" ref={errRef}></p>
       <div className="forget-password">
         <div className="form-container">
+        <h1>
+          Forget Password As Supplier
+        </h1>
           <div className="logo-container">Forget Password ?</div>
           <p className="text-header">
             Enter the email address or mobile phone number associated with your

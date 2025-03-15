@@ -1,25 +1,15 @@
 import React, { useState } from 'react';
-import LocationPicker from './LocationPicker';
+import LocationPicker from './LocationApi/LocationPicker';
 
 const ParentComponent = () => {
-  // State to hold latitude and longitude
-  const [lat, setLat] = useState(null);
-  const [lng, setLng] = useState(null);
+  const [value1, setValue1] = useState(null); // For latitude
+  const [value2, setValue2] = useState(null); // For longitude
 
   return (
     <div>
-      <h1>Pick a Location</h1>
-      
-      {/* Pass setLat and setLng as setValue1 and setValue2 */}
-      <LocationPicker setValue1={setLat} setValue2={setLng} />
-
-      {/* Display the selected latitude and longitude */}
-      {lat && lng && (
-        <div>
-          <p>Selected Latitude: {lat}</p>
-          <p>Selected Longitude: {lng}</p>
-        </div>
-      )}
+      <LocationPicker setValue1={setValue1} setValue2={setValue2} />
+      <p>Latitude: {value1}</p>
+      <p>Longitude: {value2}</p>
     </div>
   );
 };

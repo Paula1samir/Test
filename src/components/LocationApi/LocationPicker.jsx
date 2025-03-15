@@ -30,7 +30,7 @@ const LocationPicker = ({ setValue1, setValue2 }) => {
     lat: 29.999572,
     lng: 32.495359,
   };
-
+  // Removed redundant LocationPicker declaration
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
 
@@ -51,16 +51,15 @@ const LocationPicker = ({ setValue1, setValue2 }) => {
     if (typeof setValue1 === 'function' && typeof setValue2 === 'function') {
       setValue1(location.lat);
       setValue2(location.lng);
-      console.log(location.lat, location.lng);
     } else {
-      // console.error('setValue1 or setValue2 is not a function');
+      console.error('setValue1 or setValue2 is not a function');
     }
   };
 
   const handleSearchResultClick = (result) => {
     const location = {
-      lat: parseFloat(result.lat),
-      lng: parseFloat(result.lon),
+      lat: parseFloat(result.lat.toFixed(6)),
+      lng: parseFloat(result.lon.toFixed(6)),
     };
     handleLocationSelect(location); // Update selected location and pass lat/lng to parent
     setSearchResults([]);
@@ -121,7 +120,7 @@ const LocationPicker = ({ setValue1, setValue2 }) => {
           <MapEvents onLocationSelect={handleLocationSelect} />
           {selectedLocation && (
             <Marker
-              position={new LatLng(selectedLocation.lat, selectedLocation.lng)}
+              position={new LatLng(selectedLocation.lat.toFixed(6), selectedLocation.lng.toFixed(6))}
               icon={customIcon}
             />
           )}

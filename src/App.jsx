@@ -2,8 +2,6 @@ import React from "react";
 import Login from "../src/components/Login";
 import Signup from "../src/components/SignUp";
 import { useState } from 'react';
-// import SignUp2 from "../src/components/SignUp2";
-// import Register from './components/Register';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 function App() {
   // State to track which tab is active
