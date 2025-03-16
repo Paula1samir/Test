@@ -1,7 +1,8 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import "./Login.css";
 import "./Login";
-import SupLogin from "../components/Supplier/supLogin.jsx";
+import SupLogin from '@supplier/supLogin.jsx';
+import ForgetPassword from "./forgetPass/ForgetPassword";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import AuthContext from "./context/AuthProvider";
@@ -10,6 +11,8 @@ import axios from "axios";
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/login";
 
 export default function Login() {
+  // const [supLogin, setSupLogin] = useState(false);
+  const [forgetPassword, setForgetPassword] = useState(false);
   const { setAuth } = useContext(AuthContext);
   const userRef = useRef();
   const errRef = useRef();
@@ -69,6 +72,11 @@ export default function Login() {
   if(supLogin) {
     return <SupLogin />;
   }
+  
+  if(forgetPassword) {
+    return <ForgetPassword />;
+  }
+
   return (
     <>
       {success ? (
@@ -124,8 +132,9 @@ export default function Login() {
                 <span
                   className="span"
                   style={{ cursor: "pointer" }}
+                  onClick={() => setForgetPassword(true)}
                 >
-                  <Link to="/ForgetPassword">Forget Password</Link>
+                  Forget Password
                 </span>
               </div>
 
