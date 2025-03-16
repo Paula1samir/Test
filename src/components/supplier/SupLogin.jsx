@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import "../Login.css";
-import SupForgetPassword from "./SupForgetPassword.jsx";
+// import SupForgetPassword from "./SupForgetPassword.jsx";
 import SupSignUp from "./SupSignUp.jsx";
 import AuthContext from "../context/AuthProvider.jsx";
 import axios from "axios";
