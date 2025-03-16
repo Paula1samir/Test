@@ -1,5 +1,5 @@
 import React, { useState , useRef } from "react";
-import "./forgetPassword.css";
+import "./ForgetPassword.css";
 import Login from "../Login";
 import SignUp from "../SignUp";
 import axios from "axios";
