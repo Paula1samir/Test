@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
-import "./Login.css";
+import "../Login.css";
 import SupForgetPassword from "./SupForgetPassword.jsx";
 import SupSignUp from "./supplier/SupSignUp.jsx";
 import AuthContext from "./context/AuthProvider.jsx";
