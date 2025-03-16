@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef } from 'react'
 import "../SignUp.css"
-import Login from './supLogin';
+import SupLogin from './supLogin';
 import axios from 'axios';
 const OTP_URL ="https://bulkify-back-end.vercel.app/api/v1/suppliers/reset-password";
 export default function ResetPass() {
@@ -46,7 +46,7 @@ export default function ResetPass() {
       
   };
   if (success) {
-    return <Login />;
+    return <SupLogin />;
   }
   return(
     <div className="signup-container">

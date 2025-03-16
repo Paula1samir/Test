@@ -46,7 +46,7 @@ export default function ResetPass() {
       
   };
   if (success) {
-    return <Login />;
+    return <SupLogin />;
   }
   return(
     <div className="signup-container">
