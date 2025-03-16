@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useRef } from 'react'
-import "../SignUp.css"
+import "../signUp.css"
 import Login from '../Login';
 import axios from 'axios';
 const OTP_URL ="https://bulkify-back-end.vercel.app/api/v1/customers/reset-password";
