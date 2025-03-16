@@ -1,9 +1,9 @@
 import React, { useState , useRef } from "react";
 import "../forgetPass/ForgetPassword.css";  
-import SupLogin from "./supLogin";
-import SupSignUp from "./supSignUp";
+import SupLogin from "./SupLogin";
+import SupSignUp from "./SupSignUp";
 import axios from "axios";
-import ResetPass from "../OTP/ResetPass";
+import ResetPass from "./SupResetPass";
 
 const ForgetPass_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/forgot-password";
 function SupForgetPassword() {

@@ -1,15 +1,13 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import "./Login.css";
 import "./Login";
-import SupLogin from './supLogin';
+import SupLogin from './supplier/SupLogin';
 import ForgetPassword from "./forgetPass/ForgetPassword";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import AuthContext from "./context/AuthProvider";
 import axios from "axios";
-
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/login";
-
 export default function Login() {
   const [supLogin, setSupLogin] = useState(false);
   const [forgetPassword, setForgetPassword] = useState(false);
