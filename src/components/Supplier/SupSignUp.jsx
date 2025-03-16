@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../SignUp.css";
 import { Routes, Route } from "react-router-dom";
-import SupLogin from "./supLogin";
 import axios from "axios";
 
 const SupSignUp = () => {

@@ -1,10 +1,9 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import "./Login.css";
 import "./Login";
-import SupLogin from "./Supplier/supLogin";
+import SupLogin from "../components/Supplier/supLogin.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
-import Signup from "./SignUp";
 import AuthContext from "./context/AuthProvider";
 import axios from "axios";
 

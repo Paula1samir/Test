@@ -1,7 +1,5 @@
 import React, { useState , useRef } from "react";
 import "../forgetPass/ForgetPassword.css";
-import SupLogin from "./supLogin";
-import SupSignUp from "./supSignUp";
 import axios from "axios";
 import ResetPass from "../OTP/ResetPass";
 
