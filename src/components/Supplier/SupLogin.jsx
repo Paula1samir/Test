@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import "../Login.css";
-import ForgetPassword from "./supForgetPassword";
+import SupForgetPassword from "./supForgetPassword";
 import SupSignUp from "./supSignUp";
 import AuthContext from "../context/AuthProvider";
 import axios from "axios";
@@ -72,7 +72,7 @@ export default function SupLogin() {
   };
   
   if (showForgetPass) {
-    return <ForgetPassword />;
+    return <SupForgetPassword />;
   }
   if (showSignUp) {
     return <SupSignUp />;

@@ -6,7 +6,7 @@ import axios from "axios";
 import ResetPass from "../OTP/ResetPass";
 
 const ForgetPass_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/forgot-password";
-function ForgetPassword() {
+function SupForgetPassword() {
   const [showLogin, setLogin] = useState(false);
   const [showSignUp, setshowSignUp] = useState(false);
   const [showResetPass,setshowResetPass] =useState(false);
@@ -123,4 +123,4 @@ function ForgetPassword() {
   );
 }
 
-export default ForgetPassword;
+export default SupForgetPassword;
