@@ -8,7 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
 
-export default function SupLogin() {
+ function SupLogin() {
   const [showForgetPass, setForgetPass] = useState(false);
   const [showSignUp, setSignUp] = useState(false);
   const { setAuth } = useContext(AuthContext);
@@ -126,3 +126,4 @@ export default function SupLogin() {
     </>
   );
 }
+export default SupLogin;
