@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import "./Login.css";
 import "./Login";
-// import SupLogin from './Supplier/supLogin';
+import SupLogin from './Supplier/supLogin';
 import ForgetPassword from "./forgetPass/ForgetPassword";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
@@ -11,7 +11,7 @@ import axios from "axios";
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/login";
 
 export default function Login() {
-  // const [supLogin, setSupLogin] = useState(false);
+  const [supLogin, setSupLogin] = useState(false);
   const [forgetPassword, setForgetPassword] = useState(false);
   const { setAuth } = useContext(AuthContext);
   const userRef = useRef();
@@ -68,9 +68,9 @@ export default function Login() {
     }
   };
 
-  // if(supLogin) {
-  //   return <SupLogin />;
-  // }
+  if(supLogin) {
+    return <SupLogin />;
+  }
   
   if(forgetPassword) {
     return <ForgetPassword />;
@@ -145,7 +145,7 @@ export default function Login() {
             <div className="or-text">OR</div>
 
             <span className="btn btn-success w-100 mt-4"
-              // onClick={() => setSupLogin(true)}
+              onClick={() => setSupLogin(true)}
               style={{ cursor: "pointer" }}
             >
               Sign in As Supplier
