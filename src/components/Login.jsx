@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import "./Login.css";
 import "./Login";
-import SupLogin from './Supplier/supLogin';
+// import SupLogin from './Supplier/supLogin';
 import ForgetPassword from "./forgetPass/ForgetPassword";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
@@ -17,7 +17,6 @@ export default function Login() {
   const userRef = useRef();
   const errRef = useRef();
   const navigate = useNavigate();
-  const [supLogin, setSupLogin] = useState(false);
   
   const [email, setUser] = useState("");
   const [password, setPwd] = useState("");
@@ -69,9 +68,9 @@ export default function Login() {
     }
   };
 
-  if(supLogin) {
-    return <SupLogin />;
-  }
+  // if(supLogin) {
+  //   return <SupLogin />;
+  // }
   
   if(forgetPassword) {
     return <ForgetPassword />;
@@ -146,7 +145,7 @@ export default function Login() {
             <div className="or-text">OR</div>
 
             <span className="btn btn-success w-100 mt-4"
-              onClick={() => setSupLogin(true)}
+              // onClick={() => setSupLogin(true)}
               style={{ cursor: "pointer" }}
             >
               Sign in As Supplier
