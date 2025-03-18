@@ -1,5 +1,5 @@
 import React, { useState , useRef } from "react";
-import "../forgetPass/ForgetPassword.css";  
+import "../ForgetPass/ForgetPassword.css";  
 import SupLogin from "./SupLogin";
 import SupSignUp from "./SupSignUp";
 import axios from "axios";

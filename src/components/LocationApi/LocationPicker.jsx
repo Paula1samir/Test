@@ -58,12 +58,13 @@ const LocationPicker = ({ setValue1, setValue2 }) => {
 
   const handleSearchResultClick = (result) => {
     const location = {
-      lat: parseFloat(result.lat.toFixed(6)),
-      lng: parseFloat(result.lon.toFixed(6)),
+      lat: parseFloat(result.lat),
+      lng: parseFloat(result.lon),
     };
     handleLocationSelect(location); // Update selected location and pass lat/lng to parent
     setSearchResults([]);
     setSearchQuery(result.display_name);
+    
   };
 
   useEffect(() => {
@@ -87,7 +88,7 @@ const LocationPicker = ({ setValue1, setValue2 }) => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search for a location"
-            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2  border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         {searchResults.length > 0 && (

@@ -54,14 +54,6 @@
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
   }
   
-  .input {
-    height: 100%;
-    border: none;
-    outline: none;
-    font-size: 0.9em;
-    caret-color: rgb(255, 81, 0);
-  }
-  
   .labelforsearch {
     cursor: text;
     padding: 0px 12px;

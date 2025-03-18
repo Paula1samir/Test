@@ -1,26 +1,22 @@
 import React from "react";
 import Login from "../src/components/Login";
 import Signup from "../src/components/SignUp";
-import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-function App() {
-  // State to track which tab is active
-  const [activeTab, setActiveTab] = useState('Login');
+import ForgetPassword from "../src/components/ForgetPass/Forget-Password";
+import SupLogin from "./components/supplier/SupLogin";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 
-  // Function to handle click and set the active tab
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
+function App() {
+  // Hook to get the current location (route path)
+  const location = useLocation();
+
   return (
     <>
-    <Router>
-     <div className="login-register">
-     <div className="tab-switch">
+      <div className="login-register">
+        <div className="tab-switch">
           {/* Link for Login */}
           <Link
             to="/Login"
-            className={`link ${activeTab === 'Login' ? 'active' : ''}`}
-            onClick={() => handleTabClick('Login')}
+            className={`link ${location.pathname === '/Login' ? 'active' : ''}`}
           >
             Login
           </Link>
@@ -28,21 +24,21 @@ function App() {
           {/* Link for Sign Up */}
           <Link
             to="/Signup"
-            className={`link ${activeTab === 'Signup' ? 'active' : ''}`}
-            onClick={() => handleTabClick('Signup')}
+            className={`link ${location.pathname === '/Signup' ? 'active' : ''}`}
           >
             Sign Up
           </Link>
         </div>
       </div>
 
-                    <Routes>
-                      <Route path="/Signup/*" element={<Signup />} />
-                      <Route path="/Login" element={<Login />} />
-                    </Routes>
-                    </Router>
+      <Routes>
+        <Route path="/Signup/*" element={<Signup />} />
+        <Route path="/Login/*" element={<Login />} />
+        <Route path="/Forget-Password" element={<ForgetPassword />} />
+        <Route path="/SupLogin" element={<SupLogin />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

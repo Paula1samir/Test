@@ -2,19 +2,15 @@ import React, { useRef, useEffect, useState, useContext } from "react";
 import "./Login.css";
 import "./Login";
 import SupLogin from './supplier/SupLogin';
-import ForgetPassword from "./forgetPass/ForgetPassword";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AuthContext from "./context/AuthProvider";
 import axios from "axios";
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/login";
 export default function Login() {
-  const [supLogin, setSupLogin] = useState(false);
-  const [forgetPassword, setForgetPassword] = useState(false);
   const { setAuth } = useContext(AuthContext);
   const userRef = useRef();
   const errRef = useRef();
-  const navigate = useNavigate();
   
   const [email, setUser] = useState("");
   const [password, setPwd] = useState("");
@@ -45,8 +41,7 @@ export default function Login() {
       setUser(""); // Clear the email field
       setPwd("");  // Clear the password field
       setSuccess(true); // Indicate success
-      navigate("/"); // Redirect to homepage or desired route
-
+      alert("Login Succefull")   ;   
     } catch (err) {
       if (err.response) {
         if (err.response.status === 400) {
@@ -65,14 +60,6 @@ export default function Login() {
     }
   };
 
-  if(supLogin) {
-    return <SupLogin />;
-  }
-  
-  if(forgetPassword) {
-    return <ForgetPassword />;
-  }
-
   return (
     <>
       {success ? (
@@ -80,7 +67,7 @@ export default function Login() {
           <h1>Congratulations {email}, You're logged in!</h1>
           <br />
           <p>
-            <Link to="/">Go to Home</Link>
+            <Link to="/Login">Go to Home</Link>
           </p>
         </section>
       ) : (
@@ -125,13 +112,13 @@ export default function Login() {
                   <input type="checkbox" />
                   <label>Remember me </label>
                 </div>
-                <span
+                <Link to="/Forget-Password"
                   className="span"
                   style={{ cursor: "pointer" }}
-                  onClick={() => setForgetPassword(true)}
+                  // onClick={() => setForgetPassword(true)}
                 >
                   Forget Password
-                </span>
+                </Link>
               </div>
 
               <button className="btn btn-success w-100 mt-4" type="submit">
@@ -141,12 +128,13 @@ export default function Login() {
 
             <div className="or-text">OR</div>
 
-            <span className="btn btn-success w-100 mt-4"
-              onClick={() => setSupLogin(true)}
+            <Link className="btn btn-success w-100 mt-4"
+              // onClick={() => setSupLogin(true)}
+            to={'/SupLogin'}
               style={{ cursor: "pointer" }}
             >
               Sign in As Supplier
-            </span>
+            </Link>
 
             <br />
             <br />
@@ -156,6 +144,8 @@ export default function Login() {
               <Link to="/Signup">Sign up now</Link>
             </p>
           </div>
+
+
         </>
       )}
     </>
