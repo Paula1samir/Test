@@ -6,7 +6,6 @@ import LocationPicker from "./LocationApi/LocationPicker";
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login";
 import axios from "axios";
-import SignUp2 from "./SignUp2";
 
 const SignUp = () => {
   const REGISTER_URL =
@@ -26,13 +25,60 @@ const SignUp = () => {
   const [street, setStreet] = useState("");
   const [homeNumber, setHomeNumber] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [errors, setErrors] = useState({}); // New state for field-specific errors
   const [success, setSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+
+
 
   const [value1, setValue1] = useState(null); // For latitude
   const [value2, setValue2] = useState(null); // For longitude
 
+  // Helper function to check if fields are empty and set error messages
+  const validateForm = () => {
+    const newErrors = {};
+    if (!firstName.trim()) newErrors.firstName = "First name is required ";
+    if (firstName.length < 4) newErrors.firstName = "Minimum Vaild Length is : 4";
+    if (!lastName.trim()) newErrors.lastName = "Last name is required";
+    if (!email.trim()) newErrors.email = "Email is required";
+    if (!password.trim()) newErrors.password = "Password is required";
+    // Check if the phone number is empty
+    if (!phoneNumber.trim()) {
+      newErrors.phoneNumber = "Phone number is required";
+    }
+    else if (phoneNumber.length !== 11) {
+      newErrors.phoneNumber = "Phone number should be 11 characters";
+    }
+    else if (!/^\d+$/.test(phoneNumber)) {
+      // Validate if the phone number contains only numbers
+      newErrors.phoneNumber = "Phone number should contain only digits";
+    }
+
+
+    if (!city.trim()) newErrors.city = "City is required";
+    if (!street.trim()) newErrors.street = "Street is required";
+    if (!homeNumber.trim()) newErrors.homeNumber = "Home number is required";
+    if (!gender) newErrors.gender = "Gender is required";
+    return newErrors;
+  };
+
+  const loc = document.getElementsByClassName("location-details")[0]; // Assuming you want the first element
+
+  if (loc && window.getComputedStyle(loc).display === "none") {
+    alert("Please Select Your Location");
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    } else {
+      setErrors({}); // Clear errors if no validation issues
+    }
+
     const payload = {
       firstName,
       lastName,
@@ -60,15 +106,20 @@ const SignUp = () => {
       setHomeNumber("");
       setPhoneNumber("");
     } catch (err) {
-      console.log(err);
-      if (!err?.response) {
-        setErrMsg(alert("No Server Response"));
-      } else if (err.response?.status === 409) {
-        setErrMsg(alert("Username Taken"));
+      if (err.response) {
+        if (err.response.status === 400) {
+          setErrMsg("Invalid credentials");
+        } else if (err.response.status === 401) {
+          setErrMsg("Unauthorized");
+        } else {
+          setErrMsg(err.response.data?.message || "An error occurred");
+        }
+      } else if (err.request) {
+        setErrMsg("Network Error");
       } else {
-        setErrMsg(alert("Registration Failed"));
+        setErrMsg("An error occurred");
       }
-      errRef.current.focus();
+      errRef.current.focus(); // Focus the error message
     }
   };
 
@@ -85,7 +136,7 @@ const SignUp = () => {
         <div className="signup-container">
           <p
             ref={errRef}
-            className={errMsg ? "errmsg" : "offscreen"}
+            className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
             aria-live="assertive"
           >
             {errMsg}
@@ -102,102 +153,118 @@ const SignUp = () => {
                       <label>First Name</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${errors.firstName ? 'is-invalid' : ''}`}
                         ref={userRef}
-                        autoComplete="off"
+                        value={firstName}
                         onChange={(e) => setUserFirstName(e.target.value)}
-                        required
                       />
+
+                      {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
                     </div>
                     <div className="col-md-6">
                       <label>Last Name</label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${errors.lastName ? 'is-invalid' : ''}`}
                         ref={userRef}
-                        autoComplete="off"
+                        value={lastName}
                         onChange={(e) => setUserLastName(e.target.value)}
-                        required
                       />
+                      {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
                     </div>
                   </div>
                   <div className="mt-3">
                     <label>Email Address</label>
                     <input
                       type="email"
-                      className="form-control"
-                      autoComplete="on"
+                      className={`form-control ${errors.email ? 'is-invalid' : ''}`}
+                      value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      required
                     />
+                    {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                   </div>
-                  <div className="mt-3">
+                  <div className="mt-3 custom-radio">
                     <label>Gender</label>
-                    <div>
-                      <input
-                        type="radio"
-                        name="gender"
-                        value="Male"
-                        onChange={(e) => setGender(e.target.value)}
-                      />{" "}
-                      Male
-                      <input
-                        type="radio"
-                        name="gender"
-                        value="Female"
-                        onChange={(e) => setGender(e.target.value)}
-                      />{" "}
-                      Female
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div>
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="Male"
+                          onChange={(e) => setGender(e.target.value)}
+                        />{" "} Male
+                      </div>
+                      <div>
+                        <input
+                          type="radio"
+                          name="gender"
+                          value="Female"
+                          onChange={(e) => setGender(e.target.value)}
+                        />{" "} Female
+                      </div>
                     </div>
+                    {errors.gender && <div className="text-danger">{errors.gender}</div>}
                   </div>
                   <div className="mt-3">
                     <label>Password</label>
                     <div className="input-group">
                       <input
-                        type="password"
-                        className="form-control"
+                        type={showPassword ? "text" : "password"} // Toggle between text and password
+                        className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                         id="password"
+                        value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        required
                       />
+                      <span
+                        className="input-group-text"
+                        onClick={() => setShowPassword(!showPassword)} // Toggle visibility
+                        style={{ cursor: "pointer" }}
+                      >
+                        {showPassword ? "🙈" : "👁"} {/* Icons for visibility toggle */}
+                      </span>
+                      {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                     </div>
                   </div>
                   <div className="mt-3">
                     <label>Phone</label>
                     <input
                       type="tel"
-                      className="form-control"
-                      required
+                      className={`form-control ${errors.phoneNumber ? 'is-invalid' : ''}`}
+                      value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                     />
+                    {errors.phoneNumber && <div className="invalid-feedback">{errors.phoneNumber}</div>}
                   </div>
                   <div className="mt-3">
                     <label>City</label>
                     <input
                       type="text"
-                      className="form-control"
-                      required
+                      className={`form-control ${errors.city ? 'is-invalid' : ''}`}
+                      value={city}
                       onChange={(e) => setCity(e.target.value)}
                     />
+                    {errors.city && <div className="invalid-feedback">{errors.city}</div>}
                   </div>
                   <div className="row mt-3">
                     <div className="col-md-6">
                       <label>Street</label>
                       <input
                         type="text"
-                        className="form-control"
-                        required
+                        className={`form-control ${errors.street ? 'is-invalid' : ''}`}
+                        value={street}
                         onChange={(e) => setStreet(e.target.value)}
                       />
+                      {errors.street && <div className="invalid-feedback">{errors.street}</div>}
                     </div>
                     <div className="col-md-6">
                       <label>Home Number</label>
                       <input
                         type="text"
-                        className="form-control"
-                        required
+                        className={`form-control ${errors.homeNumber ? 'is-invalid' : ''}`}
+                        value={homeNumber}
                         onChange={(e) => setHomeNumber(e.target.value)}
                       />
+                      {errors.homeNumber && <div className="invalid-feedback">{errors.homeNumber}</div>}
                     </div>
                   </div>
 
@@ -209,123 +276,16 @@ const SignUp = () => {
                     />
                   </div>
 
-                  {/* Terms of Services Modal */}
-                  <div
-                    className="modal fade"
-                    id="termsModal"
-                    tabIndex="-1"
-                    aria-labelledby="termsModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div className="modal-dialog">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h5 className="modal-title" id="termsModalLabel">
-                            Terms of Services
-                          </h5>
-                          <button
-                            type="button"
-                            className="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                            onClick={() => console.log("Modal closed")}
-                          ></button>
-                        </div>
-                        <div className="modal-body">
-                          <p>
-                            Supplier Responsibilities Suppliers must: • Provide
-                            items as described in the agreement. • Deliver items
-                            on time to the agreed location. • Ensure items are
-                            of good quality and free from defects. • Communicate
-                            any issues or delays as soon as possible. Quality
-                            Standards • All products must meet the agreed
-                            quality and description. • Damaged or defective
-                            items must be refunded. • If items do not meet
-                            quality standards, the supplier is responsible for
-                            fixing the issue. Delivery Terms • Items must be
-                            delivered by [specific date]. • If there are delays,
-                            the supplier must inform the organizer immediately.
-                            • Late delivery penalties may apply (if agreed).
-                            Payment Terms • Payment will be made after the items
-                            are received and inspected. • If the items are
-                            defective or not as agreed, payment may be delayed
-                            or reduced. Return and Refunds • Suppliers must
-                            accept returns for defective or incorrect items. •
-                            Suppliers must process refunds within [10 Days]. •
-                            Suppliers will cover costs for returns if the
-                            problem is their fault. Termination • If the
-                            supplier does not follow this policy, the agreement
-                            may be ended. • Repeated issues like poor quality or
-                            delays may lead to removal from future purchases.
-                            Adding Products for Approval • When a supplier adds
-                            a product, they must wait for approval from
-                            customers. • The approval process takes up to 7 days
-                            • Only approved products can be listed for purchase.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Privacy Policy Modal */}
-                  <div
-                    className="modal fade"
-                    id="privacyModal"
-                    tabIndex="-1"
-                    aria-labelledby="privacyModalLabel"
-                    aria-hidden="true"
-                  >
-                    <div className="modal-dialog">
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h5 className="modal-title" id="privacyModalLabel">
-                            Privacy Policy
-                          </h5>
-                          <button
-                            type="button"
-                            className="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"
-                          ></button>
-                        </div>
-                        <div className="modal-body">
-                          <p>
-                            • Return Policy When You Can Return an Item You can
-                            return an item if: • It is damaged or broken. • It
-                            is not what you ordered. • You request a return
-                            within [e.g., 7 days] of receiving the item. Note:
-                            The item must be in the same condition you received
-                            it and in its original packaging. Items You Cannot
-                            Return We cannot accept returns for: • Food or other
-                            items that spoil. • Items marked as “final sale” or
-                            “no returns.” Refunds You can get a refund if: • The
-                            item you return follows our return rules. • We
-                            inspect the item and confirm the problem. Refunds
-                            will be sent back to your original payment method
-                            within [e.g., 20 days]. How to Return an Item 1.
-                            Contact us at [email/phone] within [e.g., 7 days] of
-                            getting the item. 2. Share proof of the problem
-                            (e.g., a photo). Our Role We will: • Help you with
-                            the return process. • Work with the supplier to fix
-                            any issues.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    </div>
                   <button
+                    className="btn btn-success mt-4 d-flex justify-content-center w-100"
                     type="submit"
-                    className="btn btn-success w-100 mt-4"
-                    data-bs-toggle="modal"
-                    data-bs-target="#termsModal"
                   >
-                    SIGN UP →
+                    Register
                   </button>
                 </form>
               }
-              />
+            />
           </Routes>
-          {/* <SignUp2 /> */}
         </div>
       )}
     </>

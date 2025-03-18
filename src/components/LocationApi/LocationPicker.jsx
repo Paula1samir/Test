@@ -82,13 +82,13 @@ const LocationPicker = ({ setValue1, setValue2 }) => {
   return (
     <div className="max-w-4xl mx-auto p-4">
       <div className="mb-4">
-        <div className="relative">
+        <div className="d-flex align-items-center">
           <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
           <input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search for a location"
-            className="w-full pl-10 pr-4 py-2  border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="form-control"
           />
         </div>
         {searchResults.length > 0 && (
@@ -100,7 +100,7 @@ const LocationPicker = ({ setValue1, setValue2 }) => {
                 className="p-2 hover:bg-gray-100 cursor-pointer flex items-center"
               >
                 <MapPin className="h-5 w-5 mr-2 text-gray-500" />
-                <span>{result.display_name}</span>
+                <span className="result" >{result.display_name}</span>
               </div>
             ))}
           </div>
@@ -129,7 +129,7 @@ const LocationPicker = ({ setValue1, setValue2 }) => {
       </div>
 
       {selectedLocation && (
-        <div className="mt-4 p-4 bg-white rounded-lg shadow">
+        <div className="mt-4 p-4 bg-white rounded-lg shadow location-details">
           <h3 className="text-lg font-semibold mb-2">Selected Location:</h3>
           <p className="text-gray-700">Latitude: {selectedLocation.lat.toFixed(6)}</p>
           <p className="text-gray-700">Longitude: {selectedLocation.lng.toFixed(6)}</p>

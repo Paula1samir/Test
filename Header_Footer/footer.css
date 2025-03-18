@@ -48,6 +48,8 @@
   line-height: 20px;
   border: none;
   border-radius: 5px;
+  margin-left: 10px;
+
 }
 
 .footer .item button img {
@@ -58,8 +60,9 @@
 .footer .item h3 {
   color: #FFFFFF;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 20px;
+  line-height: 30px;
+  width: 100%;
 }
 
 .footer .item p {
@@ -73,6 +76,35 @@
 
 .footer .item ul li {
   font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 18px;
+  line-height: 30px;
+}
+ul{
+  list-style-type: none; /* Removes the bullet points */
+  padding-left: 0;  
+}
+/* For tablets */
+@media (max-width: 768px) {
+  
+  .item3{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .footer .item {
+    float: left;
+    width: 100%;
+    list-style-type: none; /* Removes the bullet points */
+    padding-left: 0;  
+  }
+  
+}
+
+/* For mobile devices */
+@media (max-width: 480px) {
+  
+  
+  
 }

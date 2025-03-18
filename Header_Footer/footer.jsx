@@ -40,7 +40,7 @@ function Footer() {
             </ul>
           </div>
 
-          <div className="item">
+          <div className="item item3">
             <h3>Download APP</h3>
             <button>
               <img src={googlePlay} alt="" />

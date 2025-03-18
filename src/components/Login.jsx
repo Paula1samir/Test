@@ -11,11 +11,13 @@ export default function Login() {
   const { setAuth } = useContext(AuthContext);
   const userRef = useRef();
   const errRef = useRef();
-  
+
   const [email, setUser] = useState("");
   const [password, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
 
   useEffect(() => {
     userRef.current.focus();
@@ -41,7 +43,7 @@ export default function Login() {
       setUser(""); // Clear the email field
       setPwd("");  // Clear the password field
       setSuccess(true); // Indicate success
-      alert("Login Succefull")   ;   
+      alert("Login Succefull");
     } catch (err) {
       if (err.response) {
         if (err.response.status === 400) {
@@ -72,14 +74,14 @@ export default function Login() {
         </section>
       ) : (
         <>
-          <p
-            ref={errRef}
-            className={errMsg ? "errMsg" : "offScreen"}
-            aria-live="assertive"
-          >
-            {errMsg}
-          </p>
           <div className="login-register">
+            <p
+              ref={errRef}
+              className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
+              aria-live="assertive"
+            >
+              {errMsg}
+            </p>
             <form className="form" onSubmit={handleSubmit}>
               <div className="flex-column">
                 <label>Email </label>
@@ -92,20 +94,29 @@ export default function Login() {
                   ref={userRef}
                   value={email}
                   onChange={(e) => setUser(e.target.value)}
+                  required
                 />
                 <br />
               </div>
               <div className="flex-column">
                 <label>Password </label>
               </div>
-              <div className="inputForm">
+              <div className="d-flex input-group" >
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"} // Toggle between text and password
                   className="input form-control"
                   value={password}
                   onChange={(e) => setPwd(e.target.value)}
                   placeholder="Enter your Password"
+                  required
                 />
+                <span
+                  className="input-group-text"
+                  onClick={() => setShowPassword(!showPassword)} // Toggle visibility
+                  style={{ cursor: "pointer" }}
+                >
+                  {showPassword ? "🙈" : "👁"} {/* Icons for visibility toggle */}
+                </span>
               </div>
               <div className="flex-row">
                 <div>
@@ -115,7 +126,7 @@ export default function Login() {
                 <Link to="/Forget-Password"
                   className="span"
                   style={{ cursor: "pointer" }}
-                  // onClick={() => setForgetPassword(true)}
+                // onClick={() => setForgetPassword(true)}
                 >
                   Forget Password
                 </Link>
@@ -130,7 +141,7 @@ export default function Login() {
 
             <Link className="btn btn-success w-100 mt-4"
               // onClick={() => setSupLogin(true)}
-            to={'/SupLogin'}
+              to={'/SupLogin'}
               style={{ cursor: "pointer" }}
             >
               Sign in As Supplier
