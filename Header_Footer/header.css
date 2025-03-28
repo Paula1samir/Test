@@ -194,7 +194,7 @@
 }
 .theCard{
     display: flex ;
-    align-items: center;
+    align-items: baseline;
 }
 hr{
   margin: 0 !important;

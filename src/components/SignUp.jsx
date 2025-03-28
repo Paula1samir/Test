@@ -42,7 +42,7 @@ const SignUp = () => {
     if (firstName.length < 4) newErrors.firstName = "Minimum Vaild Length is : 4";
     if (!lastName.trim()) newErrors.lastName = "Last name is required";
     if (!email.trim()) newErrors.email = "Email is required";
-    if (!password.trim()) newErrors.password = "Password is required";
+    // if (!password.trim()) newErrors.password = "Password is required";
     // Check if the phone number is empty
     if (!phoneNumber.trim()) {
       newErrors.phoneNumber = "Phone number is required";
@@ -74,6 +74,10 @@ const SignUp = () => {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      const alertElement = document.getElementById("alert");
+      if (alertElement) {
+        alertElement.scrollIntoView({ behavior: "smooth" });
+      }
       return;
     } else {
       setErrors({}); // Clear errors if no validation issues
@@ -91,11 +95,9 @@ const SignUp = () => {
       homeNumber,
       coordinates: [value2, value1],
     };
-    console.log(payload); // Log the payload to verify the data
 
     try {
       const response = await axios.post(REGISTER_URL, payload);
-      console.log(response?.data);
       setSuccess(true);
       // Clear state
       setUserFirstName("");
@@ -105,21 +107,19 @@ const SignUp = () => {
       setStreet("");
       setHomeNumber("");
       setPhoneNumber("");
+      console.log("Server Response:", response.data); // Log the server response
     } catch (err) {
       if (err.response) {
-        if (err.response.status === 400) {
-          setErrMsg("Invalid credentials");
-        } else if (err.response.status === 401) {
-          setErrMsg("Unauthorized");
-        } else {
-          setErrMsg(err.response.data?.message || "An error occurred");
+        const pp = document.getElementById("alert");
+        if (pp && err.response.data && err.response.data.err) {
+          for (let index = 0; index < err.response.data.err.length; index++) {
+            setErrMsg(err.response.data.err[index]);
+          }
         }
-      } else if (err.request) {
-        setErrMsg("Network Error");
-      } else {
-        setErrMsg("An error occurred");
+        if (errRef.current) {
+          errRef.current.scrollIntoView({ behavior: "smooth" });
+        }
       }
-      errRef.current.focus(); // Focus the error message
     }
   };
 
@@ -138,7 +138,19 @@ const SignUp = () => {
             ref={errRef}
             className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
             aria-live="assertive"
+            id="alert"
+            style={{
+              backgroundColor: "#ff4d4d", // Error background color (red)
+              padding: "20px",
+              borderRadius: "10px",
+              maxWidth: "90%", // Max width for responsiveness
+              width: "400px",  // Default width on larger screens
+              color: "#fff",
+              textAlign: "center",
+              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
+            }}
           >
+            
             {errMsg}
           </p>
 
@@ -275,6 +287,8 @@ const SignUp = () => {
                       setValue2={setValue2}
                     />
                   </div>
+
+
 
                   <button
                     className="btn btn-success mt-4 d-flex justify-content-center w-100"
