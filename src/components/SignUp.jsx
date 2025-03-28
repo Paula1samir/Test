@@ -110,8 +110,8 @@ const SignUp = () => {
       console.log("Server Response:", response.data); // Log the server response
     } catch (err) {
       if (err.response) {
-        const pp = document.getElementById("alert");
-        if (pp && err.response.data && err.response.data.err) {
+        const alert = document.getElementById("alert");
+        if (alert && err.response.data && err.response.data.err) {
           for (let index = 0; index < err.response.data.err.length; index++) {
             setErrMsg(err.response.data.err[index]);
           }
@@ -120,6 +120,7 @@ const SignUp = () => {
           errRef.current.scrollIntoView({ behavior: "smooth" });
         }
       }
+      errRef.current.focus(); // Focus the error message
     }
   };
 

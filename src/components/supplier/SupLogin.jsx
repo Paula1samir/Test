@@ -50,25 +50,16 @@ const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
       setSuccess(true);
     } catch (err) {
       if (err.response) {
-        // The request was made, and the server responded with a status code
-        // that falls out of the range of 2xx
-        if (err.response.status === 400) {
-          setErrMsg(alert("Invalid credentials"));
-        } else if (err.response.status === 401) {
-          setErrMsg(alert("Unauthorized"));
-        } else {
-          setErrMsg(err.response.data?.message || "An error occurred");
+        if (err.response) {
+            setErrMsg(err.response.data.message)
         }
-      } else if (err.request) {
-        // The request was made, but no response was received (network error)
-        setErrMsg(alert("Network Error"));
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        setErrMsg(alert("An error occurred"));
-      }
+          if (errRef.current) {
+            errRef.current.scrollIntoView({ behavior: "smooth" });
+          }
+        }
+        errRef.current.focus(); // Focus the error message
+        }
       
-      errRef.current.focus();
-    }
   };
   
   if (showForgetPass) {
@@ -89,7 +80,25 @@ const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
         </section>
       ) : (
         <>
-          <p ref={errRef} className={errMsg ? "errMsg" : "offScreen"}>{errMsg}</p>
+ <p
+            ref={errRef}
+            className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
+            aria-live="assertive"
+            id="alert"
+            style={{
+              backgroundColor: "#ff4d4d", // Error background color (red)
+              padding: "20px",
+              borderRadius: "10px",
+              maxWidth: "90%", // Max width for responsiveness
+              width: "400px",  // Default width on larger screens
+              color: "#fff",
+              textAlign: "center",
+              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
+            }}
+          >
+            
+            {errMsg}
+          </p>
           <div className="login-register">
             <h1>Sign In as Supplier</h1>
             <form className="form" onSubmit={handleSubmit}>

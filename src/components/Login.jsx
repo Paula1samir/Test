@@ -46,20 +46,9 @@ export default function Login() {
       alert("Login Succefull");
     } catch (err) {
       if (err.response) {
-        if (err.response.status === 400) {
-          setErrMsg("Invalid credentials");
-        } else if (err.response.status === 401) {
-          setErrMsg("Unauthorized");
-        } else {
-          setErrMsg(err.response.data?.message || "An error occurred");
-        }
-      } else if (err.request) {
-        setErrMsg("Network Error");
-      } else {
-        setErrMsg("An error occurred");
-      }
+        setErrMsg(err.response.data.message)
       errRef.current.focus(); // Focus the error message
-    }
+    }}
   };
 
   return (
@@ -75,13 +64,26 @@ export default function Login() {
       ) : (
         <>
           <div className="login-register">
-            <p
-              ref={errRef}
-              className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
-              aria-live="assertive"
-            >
-              {errMsg}
-            </p>
+          <p
+            ref={errRef}
+            className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
+            aria-live="assertive"
+            id="alert"
+            style={{
+              backgroundColor: "#ff4d4d", // Error background color (red)
+              padding: "20px",
+              borderRadius: "10px",
+              maxWidth: "90%", // Max width for responsiveness
+              width: "400px",  // Default width on larger screens
+              color: "#fff",
+              textAlign: "center",
+              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
+            }}
+          >
+            
+            {errMsg}
+          </p>
+
             <form className="form" onSubmit={handleSubmit}>
               <div className="flex-column">
                 <label>Email </label>

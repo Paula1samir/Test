@@ -51,15 +51,18 @@ const SupSignUp = () => {
       setHomeNumber("");
       setPhoneNumber("");
     } catch (err) {
-      console.log(err);
-      if (!err?.response) {
-        setErrMsg(alert("No Server Response" ));
-      } else if (err.response?.status === 409) {
-        setErrMsg(alert("Username Taken"));
-      } else {
-        setErrMsg(alert("Registration Failed"));
+      if (err.response) {
+        const alert = document.getElementById("alert");
+        if (alert && err.response.data && err.response.data.err) {
+          for (let index = 0; index < err.response.data.err.length; index++) {
+            setErrMsg(err.response.data.err[index]);
+          }
+        }
+        if (errRef.current) {
+          errRef.current.scrollIntoView({ behavior: "smooth" });
+        }
       }
-      errRef.current.focus();
+      errRef.current.focus(); // Focus the error message
     }
   };
   
@@ -77,11 +80,24 @@ const SupSignUp = () => {
         <div className="signup-container">
           <p
             ref={errRef}
-            className={errMsg ? "errmsg" : "offscreen"}
+            className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
             aria-live="assertive"
+            id="alert"
+            style={{
+              backgroundColor: "#ff4d4d", // Error background color (red)
+              padding: "20px",
+              borderRadius: "10px",
+              maxWidth: "90%", // Max width for responsiveness
+              width: "400px",  // Default width on larger screens
+              color: "#fff",
+              textAlign: "center",
+              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
+            }}
           >
+            
             {errMsg}
           </p>
+
 
           <Routes>
             <Route
