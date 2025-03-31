@@ -45,7 +45,8 @@ const ForgetPassword = () => {
     }
     if(showResetPass === true){
       return <ResetPass />
-    }
+    }  
+    
     
     return (
       <>
@@ -56,32 +57,44 @@ const ForgetPassword = () => {
               Enter the email address or mobile phone number associated with your
               bulkify account.
             </p>
+      <p
+      ref={errRef}
+      className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
+      aria-live="assertive"
+      id="alert"
+      style={{
+        backgroundColor: "#ff4d4d", // Error background color (red)
+        padding: "20px",
+        borderRadius: "10px",
+        maxWidth: "90%", // Max width for responsiveness
+        width: "400px",  // Default width on larger screens
+        color: "#fff",
+        textAlign: "center",
+        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
+      }}
+    >
+      
+      {errMsg}
+    </p>
+  
             <form className="form1" action="" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
+            <div className="input-group">
                 <input
-                  type="text"
-                  id="email"
-                  name="email"
-                  placeholder="Enter your email"
+                  type="email"
+                  className="input form-control"
+                  placeholder="Enter your Email"
                   required=""
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
                   ref={errRef}
-                ></input>
+                />
+                <br />
               </div>
               <div className="flex-row">
-              <button type="submit" >
-                Send Code
-              </button>
+              <button class="btn btn-success w-100 mt-4" type="submit">Send Code</button>
               </div>
             </form>
-            {errMsg && (
-          <p ref={errRef} className="error-message" aria-live="assertive">
-            {errMsg}
-          </p>
-        )}
-  
+                      
         {/* Display success message */}
         {successMsg && (
           <p className="success-message">

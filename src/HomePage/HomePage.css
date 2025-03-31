@@ -1,0 +1,19 @@
+.sideContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.description{
+    width: 100%;
+    padding-left: 30px;
+}
+.mainContainer{
+padding: 50px 150px;
+}
+@media (max-width: 768px) {
+    
+    .mainContainer{
+        display: block !important;
+    }
+}

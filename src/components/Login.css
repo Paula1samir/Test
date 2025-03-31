@@ -109,13 +109,12 @@
 .tab-switch {
     display: flex;
     justify-content: space-between;
-    border-bottom: 2px solid #ddd;
     padding-bottom: 10px;
 }
 .tab-switch a {
     text-decoration: none;
     font-weight: bold;
-    color: #888;
+    color: #ffffff;
     padding-bottom: 5px;
 }
 .tab-switch a.active {

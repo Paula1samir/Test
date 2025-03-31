@@ -33,7 +33,6 @@
   }
   .lower-header{
     background-color: #61AE45;
-    color: #ffffff;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -234,7 +233,6 @@ hr{
     flex-wrap: wrap;
     text-align: center;
     margin: auto;
-    justify-content: center;
   }
 
 }

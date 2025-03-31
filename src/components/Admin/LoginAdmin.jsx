@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
-import "./Login.css";
-import "./Login";
+import "../Login.css";
+import "./LoginAdmin";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AuthContext from "./context/AuthProvider";
+import { Link } from "react-router-dom";
+import AuthContext from "../context/AuthProvider";
 import axios from "axios";
-const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/login";
-export default function Login() {
+const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/admins/login";
+export default function LoginAdmin() {
   const { setAuth } = useContext(AuthContext);
   const userRef = useRef();
   const errRef = useRef();
@@ -53,10 +54,10 @@ export default function Login() {
     <>
       {success ? (
         <section>
-          <h1>Congratulations {email}, You're logged in!</h1>
+          <h1>Congratulations {email}, You're logged in As Admin!</h1>
           <br />
           <p>
-            <a href="/">Go to Home</a>
+            <Link to="/Login">Go to Home</Link>
           </p>
         </section>
       ) : (
@@ -123,13 +124,13 @@ export default function Login() {
                   <input type="checkbox" />
                   <label>Remember me </label>
                 </div>
-                <a href="/Forget-Password"
+                <Link to="/Forget-Password"
                   className="span"
                   style={{ cursor: "pointer" }}
                 // onClick={() => setForgetPassword(true)}
                 >
                   Forget Password
-                </a>
+                </Link>
               </div>
 
               <button className="btn btn-success w-100 mt-4" type="submit">
@@ -137,27 +138,10 @@ export default function Login() {
               </button>
             </form>
 
-            <div className="or-text">OR</div>
-
-            <a className="btn btn-success w-100 mt-4"
-              // onClick={() => setSupLogin(true)}
-              href={'/SupLogin'}
-              style={{ cursor: "pointer" }}
-            >
-              Sign in As Supplier
-            </a>
-
-            <br />
-            <br />
-            <a className="btn btn-success w-100 mt-4"
-              href={'/LoginAdmin'}
-              style={{ cursor: "pointer" }}
-            >
-              Sign in As Admin
-            </a>
+          
             <p>
               Don't have an account?{" "}
-              <a href="/Signup">Sign up now</a>
+              <Link to="/SignUpAdmin">Sign up now</Link>
             </p>
           </div>
 
