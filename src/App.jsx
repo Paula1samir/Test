@@ -8,6 +8,7 @@ import SupLogin from "./components/supplier/SupLogin";
 import Header from '../Header_Footer/header.jsx'
 import Footer from '../Header_Footer/footer.jsx'
 import HomePage from "./HomePage/HomePage.jsx";
+import ProductDetails from "./HomePage/ProductDetails.jsx";
 import { BrowserRouter as Router, Routes, Route, } from 'react-router-dom';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/LoginAdmin" element ={<LoginAdmin />}/>
         <Route path="/SignUpAdmin" element ={<SignUpAdmin />}/>
         <Route path="/" element ={<HomePage />}/>
+        <Route path="/ProductDetails/:name" element={<ProductDetails />} />
       </Routes>
       <Footer />
     </>

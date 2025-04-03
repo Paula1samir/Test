@@ -258,6 +258,8 @@ hr{
     flex-wrap: wrap;
     text-align: center;
     margin: auto;
+    display: inline-grid
+;
   }
 
   .InputContainer{

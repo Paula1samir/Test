@@ -8,12 +8,120 @@
     width: 100%;
     padding-left: 30px;
 }
-.mainContainer{
-padding: 50px 150px;
-}
 @media (max-width: 768px) {
     
     .mainContainer{
         display: block !important;
     }
+    .HomePage{
+        padding: 20px 30px  !important;
+    
+    }
 }
+@media (max-width: 479px) {
+    
+.right{
+    margin-top: 20px;
+}
+.sideContainer2{
+    flex-wrap: wrap;
+
+}
+}
+.ProductImg{
+    width: 100px;
+    height: 100px;
+}
+.HomePage{
+    padding: 50px 150px;
+
+}
+img{
+  filter:   drop-shadow(2px 4px 6px ,black);
+}
+
+
+/* ProductStyles.css */
+.product-list {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    align-items: center;
+    cursor: pointer;
+    flex-wrap: wrap;
+  }
+  
+  .product-card {
+    width: 240px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .product-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .product-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .product-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 8px;
+  }
+  
+  .product-description {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    margin-top: 4px;
+  }
+  
+  .product-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #27ae60;
+    margin-top: 8px;
+  }
+  
+  .nav-button {
+    padding: 10px 16px;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .nav-button:hover {
+    background-color: #1e8449;
+  }
+  
+  .features{
+    width: 80%;
+    font-weight: 700;
+    font-size: 18px;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    padding: 16px;
+    flex-wrap: wrap;
+  }
+  .sideContainer2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-direction: row;
+  }
