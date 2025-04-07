@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Products - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .sidebar {
+      height: 100vh;
+      background-color: white;
+      border-right: 1px solid #dee2e6;
+      padding-top: 1rem;
+    }
+    .sidebar .nav-item {
+      transition: all 0.2s;
+    }
+    .sidebar .nav-link {
+      display: block;
+      padding: 10px 20px;
+      color: #333;
+      text-decoration: none;
+    }
+    .sidebar .nav-item:hover,
+    .sidebar .nav-link.active {
+      background-color: #61AE45;
+    }
+    .sidebar .nav-item:hover .nav-link,
+    .sidebar .nav-link.active {
+      color: white;
+    }
+    .topbar {
+      background-color: #e6f4ea;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .table-section {
+      padding: 2rem;
+      background-color: white;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .product-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .action-icons i {
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .action-icons i.edit {
+      color: #61AE45;
+    }
+    .action-icons i.delete {
+      color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-2 sidebar">
+      <img src="./images/Layer_1logo (1).png" class="mb-4 mx-3" alt="logo">
+      <div class="nav flex-column">
+        <div class="nav-item">
+          <a href="#" class="nav-link">Add Product</a>
+        </div>
+        <div class="nav-item">
+          <a href="#" class="nav-link active">Edit Products</a>
+        </div>
+        <div class="nav-item">
+          <a href="#" class="nav-link">Live Purchase Deals</a>
+        </div>
+        <div class="nav-item">
+          <a href="#" class="nav-link">Order Status</a>
+        </div>
+        <div class="nav-item mt-auto" style="margin-top: 200px;">
+          <a href="#" class="nav-link text-muted">Logout</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-10">
+      <!-- Topbar -->
+      <div class="topbar">
+        <input type="text" class="form-control w-50" placeholder="Search">
+        <div class="d-flex align-items-center">
+          <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="User">
+          <div>
+            <strong>Ynessa Alberto</strong><br>
+            <small class="text-muted">Supplier</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table Section -->
+      <div class="p-4">
+        <div class="table-section">
+          <h5 class="mb-4">Edit Or Delete Product</h5>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Bulk Pieces</th>
+                  <th>Bulk Price</th>
+                  <th>Pieces</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><img src="./images/Bitmap.png" class="product-img" alt=""></td>
+                  <td>Apple Watch Series 4</td>
+                  <td>Electronics</td>
+                  <td>EGP690.00</td>
+                  <td>12</td>
+                  <td>EGP11,520</td>
+                  <td>63</td>
+                  <td class="action-icons">
+                    <i class="bi bi-pencil-square edit me-2"></i>
+                    <i class="bi bi-trash delete"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td><img src="./images/Bitmap (1).png" class="product-img" alt=""></td>
+                  <td>Microsoft Headsquare</td>
+                  <td>Electronics</td>
+                  <td>EGP190.00</td>
+                  <td>12</td>
+                  <td>EGP2,280</td>
+                  <td>13</td>
+                  <td class="action-icons">
+                    <i class="bi bi-pencil-square edit me-2"></i>
+                    <i class="bi bi-trash delete"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td><img src="./images/Bitmap (2).png" class="product-img" alt=""></td>
+                  <td>Samsung A50</td>
+                  <td>Electronics</td>
+                  <td>EGP400.00</td>
+                  <td>12</td>
+                  <td>EGP4,800</td>
+                  <td>67</td>
+                  <td class="action-icons">
+                    <i class="bi bi-pencil-square edit me-2"></i>
+                    <i class="bi bi-trash delete"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td><img src="./images/Bitmap (3).png" class="product-img" alt=""></td>
+                  <td>Camera</td>
+                  <td>Electronics</td>
+                  <td>EGP420.00</td>
+                  <td>12</td>
+                  <td>EGP5,040</td>
+                  <td>52</td>
+                  <td class="action-icons">
+                    <i class="bi bi-pencil-square edit me-2"></i>
+                    <i class="bi bi-trash delete"></i>
+                  </td>
+                </tr>
+                <tr>
+                  <td><img src="./images/Bitmap (4).png" class="product-img" alt=""></td>
+                  <td>Microsoft Headsquare</td>
+                  <td>Electronics</td>
+                  <td>EGP190.00</td>
+                  <td>12</td>
+                  <td>EGP2,280</td>
+                  <td>13</td>
+                  <td class="action-icons">
+                    <i class="bi bi-pencil-square edit me-2"></i>
+                    <i class="bi bi-trash delete"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<!-- Action Scripts -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".action-icons .edit").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        alert("Edit action triggered for this product!");
+      });
+    });
+
+    document.querySelectorAll(".action-icons .delete").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const confirmDelete = confirm("Are you sure you want to delete this product?");
+        if (confirmDelete) {
+          alert("Product deleted!");
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

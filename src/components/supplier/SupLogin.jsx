@@ -1,23 +1,26 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import "../Login.css";
+import { useNavigate } from "react-router-dom";
 import SupForgetPassword from "./SupForgetPassword.jsx";
 import SupSignUp from "./SupSignUp.jsx";
 import AuthContext from "../context/AuthProvider.jsx";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import SuppDashboard from "./SuppDashboard.jsx";
+
 
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
 
- function SupLogin() {
+function SupLogin() {
   const [showForgetPass, setForgetPass] = useState(false);
   const [showSignUp, setSignUp] = useState(false);
   const { setAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
   const userRef = useRef();
   const errRef = useRef();
   const [email, setUser] = useState("");
   const [password, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     userRef.current.focus();
@@ -29,7 +32,7 @@ const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       const response = await axios.post(
         Login_URL,
@@ -38,30 +41,35 @@ const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
           headers: { "Content-Type": "application/json" },
         }
       );
-      
+
       console.log(JSON.stringify(response?.data));
       const token = response?.data?.token;
       const roles = response?.data?.roles;
+
       setAuth({ email, password, roles, token });
-      console.log(token);
-      console.log(email, password);
+
+      // 🔐 Save to localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("roles", JSON.stringify(roles)); // in case it's an array or object
+
+      localStorage.setItem("supplier", JSON.stringify(response.data.supplier));
+      navigate("/SuppDashboard"); // redirect to dashboard
       setUser("");
       setPwd("");
-      setSuccess(true);
     } catch (err) {
       if (err.response) {
         if (err.response) {
-            setErrMsg(err.response.data.message)
+          setErrMsg(err.response.data.message)
         }
-          if (errRef.current) {
-            errRef.current.scrollIntoView({ behavior: "smooth" });
-          }
+        if (errRef.current) {
+          errRef.current.scrollIntoView({ behavior: "smooth" });
         }
-        errRef.current.focus(); // Focus the error message
-        }
-      
+      }
+      errRef.current.focus(); // Focus the error message
+    }
+
   };
-  
+
   if (showForgetPass) {
     return <SupForgetPassword />;
   }
@@ -71,16 +79,8 @@ const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
 
   return (
     <>
-      {success ? (
-        <section>
-          <h1>Congratulations {email}, you're logged in!</h1>
-          <p>
-            <a href="#">Go to Home</a>
-          </p>
-        </section>
-      ) : (
         <>
- <p
+          <p
             ref={errRef}
             className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
             aria-live="assertive"
@@ -96,7 +96,7 @@ const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
               boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
             }}
           >
-            
+
             {errMsg}
           </p>
           <div className="login-register">
@@ -131,7 +131,7 @@ const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
             <p>Don't have an account? <span onClick={() => setSignUp(true)} style={{ cursor: "pointer" }}>Sign up now</span></p>
           </div>
         </>
-      )}
+      
     </>
   );
 }

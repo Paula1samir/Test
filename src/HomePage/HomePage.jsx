@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 
 
 
+
 const ProductCardApi = ({ name, description, price, quantity, image }) => {
   return (
     <div className="product-card" style={{ width: '300px', margin: 'auto', textAlign: 'center' }}>
