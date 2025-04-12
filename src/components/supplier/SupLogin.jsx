@@ -6,7 +6,6 @@ import SupSignUp from "./SupSignUp.jsx";
 import AuthContext from "../context/AuthProvider.jsx";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import SuppDashboard from "./SuppDashboard.jsx";
 
 
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
@@ -42,7 +41,6 @@ function SupLogin() {
         }
       );
 
-      console.log(JSON.stringify(response?.data));
       const token = response?.data?.token;
       const roles = response?.data?.roles;
 
@@ -50,6 +48,7 @@ function SupLogin() {
 
       // 🔐 Save to localStorage
       localStorage.setItem("token", token);
+      console.log("Token: ", token);
       localStorage.setItem("roles", JSON.stringify(roles)); // in case it's an array or object
 
       localStorage.setItem("supplier", JSON.stringify(response.data.supplier));

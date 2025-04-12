@@ -36,6 +36,9 @@ export default function LoginAdmin() {
       );
 
       const token = response?.data?.token;
+      localStorage.setItem("token", token); // Save token to local storage
+
+      console.log(token);
       const roles = response?.data?.roles;
       setAuth({ email, password, roles, token });
 

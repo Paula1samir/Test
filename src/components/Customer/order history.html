@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        .sidebar {
+            height: 100vh;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+            width: 250px;
+            position: fixed;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: #000;
+            text-decoration: none;
+        }
+
+        .sidebar a.active {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .sidebar a:hover {
+            background-color: #ddd;
+        }
+
+        .sidebar i {
+            margin-right: 10px;
+        }
+
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .status-pending {
+            color: orange;
+        }
+
+        .status-purchased {
+            color: blue;
+        }
+
+        .status-cancelled {
+            color: red;
+        }
+
+        .status-arrived {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex">
+        <div class="sidebar">
+            <a href="#"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+            <a href="#" class="active"><i class="fas fa-history"></i> Order History</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i> Log out</a>
+        </div>
+        <div class="content">
+            <h2>ORDER HISTORY</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#FTR478</td>
+                        <td class="status-pending">PENDING</td>
+                        <td>Dec 18, 2020 17:32</td>
+                        <td>GBP579.88 bulk</td>
+                    </tr>
+                    <tr>
+                        <td>#FTR479</td>
+                        <td class="status-purchased">PURCHASED</td>
+                        <td>Dec 18, 2020 17:32</td>
+                        <td>GBP579.88 bulk</td>
+                    </tr>
+                    <tr>
+                        <td>#FTR480</td>
+                        <td class="status-cancelled">CANCELLED</td>
+                        <td>Jan 5, 2021 12:42</td>
+                        <td>GBP579.88 bulk</td>
+                    </tr>
+                    <tr>
+                        <td>#FTR481</td>
+                        <td class="status-arrived">ARRIVED</td>
+                        <td class="status-arrived">Feb 8, 2021 09:00</td>
+                        <td>GBP579.88 bulk</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

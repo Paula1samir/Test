@@ -16,6 +16,8 @@ import AddProduct from "./components/supplier/AddProduct.jsx";
 import EditProduct from "./components/supplier/EditProduct.jsx";
 import LivePurchase from "./components/supplier/LivePurchase.jsx";
 import OrderStatus from "./components/supplier/OrderStatus.jsx";
+import EditProductDetails from "./components/supplier/EditProductDetails.jsx";
+import Categories from "./components/Categories/Categories.jsx";
 
 function App() {
   return (
@@ -37,7 +39,9 @@ function App() {
           <Route path="edit" element={<EditProduct />} />
           <Route path="live" element={<LivePurchase />} />
           <Route path="order" element={<OrderStatus />} />
-        </Route>
+          <Route path="categories" element={<Categories />} />
+
+          </Route>
       </Routes>
       <Footer />
     </>

@@ -1,17 +1,20 @@
-/* eslint-disable no-unused-vars */
-import React, { useState,useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
-import AddProduct from "./AddProduct"; // Adjust paths as needed
+import React, { useState, useEffect } from "react";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
 import LivePurchase from "./LivePurchase";
 import OrderStatus from "./OrderStatus";
-import Logo from "../images/Layer_1.png"; // Adjust path as needed
+import Logo from "../images/Layer_1.png";
+import axios from 'axios';
+import EditProductDetails from "./EditProductDetails";
+import Categories from "../Categories/Categories";
 
-const SidebarLayout = ({  logo }) => {
+const SidebarLayout = () => {
     const [sidebarVisible, setSidebarVisible] = useState(false);
+    const [supplier, setSupplier] = useState(null);
+    const navigate = useNavigate();
 
     const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
-        const [supplier, setSupplier] = useState(null);
 
     useEffect(() => {
         const storedSupplier = localStorage.getItem("supplier");
@@ -19,6 +22,25 @@ const SidebarLayout = ({  logo }) => {
             setSupplier(JSON.parse(storedSupplier));
         }
     }, []);
+
+    const logout = async () => {
+        try {
+            console.log("Logging out...");
+            const response = await axios.post('/logout');
+            console.log("Logout response:", response);
+
+            // Clear stored data
+            localStorage.removeItem('token');
+            localStorage.removeItem('supplier');
+
+            // Navigate to login page
+            console.log("Redirecting to login...");
+            navigate('/login');
+        } catch (error) {
+            console.error('Logout failed:', error);
+        }
+    };
+
     return (
         <div className="container-fluid">
             <div className="d-flex ">
@@ -56,14 +78,17 @@ const SidebarLayout = ({  logo }) => {
                         <Link to="order" className="nav-link" onClick={() => setSidebarVisible(false)}>
                             Order Status
                         </Link>
-                        <a href="#" className="nav-link text-muted mt-auto" style={{ marginTop: "200px" }}>
+                        <Link to="Categories" className="nav-link" onClick={() => setSidebarVisible(false)}>
+                            Categories
+                        </Link>
+                        <Link to="#" className="nav-link text-muted mt-auto" style={{ marginTop: "200px" }} onClick={logout}>
                             Logout
-                        </a>
+                        </Link>
                     </div>
                 </div>
 
                 {/* Main content */}
-                <div className="col py-3" style={{width: "-webkit-fill-available"}}>
+                <div className="col py-3" style={{ width: "-webkit-fill-available" }}>
                     {/* Topbar */}
                     <div className="d-flex flex-row flex-md-row justify-content-between align-items-center mb-3">
                         <input type="text" className="form-control mb-2 mb-md-0 w-100 w-md-50" placeholder="Search" />
@@ -77,12 +102,14 @@ const SidebarLayout = ({  logo }) => {
                     </div>
 
                     {/* Dynamically rendered content via routing */}
-                    <div className="p-2 p-md-4">
+                    <div className="">
                         <Routes>
                             <Route path="add" element={<AddProduct supplierId={supplier?.id} />} />
                             <Route path="edit" element={<EditProduct supplierId={supplier?.id} />} />
+                            <Route path="edit-product/:name" element={<EditProductDetails supplierId={supplier?.id} />} />
                             <Route path="live" element={<LivePurchase supplierId={supplier?.id} />} />
                             <Route path="order" element={<OrderStatus supplierId={supplier?.id} />} />
+                            <Route path="Categories" element={<Categories supplierId={supplier?.id} />} />
                             <Route path="*" element={<div>Select an option from the sidebar.</div>} />
                         </Routes>
                     </div>

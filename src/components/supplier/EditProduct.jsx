@@ -1,111 +1,81 @@
-import React from 'react'
-import './SuppDashboard.css'
-import { Link } from 'react-router-dom'
-import SuppDashboard from './SuppDashboard'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import './SuppDashboard.css';
+
 export default function EditProduct() {
+    const [products, setProducts] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        axios.get('https://bulkify-back-end.vercel.app/api/v1/products')
+            .then(response => {
+                setProducts(response.data.products);
+            })
+            .catch(error => {
+                console.error('There was an error fetching the products!', error);
+            });
+    }, []);
+
+    const handleEdit = (product) => {
+        const encodedName = encodeURIComponent(product.name);
+        navigate(`/SuppDashboard/edit-product/${encodedName}`, { state: { product } });
+    };
+
     return (
-        <>
-
         <div className="container-fluid">
-            <div className="row">
-
-
-                    {/* Main Content */}
-                    <div className="col-md-10 " style={{width: "-webkit-fill-available"}}>
-
-                        {/* Table Section */}
-                        <div className="p-4">
-                            <div className="table-section">
-                                <h5 className="mb-4">Edit Or Delete Product</h5>
-                                <div className="table-responsive">
-                                    <table className="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Image</th>
-                                                <th>Product Name</th>
-                                                <th>Category</th>
-                                                <th>Price</th>
-                                                <th>Bulk Pieces</th>
-                                                <th>Bulk Price</th>
-                                                <th>Pieces</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><img src="./images/Bitmap.png" className="product-img" alt="" /></td>
-                                                <td>Apple Watch Series 4</td>
-                                                <td>Electronics</td>
-                                                <td>EGP690.00</td>
-                                                <td>12</td>
-                                                <td>EGP11,520</td>
-                                                <td>63</td>
+            <div className="">
+                <div className="col-md-10" style={{ width: "-webkit-fill-available" }}>
+                    <div className="p-4">
+                        <div className="table-section">
+                            <h5 className="mb-4">Edit Or Delete Product</h5>
+                            <div className="table-responsive">
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Image</th>
+                                            <th>Product Name</th>
+                                            <th>Category</th>
+                                            <th>Price</th>
+                                            <th>Bulk Pieces</th>
+                                            <th>Bulk Price</th>
+                                            <th>Pieces</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {products.map((product) => (
+                                            <tr key={product._id}>
+                                                <td>
+                                                    <img
+                                                        src={product.imageSource[0] || './images/default.png'}
+                                                        className="product-img"
+                                                        alt={product.name}
+                                                    />
+                                                </td>
+                                                <td>{product.name}</td>
+                                                <td>{product.categoryId || 'Uncategorized'}</td>
+                                                <td>{`EGP ${product.price}`}</td>
+                                                <td>{product.bulkThreshold}</td>
+                                                <td>{`EGP ${product.price * product.bulkThreshold}`}</td>
+                                                <td>{product.quantity}</td>
                                                 <td className="action-icons">
-                                                    <i className="bi bi-pencil-square edit me-2"></i>
+                                                    <i
+                                                        className="bi bi-pencil-square edit me-2"
+                                                        onClick={() => handleEdit(product)}
+                                                        style={{ cursor: 'pointer' }}
+                                                    ></i>
                                                     <i className="bi bi-trash delete"></i>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td><img src="./images/Bitmap (1).png" className="product-img" alt="" /></td>
-                                                <td>Microsoft Headsquare</td>
-                                                <td>Electronics</td>
-                                                <td>EGP190.00</td>
-                                                <td>12</td>
-                                                <td>EGP2,280</td>
-                                                <td>13</td>
-                                                <td className="action-icons">
-                                                    <i className="bi bi-pencil-square edit me-2"></i>
-                                                    <i className="bi bi-trash delete"></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><img src="./images/Bitmap (2).png" className="product-img" alt="" /></td>
-                                                <td>Samsung A50</td>
-                                                <td>Electronics</td>
-                                                <td>EGP400.00</td>
-                                                <td>12</td>
-                                                <td>EGP4,800</td>
-                                                <td>67</td>
-                                                <td className="action-icons">
-                                                    <i className="bi bi-pencil-square edit me-2"></i>
-                                                    <i className="bi bi-trash delete"></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><img src="./images/Bitmap (3).png" className="product-img" alt="" /></td>
-                                                <td>Camera</td>
-                                                <td>Electronics</td>
-                                                <td>EGP420.00</td>
-                                                <td>12</td>
-                                                <td>EGP5,040</td>
-                                                <td>52</td>
-                                                <td className="action-icons">
-                                                    <i className="bi bi-pencil-square edit me-2"></i>
-                                                    <i className="bi bi-trash delete"></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><img src="./images/Bitmap (4).png" className="product-img" alt="" /></td>
-                                                <td>Microsoft Headsquare</td>
-                                                <td>Electronics</td>
-                                                <td>EGP190.00</td>
-                                                <td>12</td>
-                                                <td>EGP2,280</td>
-                                                <td>13</td>
-                                                <td className="action-icons">
-                                                    <i className="bi bi-pencil-square edit me-2"></i>
-                                                    <i className="bi bi-trash delete"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-        </>
-    )
+        </div>
+    );
 }
