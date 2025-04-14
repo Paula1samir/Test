@@ -9,7 +9,7 @@ export default function Categories() {
     const [editMode, setEditMode] = useState(false);
     const [editCategoryId, setEditCategoryId] = useState(null);
 
-    const token = "your_token_here";
+    const AdminToken = localStorage.getItem("AdminToken");
 
     const fetchCategories = async () => {
         try {
@@ -29,7 +29,7 @@ export default function Categories() {
             await axios.delete(
                 `https://bulkify-back-end.vercel.app/api/v1/categories/${id}`,
                 {
-                    headers: { "token": token },
+                    headers: { "token": AdminToken },
                 }
             );
             fetchCategories();
@@ -48,7 +48,7 @@ export default function Categories() {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        token,
+                        AdminToken,
                     },
                 }
             );
@@ -70,7 +70,7 @@ export default function Categories() {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "token": token,
+                        "token": AdminToken,
                     },
                 }
             );

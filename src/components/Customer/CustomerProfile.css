@@ -1,11 +1,4 @@
 
-.sidebar {
-  width: 220px;
-  background-color: #fff;
-  border-right: 1px solid #ddd;
-  height: 100vh;
-  padding-top: 30px;
-}
 .container-fluid{
   display: flex;
   flex-direction: row;

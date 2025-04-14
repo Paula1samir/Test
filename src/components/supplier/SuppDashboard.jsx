@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
 import LivePurchase from "./LivePurchase";
 import OrderStatus from "./OrderStatus";
 import Logo from "../images/Layer_1.png";
-import axios from 'axios';
 import EditProductDetails from "./EditProductDetails";
 import Categories from "../Categories/Categories";
 
 const SidebarLayout = () => {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [supplier, setSupplier] = useState(null);
-    const navigate = useNavigate();
 
     const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
 
@@ -23,24 +21,7 @@ const SidebarLayout = () => {
         }
     }, []);
 
-    const logout = async () => {
-        try {
-            console.log("Logging out...");
-            const response = await axios.post('/logout');
-            console.log("Logout response:", response);
-
-            // Clear stored data
-            localStorage.removeItem('token');
-            localStorage.removeItem('supplier');
-
-            // Navigate to login page
-            console.log("Redirecting to login...");
-            navigate('/login');
-        } catch (error) {
-            console.error('Logout failed:', error);
-        }
-    };
-
+    const SuuplierToken = localStorage.getItem("SuuplierToken");
     return (
         <div className="container-fluid">
             <div className="d-flex ">
@@ -81,8 +62,16 @@ const SidebarLayout = () => {
                         <Link to="Categories" className="nav-link" onClick={() => setSidebarVisible(false)}>
                             Categories
                         </Link>
-                        <Link to="#" className="nav-link text-muted mt-auto" style={{ marginTop: "200px" }} onClick={logout}>
-                            Logout
+                        <Link
+                            className="nav-link"
+                            onClick={() => {
+                                localStorage.removeItem("SupplierToken");
+                                localStorage.removeItem("supplier");
+                                window.location.href = "/Login";
+                            }}
+                        >
+                            <i className="fas fa-sign-out-alt"></i>
+                            Log-out
                         </Link>
                     </div>
                 </div>
@@ -93,7 +82,6 @@ const SidebarLayout = () => {
                     <div className="d-flex flex-row flex-md-row justify-content-between align-items-center mb-3">
                         <input type="text" className="form-control mb-2 mb-md-0 w-100 w-md-50" placeholder="Search" />
                         <div className="d-flex align-items-center ms-md-3">
-                            <img src="https://via.placeholder.com/40" className="rounded-circle me-2" alt="User" />
                             <div>
                                 <strong>{supplier ? supplier.fullName : "Loading..."}</strong><br />
                                 <small className="text-muted">Supplier</small>

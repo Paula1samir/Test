@@ -50,11 +50,11 @@ export default function CustomerProfile() {
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) return;
+    const CustomerToken = localStorage.getItem('CustomerToken');
+    if (!CustomerToken) return;
 
     axios.get('https://bulkify-back-end.vercel.app/api/v1/customers/profile', {
-      headers: { "token": `${token}` }
+      headers: { "token": `${CustomerToken}` }
     })
       .then(res => {
         const data = res.data.customer;
@@ -73,8 +73,8 @@ export default function CustomerProfile() {
   }, []);
 
   // logic for log in 
-  const token = localStorage.getItem("token");
-  if (!token) {
+  const CustomerToken = localStorage.getItem("CustomerToken");
+  if (!CustomerToken) {
     return (
       <div style={{
         textAlign: 'center',
@@ -101,7 +101,7 @@ export default function CustomerProfile() {
         <button
           className="nav-link"
           onClick={() => {
-            localStorage.removeItem("token");
+            localStorage.removeItem("CustomerToken");
             window.location.href = "/Login";
           }}
         >

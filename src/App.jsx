@@ -20,6 +20,10 @@ import Categories from "./components/Categories/Categories.jsx";
 import CustomerProfile from "./components/Customer/CustomerProfile.jsx";
 import OrderHistory from "./components/Customer/OrderHistory.jsx";
 
+import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
+import ProductRequests from "./components/Admin/ProductRequests.jsx";
+import Reports from "./components/Admin/Reports.jsx";
+
 function App() {
   return (
     <>
@@ -37,14 +41,25 @@ function App() {
         <Route path="orderhistory" element={<OrderHistory />} />
         </Route>
 
-        {/* Dashboard with nested routes */}
+        {/* Dashboard for Supplier with nested routes */}
         <Route path="/SuppDashboard/*" element={<SuppDashboard />}>
           <Route path="add" element={<AddProduct />} />
           <Route path="edit" element={<EditProduct />} />
           <Route path="live" element={<LivePurchase />} />
           <Route path="order" element={<OrderStatus />} />
-          <Route path="categories" element={<Categories />} />
           </Route>
+
+        {/* Dashboard for Admin with nested routes */}
+        <Route path="/AdminDashboard/*" element={<AdminDashboard />}>
+          <Route path="categories" element={<Categories />} />
+          {/* <Route path="categories" element={<Categories />} /> */}
+          <Route path="product-requests" element={<ProductRequests />} />
+          <Route path="reports" element={<Reports />} />
+          {/* <Route path="supplier-requests" element={<SupplierRequests />} />
+          <Route path="edit-customer" element={<EditCustomer />} />
+          <Route path="available-categories" element={<AvailableCategories />} /> */}
+        </Route>
+
       </Routes>
       <Footer />
     </>

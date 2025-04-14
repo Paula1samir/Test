@@ -5,14 +5,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter, faInstagram, faFacebook, faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { Link, useLocation } from 'react-router-dom';
 import Icon from '@mui/material/Icon';
-import CustomerProfile from '../src/components/Customer/CustomerProfile';
 
 <Icon>star</Icon>;
 
 function Header() {
   const location = useLocation();
-  const token = localStorage.getItem("token");
-
+  const CustomerToken = localStorage.getItem("CustomerToken");
+  const SupplierToken = localStorage.getItem("SupplierToken");
+  const AdminToken = localStorage.getItem("AdminToken");
+  const Admin = JSON.parse(localStorage.getItem("Admin") || '{}');
+  const Supplier = JSON.parse(localStorage.getItem("supplier") || '{}');
+  const Customer = JSON.parse(localStorage.getItem("Customer") || '{}');
+  // const suppiler = JSON.parse(localStorage.getItem("supplier") || '{}');
   return (
 
     <>
@@ -49,10 +53,10 @@ function Header() {
         </a>
         <div className='lower-header-box1'>
           <div className="">
-            {!token && (
+            {!CustomerToken && !SupplierToken && !AdminToken && (
               <div className="tab-switch">
                 <a 
-                style={{fontSize:'20px'}} 
+                style={{fontSize:'20px', color:"#ffffff !important"}} 
                   href="/Login"
                   className={`link ${location.pathname === '/Login' ? 'active' : ''}`}
                 >
@@ -63,7 +67,7 @@ function Header() {
                 </a>
                 <p>/</p>
                 <a
-                style={{fontSize:'20px'}} 
+                style={{fontSize:'20px', color:"#ffffff !important"}} 
                   href="/Signup"
                   className={`link ${location.pathname === '/Signup' ? 'active' : ''}`}
                 >
@@ -71,12 +75,23 @@ function Header() {
                 </a>
               </div>
             )}
-            {token && (
-              <Link style={{fontSize:'30px'}}  to="/CustomerProfile" className={`${location.pathname === '/CustomerProfile' ? 'active' : ''}`}>
-                Dashboard
+            {CustomerToken && (
+              <Link style={{fontSize:'30px' , color :"#ffffff !important" }}  to="/CustomerProfile" className={`${location.pathname === '/CustomerProfile' ? 'active' : ''}`}>
+              {Customer.fullName}    Dashboard 
               </Link>
             )}
-
+            {SupplierToken  && (
+              <Link style={{fontSize:'30px', color :"#ffffff !important"}}  to="/SuppDashboard" className={`${location.pathname === '/SuppDashboard' ? 'active' : ''}`}>
+              {Supplier.fullName}    Dashboard 
+              </Link>
+            )}
+            {
+              AdminToken && (
+                <Link style={{fontSize:'30px', color :"#ffffff !important"}}  to="/AdminDashboard" className={`${location.pathname === '/AdminDashboard' ? 'active' : ''}`}>
+                {Admin.fullName}  Dashboard 
+                </Link>
+              )}
+            
           </div>
         </div>
       </div></>

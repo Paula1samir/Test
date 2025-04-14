@@ -2,9 +2,11 @@ import React, { useRef, useEffect, useState, useContext } from "react";
 import "../Login.css";
 import "./LoginAdmin";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import AuthContext from "../context/AuthProvider";
 import axios from "axios";
+import AdminDashboard from "./AdminDashboard";
+
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/admins/login";
 export default function LoginAdmin() {
   const { setAuth } = useContext(AuthContext);
@@ -36,12 +38,14 @@ export default function LoginAdmin() {
       );
 
       const AdminToken = response?.data?.token;
-      localStorage.setItem("token", AdminToken); // Save token to local storage
-
-      console.log(AdminToken);
+      localStorage.setItem("AdminToken", AdminToken); // Save token to local storage
+      
+      console.log( "AdminToken : ",AdminToken);
       const roles = response?.data?.roles;
       setAuth({ email, password, roles, AdminToken });
-
+      localStorage.setItem("Admin", JSON.stringify(response.data.admin));
+      console.log("Admin: ", response.data.admin);
+      
       setUser(""); // Clear the email field
       setPwd("");  // Clear the password field
       setSuccess(true); // Indicate success
@@ -60,7 +64,7 @@ export default function LoginAdmin() {
           <h1>Congratulations {email}, You're logged in As Admin!</h1>
           <br />
           <p>
-            <Link to="/Login">Go to Home</Link>
+            <Link to="/AdminDashboard">Go to Dashboard</Link>
           </p>
         </section>
       ) : (

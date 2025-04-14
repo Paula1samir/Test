@@ -39,6 +39,7 @@ export default function Login() {
       console.log(token);
       const roles = response?.data?.roles;
       setAuth({ email, password, roles, token });
+      localStorage.setItem("Customer", JSON.stringify(response.data.customer)); // Store customer data in local storage
       navigate("/CustomerProfile"); // Use the navigate function to redirect
       localStorage.setItem("CustomerToken", token); // Store the token in local storage
     } catch (err) {

@@ -118,7 +118,6 @@ export default function AddProduct() {
         <div style={{ width: "100%" }}>
             <div className="form-section">
                 <h5 className="mb-4">ADD Product</h5>
-
                 <p
                     ref={errRef}
                     className={`alert ${msgType === "success" ? "alert-success" : "alert-danger"} ${msg ? 'd-block' : 'd-none'} text-center mx-auto`}
@@ -165,7 +164,6 @@ export default function AddProduct() {
                             placeholder="Select categories..."
                         />
                     </div>
-
                     <div className="mb-3">
                         <input
                             type="file"
