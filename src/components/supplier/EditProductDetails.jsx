@@ -3,13 +3,40 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./SuppDashboard.css";
 import axios from "axios";
+import Select from 'react-select';
+
 
 export default function EditProductDetails() {
+
     const { name } = useParams();
     const [product, setProduct] = useState(null);
     const [formData, setFormData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [message, setMessage] = useState("");
+    const [categories, setCategories] = useState([]);
+    const handleCategoryChange = (selectedOptions) => {
+        setFormData(prev => ({
+            ...prev,
+            category: selectedOptions || []
+        }));
+    };
+    const categoryOptions = categories.map(cat => ({
+        value: cat._id,
+        label: cat.name
+    }));
+    
+    useEffect(() => {
+        async function fetchCategories() {
+            try {
+                const res = await axios.get("https://bulkify-back-end.vercel.app/api/v1/categories");
+                setCategories(res.data.categories || []);
+            } catch (err) {
+                console.error("Failed to fetch categories", err);
+            }
+        }
+
+        fetchCategories();
+    }, []);
 
     useEffect(() => {
         axios
@@ -40,8 +67,8 @@ export default function EditProductDetails() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const token = localStorage.getItem("token");
-        if (!token) {
+        const SupplierToken = localStorage.getItem("SupplierToken");
+        if (!SupplierToken) {
             setMessage("Token not found. Please log in again.");
             return;
         }
@@ -60,7 +87,7 @@ export default function EditProductDetails() {
                 cleanFormData,
                 {
                     headers: {
-                        "token": `${token}`
+                        "token": `${SupplierToken}`
                     }
                 }
             )
@@ -92,15 +119,15 @@ export default function EditProductDetails() {
                             />
                         </div>
                         <div className="mb-3">
-                            <label className="form-label">Category</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                name="categoryId"
-                                value={formData.categoryId || ""}
-                                onChange={handleChange}
-                            />
-                        </div>
+                            <label className="form-label">category</label>
+                        <Select
+                            isMulti
+                            options={categoryOptions}
+                            value={formData.category}
+                            onChange={handleCategoryChange}
+                            placeholder="Select categories..."
+                        />
+                    </div>
                         <div className="mb-3">
                             <label className="form-label">Price</label>
                             <input

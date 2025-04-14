@@ -35,12 +35,12 @@ export default function LoginAdmin() {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      const token = response?.data?.token;
-      localStorage.setItem("token", token); // Save token to local storage
+      const AdminToken = response?.data?.token;
+      localStorage.setItem("token", AdminToken); // Save token to local storage
 
-      console.log(token);
+      console.log(AdminToken);
       const roles = response?.data?.roles;
-      setAuth({ email, password, roles, token });
+      setAuth({ email, password, roles, AdminToken });
 
       setUser(""); // Clear the email field
       setPwd("");  // Clear the password field

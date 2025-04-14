@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import "./Login";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -9,11 +10,11 @@ export default function Login() {
   const { setAuth } = useContext(AuthContext);
   const userRef = useRef();
   const errRef = useRef();
+  const navigate = useNavigate(); // Initialize useNavigate at the top level
 
   const [email, setUser] = useState("");
   const [password, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
 
@@ -35,13 +36,11 @@ export default function Login() {
       );
 
       const token = response?.data?.token;
+      console.log(token);
       const roles = response?.data?.roles;
       setAuth({ email, password, roles, token });
-
-      setUser(""); // Clear the email field
-      setPwd("");  // Clear the password field
-      setSuccess(true); // Indicate success
-      alert("Login Succefull");
+      navigate("/CustomerProfile"); // Use the navigate function to redirect
+      localStorage.setItem("CustomerToken", token); // Store the token in local storage
     } catch (err) {
       if (err.response) {
         setErrMsg(err.response.data.message)
@@ -50,16 +49,6 @@ export default function Login() {
   };
 
   return (
-    <>
-      {success ? (
-        <section>
-          <h1>Congratulations {email}, You're logged in!</h1>
-          <br />
-          <p>
-            <a href="/">Go to Home</a>
-          </p>
-        </section>
-      ) : (
         <>
           <div className="login-register">
           <p
@@ -163,7 +152,7 @@ export default function Login() {
 
 
         </>
-      )}
-    </>
+      
+   
   );
 }

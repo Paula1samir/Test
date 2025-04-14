@@ -41,14 +41,14 @@ function SupLogin() {
         }
       );
 
-      const token = response?.data?.token;
+      const SupplierToken = response?.data?.token;
       const roles = response?.data?.roles;
 
-      setAuth({ email, password, roles, token });
+      setAuth({ email, password, roles, SupplierToken });
 
       // 🔐 Save to localStorage
-      localStorage.setItem("token", token);
-      console.log("Token: ", token);
+      localStorage.setItem("SupplierToken", SupplierToken);
+      console.log("SupplierToken: ", SupplierToken);
       localStorage.setItem("roles", JSON.stringify(roles)); // in case it's an array or object
 
       localStorage.setItem("supplier", JSON.stringify(response.data.supplier));

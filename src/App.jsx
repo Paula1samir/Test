@@ -16,8 +16,9 @@ import AddProduct from "./components/supplier/AddProduct.jsx";
 import EditProduct from "./components/supplier/EditProduct.jsx";
 import LivePurchase from "./components/supplier/LivePurchase.jsx";
 import OrderStatus from "./components/supplier/OrderStatus.jsx";
-import EditProductDetails from "./components/supplier/EditProductDetails.jsx";
 import Categories from "./components/Categories/Categories.jsx";
+import CustomerProfile from "./components/Customer/CustomerProfile.jsx";
+import OrderHistory from "./components/Customer/OrderHistory.jsx";
 
 function App() {
   return (
@@ -32,6 +33,9 @@ function App() {
         <Route path="/LoginAdmin" element={<LoginAdmin />} />
         <Route path="/SignUpAdmin" element={<SignUpAdmin />} />
         <Route path="/ProductDetails/:name" element={<ProductDetails />} />
+        <Route path="/CustomerProfile/*" element={<CustomerProfile />}>
+        <Route path="orderhistory" element={<OrderHistory />} />
+        </Route>
 
         {/* Dashboard with nested routes */}
         <Route path="/SuppDashboard/*" element={<SuppDashboard />}>
@@ -40,7 +44,6 @@ function App() {
           <Route path="live" element={<LivePurchase />} />
           <Route path="order" element={<OrderStatus />} />
           <Route path="categories" element={<Categories />} />
-
           </Route>
       </Routes>
       <Footer />

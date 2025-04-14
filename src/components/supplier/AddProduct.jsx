@@ -60,8 +60,8 @@ export default function AddProduct() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const token = localStorage.getItem("token");
-        if (!token) {
+        const SupplierToken = localStorage.getItem("SupplierToken");
+        if (!SupplierToken) {
             setMsg("Token not found. Please log in.");
             setMsgType("error");
             return;
@@ -94,7 +94,7 @@ export default function AddProduct() {
                 formDataToSend,
                 {
                     headers: {
-                        "token": token,
+                        "token": SupplierToken,
                         "Content-Type": "multipart/form-data",
                     }
                 }
