@@ -41,7 +41,7 @@ export default function ProductDetails() {
     }
 
     return (
-        <div className="container product-container mt-5">
+        <div className="container product-container my-5">
             <div className="row">
                 <div className="col-md-6">
                     <div className="product-images text-center">
@@ -57,11 +57,11 @@ export default function ProductDetails() {
                 </div>
                 <div className="col-md-6">
                     <h2>{product.name}</h2>
-                    <p><strong>Brand:</strong> {product.supplierId.fullName}</p>
-                    <p><strong>Availability:</strong> {product.quantity > 0 ? "In Stock" : "Out of Stock"}</p>
-                    <p><strong>Price:</strong> ${product.price}</p>
+                    <p><strong>Supplier : </strong> {product.supplierId.fullName}</p>
+                    <p><strong>Availability: {product.quantity}  </strong> {product.quantity > 0 ? "In Stock" : "Out of Stock"}</p>
+                    <p><strong>Price : </strong> ${product.price}</p>
                     <p>{product.description}</p>
-                    <label htmlFor="quantity">Quantity:</label>
+                    <label htmlFor="quantity">Quantity : </label>
                     <input type="number" id="quantity" className="form-control mb-3" min="1" max={product.quantity} />
                     <button className="btn btn-success w-100">Start Purchase</button>
                 </div>

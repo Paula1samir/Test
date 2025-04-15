@@ -2,13 +2,27 @@ import React, { useEffect, useState, useRef } from 'react';
 import './CustomerProfile.css';
 import axios from 'axios';
 import OrderHistory from './OrderHistory';
+import CustomDateInput from '../DatePicker';
+import LocationPicker from "../LocationApi/LocationPicker";
 
 export default function CustomerProfile() {
   const [msg, setMsg] = useState("");
   const [msgType, setMsgType] = useState("");
+    const [birthDate, setBirthDate] = useState("");
+    const [value1, setValue1] = useState(null); // For latitude
+    const [value2, setValue2] = useState(null); // For longitude
   const errRef = useRef(null);
   const [activeView, setActiveView] = useState("profile"); // 'profile' or 'orderHistory'
 
+  useEffect(() => {
+    if (!msg) return;
+
+    const timer = setTimeout(() => {
+      setMsg('');
+    }, 6000);
+
+    return () => clearTimeout(timer);
+  }, [msg, setMsg]);
 
   const [customer, setCustomer] = useState({
     firstName: '',
@@ -16,9 +30,12 @@ export default function CustomerProfile() {
     email: '',
     phoneNumber: '',
     gender: '',
+    birthDate: '',  
     city: '',
     street: '',
-    homeNumber: ''
+    homeNumber: '',
+    coordinates: [value2, value1],
+
   });
 
   const handleSave = () => {
@@ -48,7 +65,7 @@ export default function CustomerProfile() {
       [name]: value,
     }));
   };
-
+    // Edit customer data
   useEffect(() => {
     const CustomerToken = localStorage.getItem('CustomerToken');
     if (!CustomerToken) return;
@@ -162,6 +179,13 @@ export default function CustomerProfile() {
                 <label>City</label>
                 <input type="text" name="city" className="form-control" value={customer.city} onChange={handleChange} />
               </div>
+              <div className="mt-3">
+                    <label>Birth Date</label>
+                    <CustomDateInput
+                      value={birthDate}
+                      onChange={(val) => setBirthDate(val)}
+                    />
+                  </div>
             </div>
             <div className="row mb-3">
               <div className="col-md-6">
@@ -173,6 +197,15 @@ export default function CustomerProfile() {
                 <input type="text" name="homeNumber" className="form-control" value={customer.homeNumber} onChange={handleChange} />
               </div>
             </div>
+            
+                  {/* Location Picker */}
+                  <div className="map-container mt-3">
+                    <LocationPicker
+                      setValue1={setValue1}
+                      setValue2={setValue2}
+                    />
+                  </div>
+
             <button className="btn save-btn" onClick={handleSave}>SAVE CHANGES</button>
           </div>
         )}

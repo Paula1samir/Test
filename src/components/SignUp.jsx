@@ -6,6 +6,8 @@ import LocationPicker from "./LocationApi/LocationPicker";
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login";
 import axios from "axios";
+import CustomDateInput from '../components/DatePicker'; // adjust path if needed
+
 
 const SignUp = () => {
   const REGISTER_URL =
@@ -24,6 +26,7 @@ const SignUp = () => {
   const [city, setCity] = useState("");
   const [street, setStreet] = useState("");
   const [homeNumber, setHomeNumber] = useState("");
+  const [birthDate, setBirthDate] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [errors, setErrors] = useState({}); // New state for field-specific errors
   const [success, setSuccess] = useState(false);
@@ -89,6 +92,7 @@ const SignUp = () => {
       email,
       password,
       gender,
+      birthDate,
       phoneNumber,
       city,
       street,
@@ -151,7 +155,7 @@ const SignUp = () => {
               boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
             }}
           >
-            
+
             {errMsg}
           </p>
 
@@ -195,6 +199,15 @@ const SignUp = () => {
                       onChange={(e) => setEmail(e.target.value)}
                     />
                     {errors.email && <div className="invalid-feedback">{errors.email}</div>}
+                  </div>
+                  <div className="mt-3">
+                    <label>Birth Date</label>
+                    <CustomDateInput
+                      value={birthDate}
+                      onChange={(val) => setBirthDate(val)}
+                      error={errors.birthDate}
+                    />
+                    {errors.birthDate && <div className="invalid-feedback">{errors.birthDate}</div>}
                   </div>
                   <div className="mt-3 custom-radio">
                     <label>Gender</label>

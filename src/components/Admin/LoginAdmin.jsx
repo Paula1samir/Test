@@ -144,12 +144,6 @@ export default function LoginAdmin() {
                 Sign In
               </button>
             </form>
-
-          
-            <p>
-              Don't have an account?{" "}
-              <Link to="/SignUpAdmin">Sign up now</Link>
-            </p>
           </div>
 
 
