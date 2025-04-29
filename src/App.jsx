@@ -24,6 +24,7 @@ import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
 import ProductRequests from "./components/Admin/ProductRequests.jsx";
 import Reports from "./components/Admin/Reports.jsx";
 import HandleCustomer from "./components/Admin/HandleCustomer.jsx";
+import HandleSuppliers from "./components/Admin/HandleSuppliers.jsx";
 function App() {
   return (
     <>
@@ -56,9 +57,7 @@ function App() {
           <Route path="product-requests" element={<ProductRequests />} />
           <Route path="reports" element={<Reports />} />
           <Route path="handle-customer" element={<HandleCustomer />} />
-          {/* <Route path="supplier-requests" element={<SupplierRequests />} />
-          <Route path="edit-customer" element={<EditCustomer />} />
-          <Route path="available-categories" element={<AvailableCategories />} /> */}
+          <Route path="handle-suppliers" element={<HandleSuppliers />} />
         </Route>
 
       </Routes>
