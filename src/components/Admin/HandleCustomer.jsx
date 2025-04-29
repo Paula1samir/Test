@@ -38,7 +38,7 @@ return (
         <div className="row g-4">
             {customers.map((customer) => (
                 <div className="col-md-4" key={customer._id}>
-                    <div className="product-card-live" style={{ border: '2px solid #4CAF50', padding: '15px', borderRadius: '10px', backgroundColor: '#f9f9f9', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', textAlign: "left" }}>
+                    <div className=" product-card-live-customer" style={{ border: '2px solid #4CAF50', padding: '15px', borderRadius: '10px', backgroundColor: '#f9f9f9', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'}}>
                         <div style={{ fontWeight: 'bold', fontSize: '20px', color: '#4CAF50' }}>
                             {customer.firstName} {customer.lastName}
                         </div>
@@ -56,13 +56,13 @@ return (
             ))}
         </div>
 
-        <div className="d-flex justify-content-center mt-4">
+        <div className=" justify-content-center mt-4">
             {[...Array(totalPages)].map((_, index) => (
                 <button
                     key={index + 1}
                     onClick={() => handlePageChange(index + 1)}
                     style={{
-                        margin: '0 5px',
+                        margin: '15px 5px',
                         padding: '10px 15px',
                         backgroundColor: currentPage === index + 1 ? '#4CAF50' : '#e9ecef',
                         color: currentPage === index + 1 ? '#fff' : '#000',
