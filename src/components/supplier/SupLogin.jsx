@@ -20,6 +20,7 @@ function SupLogin() {
   const [email, setUser] = useState("");
   const [password, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     userRef.current.focus();
@@ -78,59 +79,66 @@ function SupLogin() {
 
   return (
     <>
-        <>
-          <p
-            ref={errRef}
-            className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
-            aria-live="assertive"
-            id="alert"
-            style={{
-              backgroundColor: "#ff4d4d", // Error background color (red)
-              padding: "20px",
-              borderRadius: "10px",
-              maxWidth: "90%", // Max width for responsiveness
-              width: "400px",  // Default width on larger screens
-              color: "#fff",
-              textAlign: "center",
-              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
-            }}
-          >
+      <>
+        <p
+          ref={errRef}
+          className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
+          aria-live="assertive"
+          id="alert"
+          style={{
+            backgroundColor: "#ff4d4d", // Error background color (red)
+            padding: "20px",
+            borderRadius: "10px",
+            maxWidth: "90%", // Max width for responsiveness
+            width: "400px",  // Default width on larger screens
+            color: "#fff",
+            textAlign: "center",
+            boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
+          }}
+        >
 
-            {errMsg}
-          </p>
-          <div className="login-register">
-            <h1>Sign In as Supplier</h1>
-            <form className="form" onSubmit={handleSubmit}>
-              <label>Email</label>
+          {errMsg}
+        </p>
+        <div className="login-register">
+          <h1>Sign In as Supplier</h1>
+          <form className="form" onSubmit={handleSubmit}>
+            <label>Email</label>
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Enter your Email"
+              ref={userRef}
+              value={email}
+              onChange={(e) => setUser(e.target.value)}
+              required
+            />
+            <label>Password</label>
+            <div className="d-flex input-group" >
               <input
-                type="email"
-                className="form-control"
-                placeholder="Enter your Email"
-                ref={userRef}
-                value={email}
-                onChange={(e) => setUser(e.target.value)}
-                required
-              />
-              <label>Password</label>
-              <input
-                type="password"
+                type={showPassword ? "text" : "password"} // Toggle between text and password
                 className="form-control"
                 placeholder="Enter your Password"
                 value={password}
                 onChange={(e) => setPwd(e.target.value)}
                 required
               />
-              <div className="flex-row">
-                <input type="checkbox" />
-                <label>Remember me</label>
-                <span onClick={() => setForgetPass(true)} style={{ cursor: "pointer" }}>Forget Password</span>
-              </div>
-              <button className="btn btn-success w-100 mt-4" type="submit">Sign In</button>
-            </form>
-            <p>Don't have an account? <span onClick={() => setSignUp(true)} style={{ cursor: "pointer" }}>Sign up now</span></p>
-          </div>
-        </>
-      
+              <span
+                className="input-group-text"
+                onClick={() => setShowPassword(!showPassword)} // Toggle visibility
+                style={{ cursor: "pointer" }}
+              >
+                {showPassword ? "🙈" : "👁"} {/* Icons for visibility toggle */}
+              </span>
+            </div>
+            <div className="flex-row">
+              <span className="span" onClick={() => setForgetPass(true)} style={{ cursor: "pointer" }}>Forget Password ?</span>
+            </div>
+            <button className="btn btn-success w-100 mt-4" type="submit">Sign In</button>
+          </form>
+          <p>Don't have an account? <span onClick={() => setSignUp(true)} style={{ cursor: "pointer" }}>Sign up now</span></p>
+        </div>
+      </>
+
     </>
   );
 }

@@ -102,7 +102,7 @@ export default function EditProductDetails() {
 
 
     return (
-        <div className="container-fluid">
+        <div className="">
             <div className="p-4">
                 <div className="form-section">
                     <h5 className="mb-4">Edit Or Delete Product</h5>

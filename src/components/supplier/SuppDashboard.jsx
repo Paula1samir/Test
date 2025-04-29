@@ -6,7 +6,6 @@ import LivePurchase from "./LivePurchase";
 import OrderStatus from "./OrderStatus";
 import Logo from "../images/Layer_1.png";
 import EditProductDetails from "./EditProductDetails";
-import Categories from "../Categories/Categories";
 
 const SidebarLayout = () => {
     const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -23,7 +22,7 @@ const SidebarLayout = () => {
 
     const SuuplierToken = localStorage.getItem("SuuplierToken");
     return (
-        <div className="container-fluid">
+        <div className="">
             <div className="d-flex ">
                 {/* Fixed Sidebar Button for Mobile */}
                 <button
@@ -59,9 +58,6 @@ const SidebarLayout = () => {
                         <Link to="order" className="nav-link" onClick={() => setSidebarVisible(false)}>
                             Order Status
                         </Link>
-                        <Link to="Categories" className="nav-link" onClick={() => setSidebarVisible(false)}>
-                            Categories
-                        </Link>
                         <Link
                             className="nav-link"
                             onClick={() => {
@@ -77,7 +73,7 @@ const SidebarLayout = () => {
                 </div>
 
                 {/* Main content */}
-                <div className="col py-3" style={{ width: "-webkit-fill-available" }}>
+                <div className="col py-3" style={{ width: "0" }}>
                     {/* Topbar */}
                     <div className="d-flex flex-row flex-md-row justify-content-between align-items-center mb-3">
                         <input type="text" className="form-control mb-2 mb-md-0 w-100 w-md-50" placeholder="Search" />
@@ -90,14 +86,13 @@ const SidebarLayout = () => {
                     </div>
 
                     {/* Dynamically rendered content via routing */}
-                    <div className="">
+                    <div className="p-3">
                         <Routes>
                             <Route path="add" element={<AddProduct supplierId={supplier?.id} />} />
                             <Route path="edit" element={<EditProduct supplierId={supplier?.id} />} />
                             <Route path="edit-product/:name" element={<EditProductDetails supplierId={supplier?.id} />} />
                             <Route path="live" element={<LivePurchase supplierId={supplier?.id} />} />
                             <Route path="order" element={<OrderStatus supplierId={supplier?.id} />} />
-                            <Route path="Categories" element={<Categories supplierId={supplier?.id} />} />
                             <Route path="*" element={<div>Select an option from the sidebar.</div>} />
                         </Routes>
                     </div>

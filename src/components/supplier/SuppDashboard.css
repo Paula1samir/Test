@@ -139,3 +139,16 @@
     .badge-cancelled { background-color: #f8d7da; color: #721c24; }
     .badge-shipped { background-color: #d1ecf1; color: #0c5460; }
     .badge-arrived { background-color: #e2e3f3; color: #383d52; }
+
+    .product-card-live {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      background: #fff;
+      display: flex
+  ;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+      transition: transform 0.3s ease-in-out;
+  }

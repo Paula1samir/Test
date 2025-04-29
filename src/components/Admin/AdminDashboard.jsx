@@ -7,6 +7,7 @@ import PurchaseDeals from './PurchaseDeals'
 import Categories from '../Categories/Categories'
 import Reports from './Reports'
 import CreateAdmin from './CreateAdmin'
+import HandleCustomer from './HandleCustomer'
 const SidebarLayout = () => {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [Admin, setAdmin] = useState(null);
@@ -50,7 +51,7 @@ const SidebarLayout = () => {
                             <Link to="purchase-deals"><i className="bi bi-bag-check-fill me-2"></i> Purchase Deals</Link>
                             <Link to="product-requests"><i className="bi bi-box-seam me-2"></i> Product Requests</Link>
                             <Link to="#"><i className="bi bi-person-badge-fill me-2"></i> Supplier Requests</Link>
-                            <Link to="#"><i className="bi bi-person-dash-fill me-2"></i> Edit / delete Customer</Link>
+                            <Link to="handle-customer"><i className="bi bi-person-dash-fill me-2"></i> Edit / delete Customer</Link>
                             <Link to="categories"><i className="bi bi-grid-3x3-gap-fill me-2"></i> Available Categories</Link>
                             <Link to="create-admin"><i className="bi bi-person-dash-fill me-2"></i> Create Admin </Link>
                             <button
@@ -68,7 +69,7 @@ const SidebarLayout = () => {
 
 
                     {/* Main content */}
-                    <div className="col py-3 mx-3 prodReqContainer" >
+                    <div className="col py-3 mx-3 prodReqContainer" style={{width: "0"}}>
                         {/* Topbar */}
                         <div className="d-flex flex-row flex-md-row justify-content-between align-items-center mb-3">
                             <input type="text" className="form-control mb-2 mb-md-0 w-100 w-md-50" placeholder="Search" />
@@ -89,7 +90,7 @@ const SidebarLayout = () => {
                                 <Route path="categories" element={<Categories/>} />
                                 <Route path="reports" element={<Reports />} />
                                 <Route path="create-admin" element={<CreateAdmin />} />
-
+                                <Route path="handle-customer" element={<HandleCustomer />} />
                                 {/* Add more routes as needed */}
                                 <Route path="*" element={<div>Select an option from the sidebar.</div>} />
 

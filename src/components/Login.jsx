@@ -108,17 +108,13 @@ export default function Login() {
                   {showPassword ? "🙈" : "👁"} {/* Icons for visibility toggle */}
                 </span>
               </div>
-              <div className="flex-row">
-                <div>
-                  <input type="checkbox" />
-                  <label>Remember me </label>
-                </div>
+              <div className="flex-row">  
                 <a href="/Forget-Password"
                   className="span"
                   style={{ cursor: "pointer" }}
                 // onClick={() => setForgetPassword(true)}
                 >
-                  Forget Password
+                  Forget Password ?
                 </a>
               </div>
 
@@ -138,13 +134,16 @@ export default function Login() {
             </a>
 
             <br />
-            <br />
+
+            <div className="or-text">OR</div>
+
             <a className="btn btn-success w-100 mt-4"
               href={'/LoginAdmin'}
               style={{ cursor: "pointer" }}
             >
               Sign in As Admin
             </a>
+            <br />
             <p>
               Don't have an account?{" "}
               <a href="/Signup">Sign up now</a>

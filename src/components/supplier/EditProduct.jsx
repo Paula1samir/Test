@@ -23,7 +23,7 @@ export default function EditProduct() {
     };
 
     return (
-        <div className="container-fluid">
+        <div className="">
             <div className="">
                 <div className="col-md-10" style={{ width: "-webkit-fill-available" }}>
                     <div className="p-4">

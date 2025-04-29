@@ -237,7 +237,7 @@ hr{
     text-align: center;
     margin: auto;
   }
-
+  
 }
 
 /* For mobile devices */
@@ -248,6 +248,7 @@ hr{
     padding-bottom: 10px;
     align-items: center;
     justify-content: center;
+    display: none;
     
   }
   .theCard{
@@ -261,12 +262,16 @@ hr{
     flex-wrap: wrap;
     text-align: center;
     margin: auto;
-    display: inline-grid
-;
+
   }
 
   .InputContainer{
     margin: 15px;
   }
   
+}
+@media (min-width: 768px) {
+  .col-md-3 {
+      width: 50% !important;
+  }
 }
