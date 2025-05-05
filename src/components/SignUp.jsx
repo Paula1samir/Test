@@ -38,6 +38,16 @@ const SignUp = () => {
   const [value1, setValue1] = useState(null); // For latitude
   const [value2, setValue2] = useState(null); // For longitude
 
+
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
+
+  // Toggle the Terms of Service Modal
+  const toggleTermsModal = () => setShowTermsModal(!showTermsModal);
+
+  // Toggle the Privacy Policy Modal
+  const togglePrivacyModal = () => setShowPrivacyModal(!showPrivacyModal);
+
   // Helper function to check if fields are empty and set error messages
   const validateForm = () => {
     const newErrors = {};
@@ -112,6 +122,9 @@ const SignUp = () => {
       setHomeNumber("");
       setPhoneNumber("");
       console.log("Server Response:", response.data); // Log the server response
+
+      const customerData = payload;
+      localStorage.setItem("CustomerData", JSON.stringify(customerData)); // Store customer data in local storage
     } catch (err) {
       if (err.response) {
         const alert = document.getElementById("alert");
@@ -145,17 +158,16 @@ const SignUp = () => {
             aria-live="assertive"
             id="alert"
             style={{
-              backgroundColor: "#ff4d4d", // Error background color (red)
+              backgroundColor: "#ff4d4d",
               padding: "20px",
               borderRadius: "10px",
-              maxWidth: "90%", // Max width for responsiveness
-              width: "400px",  // Default width on larger screens
+              maxWidth: "90%",
+              width: "400px",
               color: "#fff",
               textAlign: "center",
-              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
+              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
             }}
           >
-
             {errMsg}
           </p>
 
@@ -175,7 +187,6 @@ const SignUp = () => {
                         value={firstName}
                         onChange={(e) => setUserFirstName(e.target.value)}
                       />
-
                       {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
                     </div>
                     <div className="col-md-6">
@@ -235,7 +246,7 @@ const SignUp = () => {
                     <label>Password</label>
                     <div className="input-group">
                       <input
-                        type={showPassword ? "text" : "password"} // Toggle between text and password
+                        type={showPassword ? "text" : "password"}
                         className={`form-control ${errors.password ? 'is-invalid' : ''}`}
                         id="password"
                         value={password}
@@ -243,10 +254,10 @@ const SignUp = () => {
                       />
                       <span
                         className="input-group-text"
-                        onClick={() => setShowPassword(!showPassword)} // Toggle visibility
+                        onClick={() => setShowPassword(!showPassword)}
                         style={{ cursor: "pointer" }}
                       >
-                        {showPassword ? "🙈" : "👁"} {/* Icons for visibility toggle */}
+                        {showPassword ? "🙈" : "👁"}
                       </span>
                       {errors.password && <div className="invalid-feedback">{errors.password}</div>}
                     </div>
@@ -294,7 +305,6 @@ const SignUp = () => {
                     </div>
                   </div>
 
-                  {/* Location Picker */}
                   <div className="map-container mt-3">
                     <LocationPicker
                       setValue1={setValue1}
@@ -302,8 +312,119 @@ const SignUp = () => {
                     />
                   </div>
 
+                  <div className="d-flex justify-content-center">
+                    {/* Button to trigger Terms of Service Modal */}
+                    <button type="button" className="btn btn-link" onClick={toggleTermsModal}>
+                      View Terms of Service
+                    </button>
 
+                    {/* Button to trigger Privacy Policy Modal */}
+                    <button type="button" className="btn btn-link" onClick={togglePrivacyModal}>
+                      View Privacy Policy
+                    </button>
+                  </div>
 
+                  {/* Terms of Service Modal */}
+                  {showTermsModal && (
+                    <div className="modal fade show" style={{ display: "block" }} aria-labelledby="termsModalLabel">
+                      <div className="modal-dialog">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title" id="termsModalLabel">Terms of Services</h5>
+                            <button type="button" className="btn-close" onClick={toggleTermsModal} aria-label="Close"></button>
+                          </div>
+                          <div className="modal-body">
+                            <p>
+                              <strong>Supplier Responsibilities</strong>
+                              <ul>
+                                <li>Provide items as described in the agreement.</li>
+                                <li>Deliver items on time to the agreed location.</li>
+                                <li>Ensure items are of good quality and free from defects.</li>
+                                <li>Communicate any issues or delays as soon as possible.</li>
+                              </ul>
+                              <strong>Quality Standards</strong>
+                              <ul>
+                                <li>All products must meet the agreed quality and description.</li>
+                                <li>Damaged or defective items must be refunded.</li>
+                                <li>If items do not meet quality standards, the supplier is responsible for fixing the issue.</li>
+                              </ul>
+                              <strong>Delivery Terms</strong>
+                              <ul>
+                                <li>Items must be delivered by [specific date].</li>
+                                <li>If there are delays, the supplier must inform the organizer immediately.</li>
+                                <li>Late delivery penalties may apply (if agreed).</li>
+                              </ul>
+                              <strong>Payment Terms</strong>
+                              <ul>
+                                <li>Payment will be made after the items are received and inspected.</li>
+                                <li>If the items are defective or not as agreed, payment may be delayed or reduced.</li>
+                              </ul>
+                              <strong>Return and Refunds</strong>
+                              <ul>
+                                <li>Suppliers must accept returns for defective or incorrect items.</li>
+                                <li>Suppliers must process refunds within [10 Days].</li>
+                                <li>Suppliers will cover costs for returns if the problem is their fault.</li>
+                              </ul>
+                              <strong>Termination</strong>
+                              <ul>
+                                <li>If the supplier does not follow this policy, the agreement may be ended.</li>
+                                <li>Repeated issues like poor quality or delays may lead to removal from future purchases.</li>
+                              </ul>
+                              <strong>Adding Products for Approval</strong>
+                              <ul>
+                                <li>When a supplier adds a product, they must wait for approval from customers.</li>
+                                <li>The approval process takes up to 7 days.</li>
+                                <li>Only approved products can be listed for purchase.</li>
+                              </ul>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Privacy Policy Modal */}
+                  {showPrivacyModal && (
+                    <div className="modal fade show" style={{ display: "block" }} aria-labelledby="privacyModalLabel">
+                      <div className="modal-dialog">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+                            <button type="button" className="btn-close" onClick={togglePrivacyModal} aria-label="Close"></button>
+                          </div>
+                          <div className="modal-body">
+                            <p>
+                              <strong>Return Policy</strong>
+                              <ul>
+                                <li>You can return an item if it is damaged, broken, or not what you ordered.</li>
+                                <li>The item must be returned within [e.g., 7 days] of receiving it.</li>
+                              </ul>
+                              <strong>Items You Cannot Return</strong>
+                              <ul>
+                                <li>Food or other items that spoil.</li>
+                                <li>Items marked as “final sale” or “no returns.”</li>
+                              </ul>
+                              <strong>Refunds</strong>
+                              <ul>
+                                <li>Refunds will be processed after we inspect the returned item.</li>
+                                <li>Refunds will be sent back to your original payment method within [e.g., 20 days].</li>
+                              </ul>
+                              <strong>How to Return an Item</strong>
+                              <ol>
+                                <li>Contact us at [email/phone] within [e.g., 7 days] of getting the item.</li>
+                                <li>Provide proof of the issue (e.g., a photo).</li>
+                              </ol>
+                              <strong>Our Role</strong>
+                              <ul>
+                                <li>We will help you with the return process.</li>
+                                <li>We will work with the supplier to resolve the issue.</li>
+                              </ul>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <button
                     className="btn btn-success mt-4 d-flex justify-content-center w-100"
                     type="submit"

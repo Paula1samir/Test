@@ -31,8 +31,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/Signup" element={<Signup />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/Signup" element={<Signup />} />
         <Route path="/Forget-Password" element={<ForgetPassword />} />
         <Route path="/SupLogin" element={<SupLogin />} />
         <Route path="/LoginAdmin" element={<LoginAdmin />} />

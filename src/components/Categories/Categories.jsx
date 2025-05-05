@@ -48,7 +48,7 @@ export default function Categories() {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        AdminToken,
+                       "token": AdminToken,
                     },
                 }
             );

@@ -16,6 +16,7 @@ import ProductCardApi from "./ProductCardApi";
 export default function HomePage() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [totalPages, setTotalPages] = useState(10);
 
   useEffect(() => {

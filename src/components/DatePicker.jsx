@@ -1,4 +1,3 @@
-// components/CustomDateInput.jsx
 import DatePicker from 'react-datepicker';
 import { format, parse } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -20,6 +19,10 @@ export default function CustomDateInput({ label, value, onChange, error }) {
         selected={value ? parseDate(value) : null}
         onChange={(date) => onChange(formatDate(date))}
         dateFormat="MM-dd-yyyy"
+        showMonthDropdown
+        showYearDropdown
+        scrollableYearDropdown
+        maxDate={new Date(2012, 11, 31)} // December 31, 2012
         className={`form-control ${error ? 'is-invalid' : ''}`}
         placeholderText="mm-dd-yyyy"
       />

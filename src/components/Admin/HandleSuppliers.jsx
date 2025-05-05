@@ -28,6 +28,19 @@ export default function HandleSuppliers() {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`https://bulkify-back-end.vercel.app/api/v1/admins/suppliers/${id}`, {
+        headers: {
+          token: AdminToken,
+        },
+      });
+      fetchSuppliers(currentPage);
+    } catch (error) {
+      console.error("Error deleting supplier:", error);
+    }
+  };
+
   const totalPages = Math.ceil(totalSuppliers / 5);
 
   const handlePageChange = (page) => {
@@ -52,21 +65,6 @@ export default function HandleSuppliers() {
                 textAlign: "left",
               }}
             >
-              <div
-                style={{
-                  width: "100%",
-                  height: "200px",
-                  backgroundColor: "#f2f2f2",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "24px",
-                  fontWeight: "bold",
-                  color: "#555",
-                }}
-              >
-                {supplier.fullName[0]}
-              </div>
               <div style={{ marginTop: "10px", fontWeight: "bold" }}>
                 {supplier.fullName}
               </div>
@@ -79,6 +77,21 @@ export default function HandleSuppliers() {
               <div style={{ marginTop: "5px", fontSize: "14px", color: "#888" }}>
                 {supplier.supplierAddress?.city}, {supplier.supplierAddress?.street}
               </div>
+              <button
+                onClick={() => handleDelete(supplier._id)}
+                style={{
+                  marginTop: "10px",
+                  padding: "8px 12px",
+                  backgroundColor: "#f44336",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                Delete
+              </button>
             </div>
           </div>
         ))}

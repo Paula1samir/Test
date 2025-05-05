@@ -47,3 +47,6 @@ body {
 .read-the-docs {
   color: #888;
 }
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+  z-index: 0 !important;
+}
