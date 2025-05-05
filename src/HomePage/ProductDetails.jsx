@@ -11,12 +11,26 @@ export default function ProductDetails() {
     const [mainImage, setMainImg] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [errMsg, setErrMsg] = useState("");
-    const [existingPurchase, setExistingPurchase] = useState(null);
-    const [voterData, setVoterData] = useState({
-        city: '',
-        street: '',
-        homeNumber: ''
-    });
+    
+
+    useEffect(() => {
+        const CustomerToken = localStorage.getItem('CustomerToken');
+        if (!CustomerToken) return;
+      
+        const fetchCustomerProfile = async () => {
+          try {
+            const response = await axios.get('https://bulkify-back-end.vercel.app/api/v1/customers/profile', {
+              headers: { token: CustomerToken }
+            });
+            console.log(response.data); // Handle your data here
+          } catch (err) {
+            console.error('Error fetching customer profile:', err);
+          }
+        };
+      
+        fetchCustomerProfile();
+      }, []);
+      
 
     useEffect(() => {
         if (!name) return;
@@ -35,47 +49,36 @@ export default function ProductDetails() {
             .catch(() => setProduct(null));
     }, [name]);
 
-    useEffect(() => {
-        if (!product) return;
-        const token = localStorage.getItem("CustomerToken");
-        const customerData = JSON.parse(localStorage.getItem("CustomerData"));
-
-        if (!token || !customerData) return;
-
-        axios.get(`https://bulkify-back-end.vercel.app/api/v1/purchases/checkNearbyPurchases/${product._id}`, {
-            headers: { token },
-            params: {
-                lat: customerData.coordinates[0],
-                lng: customerData.coordinates[1]
-            }
-        })
-        .then(res => {
-            if (res.data && res.data.nearbyPurchase) {
-                setExistingPurchase(res.data.nearbyPurchase);
-            }
-        })
-        .catch(() => {});
-    }, [product]);
-
     const handleStartPurchase = async () => {
         const token = localStorage.getItem("CustomerToken");
-        const CustomerData = JSON.parse(localStorage.getItem("CustomerData"));
-
-        if (!token || !CustomerData) {
+    
+        if (!token) {
             alert("Please log in first.");
             navigate("/login");
             return;
         }
-
+    
+        let customerProfile;
+        try {
+            const profileRes = await axios.get('https://bulkify-back-end.vercel.app/api/v1/customers/profile', {
+                headers: { token }
+            });
+            customerProfile = profileRes.data.customer;
+        } catch (err) {
+            console.error('Error fetching customer profile:', err);
+            setErrMsg("Failed to fetch customer profile.");
+            return;
+        }
+    
         const payload = {
             purchaseQuantity: quantity,
             deliveryAddress: {
-                city: CustomerData.city,
-                street: CustomerData.street,
-                homeNumber: CustomerData.homeNumber
+                city: customerProfile.city,
+                street: customerProfile.street,
+                homeNumber: customerProfile.homeNumber
             }
         };
-
+    
         try {
             const response = await axios.post(
                 `https://bulkify-back-end.vercel.app/api/v1/purchases/startPurchase/${product._id}`,
@@ -86,7 +89,7 @@ export default function ProductDetails() {
                     }
                 }
             );
-
+    
             if (response.data?.url) {
                 window.location.href = response.data.url;
             } else {
@@ -96,44 +99,8 @@ export default function ProductDetails() {
             setErrMsg(err.response?.data?.message || "An error occurred while starting the purchase.");
         }
     };
-
-    const handleVoteToPurchase = async () => {
-        const token = localStorage.getItem("CustomerToken");
-
-        if (!token || !existingPurchase?.id) {
-            alert("Please log in first.");
-            navigate("/login");
-            return;
-        }
-
-        const payload = {
-            purchaseQuantity: quantity,
-            deliveryAddress: {
-                city: voterData.city,
-                street: voterData.street,
-                homeNumber: voterData.homeNumber
-            }
-        };
-
-        try {
-            const res = await axios.post(
-                `https://bulkify-back-end.vercel.app/api/v1/purchases/vote/${existingPurchase.id}`,
-                payload,
-                {
-                    "token":token 
-                }
-            );
-
-            if (res.data?.url) {
-                window.location.href = res.data.url;
-            } else {
-                setErrMsg("Unexpected response from vote API.");
-            }
-        } catch (err) {
-            setErrMsg(err.response?.data?.message || "Vote failed.");
-        }
-    };
-
+    
+ 
     if (product === null) {
         return (
             <div className="loading-container">
@@ -181,34 +148,10 @@ export default function ProductDetails() {
                         onChange={(e) => setQuantity(parseInt(e.target.value))}
                     />
 
-                    {existingPurchase ? (
-                        <>
-                            <div className="alert alert-info text-center">
-                                There is a purchase in your area ({existingPurchase.votesCount} out of 12)
-                            </div>
-
-                            <div className="mb-3">
-                                <label>City</label>
-                                <input type="text" className="form-control" value={voterData.city} onChange={(e) => setVoterData({ ...voterData, city: e.target.value })} />
-                            </div>
-                            <div className="mb-3">
-                                <label>Street</label>
-                                <input type="text" className="form-control" value={voterData.street} onChange={(e) => setVoterData({ ...voterData, street: e.target.value })} />
-                            </div>
-                            <div className="mb-3">
-                                <label>Home Number</label>
-                                <input type="text" className="form-control" value={voterData.homeNumber} onChange={(e) => setVoterData({ ...voterData, homeNumber: e.target.value })} />
-                            </div>
-
-                            <button className="btn btn-primary w-100" onClick={handleVoteToPurchase}>
-                                Vote to Complete Purchase
-                            </button>
-                        </>
-                    ) : (
                         <button className="btn btn-success w-100" onClick={handleStartPurchase}>
                             Start Purchase
                         </button>
-                    )}
+                
                 </div>
             </div>
 
