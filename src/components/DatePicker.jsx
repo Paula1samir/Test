@@ -8,8 +8,10 @@ function formatDate(date) {
 
 function parseDate(str) {
   const parsed = parse(str, 'MM-dd-yyyy', new Date());
+  if (!/^\d{2}-\d{2}-\d{4}$/.test(str)) return null; // strict MM-DD-YYYY format
   return isNaN(parsed) ? null : parsed;
 }
+
 
 export default function CustomDateInput({ label, value, onChange, error }) {
   return (

@@ -2,8 +2,9 @@ import React from 'react'
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-
+  
   return (
+    <>
     <div className="pagination" style={{ display: 'block', marginTop: '20px' }}>
       {pages.map((page) => (
         <button
@@ -24,6 +25,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         </button>
       ))}
     </div>
+    
+    </>
   );
 };
 export default Pagination;

@@ -4,13 +4,14 @@ import axios from 'axios';
 import OrderHistory from './OrderHistory';
 import CustomDateInput from '../DatePicker';
 import LocationPicker from "../LocationApi/LocationPicker";
+import { format } from 'date-fns';
+
 
 export default function CustomerProfile() {
   const [msg, setMsg] = useState("");
   const [msgType, setMsgType] = useState("");
-    const [birthDate, setBirthDate] = useState("");
-    const [value1, setValue1] = useState(null); // For latitude
-    const [value2, setValue2] = useState(null); // For longitude
+  const [value1, setValue1] = useState(null); // For latitude
+  const [value2, setValue2] = useState(null); // For longitude
   const errRef = useRef(null);
   const [activeView, setActiveView] = useState("profile"); // 'profile' or 'orderHistory'
 
@@ -30,7 +31,7 @@ export default function CustomerProfile() {
     email: '',
     phoneNumber: '',
     gender: '',
-    birthDate: '',  
+    birthDate: '',
     city: '',
     street: '',
     homeNumber: '',
@@ -65,7 +66,7 @@ export default function CustomerProfile() {
       [name]: value,
     }));
   };
-    // Edit customer data
+  // Edit customer data
   useEffect(() => {
     const CustomerToken = localStorage.getItem('CustomerToken');
     if (!CustomerToken) return;
@@ -75,6 +76,7 @@ export default function CustomerProfile() {
     })
       .then(res => {
         const data = res.data.customer;
+        const formattedDate = format(new Date(data.birthDate), 'MM-dd-yyyy');
         setCustomer({
           firstName: data.firstName || '',
           lastName: data.lastName || '',
@@ -83,12 +85,14 @@ export default function CustomerProfile() {
           gender: data.gender || '',
           city: data.city || '',
           street: data.street || '',
-          homeNumber: data.homeNumber || ''
+          homeNumber: data.homeNumber || '',
+          birthDate: formattedDate || '', // Assuming the API returns a date string
+          coordinates: data.coordinates || [],
         });
+        console.log(data.birthDate);
       })
       .catch(err => console.error('Error fetching customer profile:', err));
   }, []);
-
   // logic for log in 
   const CustomerToken = localStorage.getItem("CustomerToken");
   if (!CustomerToken) {
@@ -180,12 +184,14 @@ export default function CustomerProfile() {
                 <input type="text" name="city" className="form-control" value={customer.city} onChange={handleChange} />
               </div>
               <div className="mt-3">
-                    <label>Birth Date</label>
-                    <CustomDateInput
-                      value={birthDate}
-                      onChange={(val) => setBirthDate(val)}
-                    />
-                  </div>
+                <label>Birth Date</label>
+                <CustomDateInput
+                  label="Birth Date"
+                  value={customer.birthDate}
+                  onChange={(date) => setCustomer(prev => ({ ...prev, birthDate: date }))}
+                />
+
+              </div>
             </div>
             <div className="row mb-3">
               <div className="col-md-6">
@@ -197,14 +203,14 @@ export default function CustomerProfile() {
                 <input type="text" name="homeNumber" className="form-control" value={customer.homeNumber} onChange={handleChange} />
               </div>
             </div>
-            
-                  {/* Location Picker */}
-                  <div className="map-container mt-3">
-                    <LocationPicker
-                      setValue1={setValue1}
-                      setValue2={setValue2}
-                    />
-                  </div>
+
+            {/* Location Picker */}
+            <div className="map-container mt-3">
+              <LocationPicker
+                setValue1={setValue1}
+                setValue2={setValue2}
+              />
+            </div>
 
             <button className="btn save-btn" onClick={handleSave}>SAVE CHANGES</button>
           </div>

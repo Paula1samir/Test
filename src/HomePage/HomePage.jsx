@@ -16,14 +16,14 @@ import ProductCardApi from "./ProductCardApi";
 export default function HomePage() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalProducts, setTotalProducts] = useState(0); // Total number of products
   // eslint-disable-next-line no-unused-vars
-  const [totalPages, setTotalPages] = useState(10);
 
   useEffect(() => {
     axios.get(`https://bulkify-back-end.vercel.app/api/v1/products?page=${currentPage}`)
       .then(response => {
         setProducts(response.data.products || []);
-        setTotalPages(response.data.totalPages || 1); // API should return totalPages
+        setTotalProducts(response.data.total || 0); // Set total products
       })
       .catch(error => console.error("Error fetching products:", error));
   }, [currentPage]);
@@ -31,7 +31,8 @@ export default function HomePage() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
-
+  const totalPages = Math.ceil(totalProducts / 5);
+  
   return (
     <>
       <div className="HomePage">
@@ -78,7 +79,7 @@ export default function HomePage() {
         </div>
         <Pagination
           currentPage={currentPage}
-          totalPages={10}
+          totalPages={totalPages}
           onPageChange={handlePageChange}
         />
         <div className='mt-5 d-flex justify-content-center align-items-center'>

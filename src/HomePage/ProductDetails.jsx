@@ -165,7 +165,7 @@ export default function ProductDetails() {
 
                 <div className="col-md-6">
                     <h2>{product.name}</h2>
-                    <p><strong>Supplier:</strong> {product.supplierId.fullName}</p>
+                    <p><strong>Supplier:</strong> {product?.supplierId?.fullName?product.supplierId.fullName : " Not found"}</p>
                     <p><strong>Availability:</strong> {product.quantity > 0 ? "In Stock" : "Out of Stock"}</p>
                     <p><strong>Price:</strong> ${product.price}</p>
                     <p>{product.description}</p>
