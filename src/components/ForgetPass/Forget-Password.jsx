@@ -4,7 +4,7 @@ import Login from "../Login";
 import SignUp from "../SignUp";
 import axios from "axios";
 import ResetPass from "../OTP/ResetPass";
-import Alert from "../alert";
+import Alert from "../Alert";
 const ForgetPass_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/forgot-password";
 const SuppForgetPass_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/forgot-password";
 const ForgetPassword = () => {
