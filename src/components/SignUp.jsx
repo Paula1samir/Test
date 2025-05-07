@@ -2,10 +2,11 @@ import React, { useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./signUp.css";
+import axios from "axios";
 import LocationPicker from "./LocationApi/LocationPicker";
 import { Routes, Route } from "react-router-dom";
 import Login from "./Login";
-import axios from "axios";
+import Alert from "./Alert.jsx";
 import CustomDateInput from '../components/DatePicker'; // adjust path if needed
 
 
@@ -152,25 +153,7 @@ const SignUp = () => {
         </section>
       ) : (
         <div className="signup-container">
-          <p
-            ref={errRef}
-            className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
-            aria-live="assertive"
-            id="alert"
-            style={{
-              backgroundColor: "#ff4d4d",
-              padding: "20px",
-              borderRadius: "10px",
-              maxWidth: "90%",
-              width: "400px",
-              color: "#fff",
-              textAlign: "center",
-              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
-            }}
-          >
-            {errMsg}
-          </p>
-
+          <Alert ref={errRef} errMsg={errMsg} setErrMsg={setErrMsg} />
           <Routes>
             <Route path="/Login" element={<Login />} />
             <Route

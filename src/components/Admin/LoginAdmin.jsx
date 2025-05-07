@@ -5,9 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, Route } from "react-router-dom";
 import AuthContext from "../context/AuthProvider";
 import axios from "axios";
-import AdminDashboard from "./AdminDashboard";
-import Alert from "../alert";
 
+import Alert from "../Alert.jsx";
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/admins/login";
 export default function LoginAdmin() {
   const { setAuth } = useContext(AuthContext);

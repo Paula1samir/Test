@@ -5,8 +5,7 @@ import "./Login";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AuthContext from "./context/AuthProvider";
 import axios from "axios";
-import Alert from "./alert.jsx";
-import SupSignUp from "../components/supplier/SupSignUp.jsx";
+import Alert from "./Alert.jsx";
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/login";
 const suppLogin_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
 export default function Login() {
