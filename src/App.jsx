@@ -7,6 +7,7 @@ import LoginAdmin from "./components/Admin/LoginAdmin";
 import SignUpAdmin from "./components/Admin/SignUpAdmin";
 import ForgetPassword from "./components/ForgetPass/Forget-Password";
 import SupLogin from "./components/supplier/SupLogin";
+import SupSignUp from "./components/supplier/SupSignUp";
 import Header from '../Header_Footer/header.jsx'
 import Footer from '../Header_Footer/footer.jsx'
 import HomePage from "./HomePage/HomePage.jsx";
@@ -41,6 +42,7 @@ function App() {
         <Route path="/CustomerProfile/*" element={<CustomerProfile />}>
         <Route path="orderhistory" element={<OrderHistory />} />
         </Route>
+        <Route path="/SupSignUp" element={<SupSignUp />} />
 
         {/* Dashboard for Supplier with nested routes */}
         <Route path="/SuppDashboard/*" element={<SuppDashboard />}>

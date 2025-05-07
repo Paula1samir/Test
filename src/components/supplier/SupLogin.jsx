@@ -6,9 +6,10 @@ import SupSignUp from "./SupSignUp.jsx";
 import AuthContext from "../context/AuthProvider.jsx";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Alert from "../alert.jsx";
 
 
-const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
+const suppLogin_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
 
 function SupLogin() {
   const [showForgetPass, setForgetPass] = useState(false);
@@ -35,7 +36,7 @@ function SupLogin() {
 
     try {
       const response = await axios.post(
-        Login_URL,
+        suppLogin_URL,
         { email, password },
         {
           headers: { "Content-Type": "application/json" },
@@ -50,8 +51,6 @@ function SupLogin() {
       // 🔐 Save to localStorage
       localStorage.setItem("SupplierToken", SupplierToken);
       console.log("SupplierToken: ", SupplierToken);
-      localStorage.setItem("roles", JSON.stringify(roles)); // in case it's an array or object
-
       localStorage.setItem("supplier", JSON.stringify(response.data.supplier));
       navigate("/SuppDashboard"); // redirect to dashboard
       setUser("");
@@ -80,25 +79,7 @@ function SupLogin() {
   return (
     <>
       <>
-        <p
-          ref={errRef}
-          className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
-          aria-live="assertive"
-          id="alert"
-          style={{
-            backgroundColor: "#ff4d4d", // Error background color (red)
-            padding: "20px",
-            borderRadius: "10px",
-            maxWidth: "90%", // Max width for responsiveness
-            width: "400px",  // Default width on larger screens
-            color: "#fff",
-            textAlign: "center",
-            boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
-          }}
-        >
-
-          {errMsg}
-        </p>
+        <Alert ref={errRef} errMsg={errMsg} setErrMsg={setErrMsg} />
         <div className="login-register">
           <h1>Sign In as Supplier</h1>
           <form className="form" onSubmit={handleSubmit}>
@@ -127,7 +108,7 @@ function SupLogin() {
                 onClick={() => setShowPassword(!showPassword)} // Toggle visibility
                 style={{ cursor: "pointer" }}
               >
-                {showPassword ? "🙈" : "👁"} {/* Icons for visibility toggle */}
+                {showPassword ? "🙈" : "👀"} {/* Icons for visibility toggle */}
               </span>
             </div>
             <div className="flex-row">

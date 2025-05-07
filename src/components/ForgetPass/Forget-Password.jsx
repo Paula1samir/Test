@@ -4,7 +4,9 @@ import Login from "../Login";
 import SignUp from "../SignUp";
 import axios from "axios";
 import ResetPass from "../OTP/ResetPass";
+import Alert from "../alert";
 const ForgetPass_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/forgot-password";
+const SuppForgetPass_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/forgot-password";
 const ForgetPassword = () => {
     const [showLogin, setLogin] = useState(false);
     const [showSignUp, setshowSignUp] = useState(false);
@@ -14,17 +16,31 @@ const ForgetPassword = () => {
     const [successMsg, setSuccessMsg] = useState("");
     const errRef = useRef(null);
     // Handle form submission
+    
     const handleSubmit = async (e) => {
       e.preventDefault();
-      setErrMsg(""); // Clear error message
-      setSuccessMsg(""); // Clear success message
-  
+      setErrMsg("");
+      setSuccessMsg("");
+    
+      // Try customer reset
       try {
-        await axios.post(ForgetPass_URL, {
-          email,
-        });
+        await axios.post(ForgetPass_URL, { email });
         setSuccessMsg("Check your email for password reset instructions.");
-        setEmail(""); // Clear email field after success
+        setEmail("");
+        setshowResetPass(true);
+        return;
+      } catch (err) {
+        if (!err?.response || err.response?.status !== 404) {
+          setErrMsg(err.response?.data?.message || "Failed to send reset link.");
+          return;
+        }
+      }
+    
+      // Try supplier reset if customer failed with 404
+      try {
+        await axios.post(SuppForgetPass_URL, { email });
+        setSuccessMsg("Check your email for password reset instructions.");
+        setEmail("");
         setshowResetPass(true);
       } catch (err) {
         if (!err?.response) {
@@ -34,9 +50,9 @@ const ForgetPassword = () => {
         } else {
           setErrMsg("Failed to send reset link.");
         }
-        errRef.current.focus();
       }
     };
+    
     if (showLogin) {
       return <Login />;
     }
@@ -57,25 +73,7 @@ const ForgetPassword = () => {
               Enter the email address or mobile phone number associated with your
               bulkify account.
             </p>
-      <p
-      ref={errRef}
-      className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
-      aria-live="assertive"
-      id="alert"
-      style={{
-        backgroundColor: "#ff4d4d", // Error background color (red)
-        padding: "20px",
-        borderRadius: "10px",
-        maxWidth: "90%", // Max width for responsiveness
-        width: "400px",  // Default width on larger screens
-        color: "#fff",
-        textAlign: "center",
-        boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
-      }}
-    >
-      
-      {errMsg}
-    </p>
+            <Alert ref={errRef} errMsg={errMsg} setErrMsg={setErrMsg} />
   
             <form className="form1" action="" onSubmit={handleSubmit}>
             <div className="input-group">
@@ -91,10 +89,9 @@ const ForgetPassword = () => {
                 <br />
               </div>
               <div className="flex-row">
-              <button class="btn btn-success w-100 mt-4" type="submit">Send Code</button>
+              <button className="btn btn-success w-100 mt-4" type="submit">Send Code</button>
               </div>
             </form>
-                      
         {/* Display success message */}
         {successMsg && (
           <p className="success-message">

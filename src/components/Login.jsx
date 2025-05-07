@@ -5,7 +5,10 @@ import "./Login";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AuthContext from "./context/AuthProvider";
 import axios from "axios";
+import Alert from "./alert.jsx";
+import SupSignUp from "../components/supplier/SupSignUp.jsx";
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/login";
+const suppLogin_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
 export default function Login() {
   const { setAuth } = useContext(AuthContext);
   const userRef = useRef();
@@ -28,131 +31,130 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrMsg("");
+  
     try {
-      const response = await axios.post(
+      // Try customer login first
+      const customerResponse = await axios.post(
         Login_URL,
         { email, password },
         { headers: { "Content-Type": "application/json" } }
       );
-
-      const token = response?.data?.token;
-      console.log(token);
-      const roles = response?.data?.roles;
-      setAuth({ email, password, roles, token });
-      localStorage.setItem("Customer", JSON.stringify(response.data.customer)); // Store customer data in local storage
-      navigate("/CustomerProfile"); // Use the navigate function to redirect
-      localStorage.setItem("CustomerToken", token); // Store the token in local storage
+  
+      const token = customerResponse?.data?.token;
+      const customer = customerResponse?.data?.customer;
+  
+      setAuth({ email, token });
+      localStorage.setItem("Customer", JSON.stringify(customer));
+      localStorage.setItem("CustomerToken", token);
+      navigate("/CustomerProfile");
+      return;
     } catch (err) {
-      if (err.response) {
-        setErrMsg(err.response.data.message)
-      errRef.current.focus(); // Focus the error message
-    }}
+      if (!err.response || err.response.status !== 401) {
+        // If it's not an auth error, or there's no response at all, stop
+        setErrMsg(err.response?.data?.message || "Customer login failed");
+        return;
+      }
+    }
+  
+    try {
+      // Try supplier login if customer login failed
+      const supplierResponse = await axios.post(
+        suppLogin_URL,
+        { email, password },
+        { headers: { "Content-Type": "application/json" } }
+      );
+  
+      const token = supplierResponse?.data?.token;
+      const supplier = supplierResponse?.data?.supplier;
+      const roles = supplierResponse?.data?.roles;
+  
+      setAuth({ email, token, roles });
+      localStorage.setItem("supplier", JSON.stringify(supplier));
+      localStorage.setItem("SupplierToken", token);
+      navigate("/SuppDashboard");
+      return;
+    } catch (err) {
+      setErrMsg(err.response?.data?.message || "Supplier login failed");
+      errRef.current?.scrollIntoView({ behavior: "smooth" });
+      errRef.current?.focus();
+    }
   };
-
+  
   return (
-        <>
-          <div className="login-register">
-          <p
-            ref={errRef}
-            className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
-            aria-live="assertive"
-            id="alert"
-            style={{
-              backgroundColor: "#ff4d4d", // Error background color (red)
-              padding: "20px",
-              borderRadius: "10px",
-              maxWidth: "90%", // Max width for responsiveness
-              width: "400px",  // Default width on larger screens
-              color: "#fff",
-              textAlign: "center",
-              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
-            }}
-          >
-            
-            {errMsg}
-          </p>
-
-            <form className="form" onSubmit={handleSubmit}>
-              <div className="flex-column">
-                <label>Email </label>
-              </div>
-              <div className="input-group">
-                <input
-                  type="email"
-                  className="input form-control"
-                  placeholder="Enter your Email"
-                  ref={userRef}
-                  value={email}
-                  onChange={(e) => setUser(e.target.value)}
-                  required
-                />
-                <br />
-              </div>
-              <div className="flex-column">
-                <label>Password </label>
-              </div>
-              <div className="d-flex input-group" >
-                <input
-                  type={showPassword ? "text" : "password"} // Toggle between text and password
-                  className="input form-control"
-                  value={password}
-                  onChange={(e) => setPwd(e.target.value)}
-                  placeholder="Enter your Password"
-                  required
-                />
-                <span
-                  className="input-group-text"
-                  onClick={() => setShowPassword(!showPassword)} // Toggle visibility
-                  style={{ cursor: "pointer" }}
-                >
-                  {showPassword ? "🙈" : "👁"} {/* Icons for visibility toggle */}
-                </span>
-              </div>
-              <div className="flex-row">  
-                <a href="/Forget-Password"
-                  className="span"
-                  style={{ cursor: "pointer" }}
-                // onClick={() => setForgetPassword(true)}
-                >
-                  Forget Password ?
-                </a>
-              </div>
-
-              <button className="btn btn-success w-100 mt-4" type="submit">
-                Sign In
-              </button>
-            </form>
-
-            <div className="or-text">OR</div>
-
-            <a className="btn btn-success w-100 mt-4"
-              // onClick={() => setSupLogin(true)}
-              href={'/SupLogin'}
+    <>
+      <div className="login-register">
+        <Alert ref={errRef} errMsg={errMsg} setErrMsg={setErrMsg} />
+        <form className="form" onSubmit={handleSubmit}>
+          <div className="flex-column">
+            <label>Email </label>
+          </div>
+          <div className="input-group">
+            <input
+              type="email"
+              className="input form-control"
+              placeholder="Enter your Email"
+              ref={userRef}
+              value={email}
+              onChange={(e) => setUser(e.target.value)}
+              required
+            />
+            <br />
+          </div>
+          <div className="flex-column">
+            <label>Password </label>
+          </div>
+          <div className="d-flex input-group" >
+            <input
+              type={showPassword ? "text" : "password"} // Toggle between text and password
+              className="input form-control"
+              value={password}
+              onChange={(e) => setPwd(e.target.value)}
+              placeholder="Enter your Password"
+              required
+            />
+            <span
+              className="input-group-text"
+              onClick={() => setShowPassword(!showPassword)} // Toggle visibility
               style={{ cursor: "pointer" }}
             >
-              Sign in As Supplier
-            </a>
-
-            <br />
-
-            <div className="or-text">OR</div>
-
-            <a className="btn btn-success w-100 mt-4"
-              href={'/LoginAdmin'}
+              {showPassword ? "🙈" : "👀"} {/* Icons for visibility toggle */}
+            </span>
+          </div>
+          <div className="flex-row">
+            <a href="/Forget-Password"
+              className="span"
               style={{ cursor: "pointer" }}
+            // onClick={() => setForgetPassword(true)}
             >
-              Sign in As Admin
+              Forget Password ?
             </a>
-            <br />
-            <p>
-              Don't have an account?{" "}
-              <a href="/Signup">Sign up now</a>
-            </p>
           </div>
 
+          <button className="btn btn-success w-100 mt-4" type="submit">
+            Sign In
+          </button>
+        </form>   
 
-        </>
-      
-   
+        <div className="or-text">OR</div>
+
+        <a className="btn btn-success w-100 mt-4"
+          href={'/LoginAdmin'}
+          style={{ cursor: "pointer" }}
+        >
+          Sign in As Admin
+        </a>
+        <br />
+        <p>
+          Don't have an account?{" "}
+          <a href="/Signup">Sign up now</a><br />
+          <a href="/SupSignUp">Sign up now as Supplier</a>
+        </p>
+      </div>
+
+
+    </>
+
+
   );
 }

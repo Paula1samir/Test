@@ -6,6 +6,7 @@ import { Link, Route } from "react-router-dom";
 import AuthContext from "../context/AuthProvider";
 import axios from "axios";
 import AdminDashboard from "./AdminDashboard";
+import Alert from "../alert";
 
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/admins/login";
 export default function LoginAdmin() {
@@ -39,13 +40,13 @@ export default function LoginAdmin() {
 
       const AdminToken = response?.data?.token;
       localStorage.setItem("AdminToken", AdminToken); // Save token to local storage
-      
-      console.log( "AdminToken : ",AdminToken);
+
+      console.log("AdminToken : ", AdminToken);
       const roles = response?.data?.roles;
       setAuth({ email, password, roles, AdminToken });
       localStorage.setItem("Admin", JSON.stringify(response.data.admin));
       console.log("Admin: ", response.data.admin);
-      
+
       setUser(""); // Clear the email field
       setPwd("");  // Clear the password field
       setSuccess(true); // Indicate success
@@ -53,8 +54,9 @@ export default function LoginAdmin() {
     } catch (err) {
       if (err.response) {
         setErrMsg(err.response.data.message)
-      errRef.current.focus(); // Focus the error message
-    }}
+        errRef.current.focus(); // Focus the error message
+      }
+    }
   };
 
   return (
@@ -70,26 +72,7 @@ export default function LoginAdmin() {
       ) : (
         <>
           <div className="login-register">
-          <p
-            ref={errRef}
-            className={`alert alert-danger ${errMsg ? 'd-block' : 'd-none'} text-center mx-auto`}
-            aria-live="assertive"
-            id="alert"
-            style={{
-              backgroundColor: "#ff4d4d", // Error background color (red)
-              padding: "20px",
-              borderRadius: "10px",
-              maxWidth: "90%", // Max width for responsiveness
-              width: "400px",  // Default width on larger screens
-              color: "#fff",
-              textAlign: "center",
-              boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)", // Add shadow for pop-up effect
-            }}
-          >
-            
-            {errMsg}
-          </p>
-
+            <Alert ref={errRef} errMsg={errMsg} setErrMsg={setErrMsg} />
             <form className="form" onSubmit={handleSubmit}>
               <div className="flex-column">
                 <label>Email </label>
@@ -123,23 +106,19 @@ export default function LoginAdmin() {
                   onClick={() => setShowPassword(!showPassword)} // Toggle visibility
                   style={{ cursor: "pointer" }}
                 >
-                  {showPassword ? "🙈" : "👁"} {/* Icons for visibility toggle */}
+                  {showPassword ? "🙈" : "👀"} {/* Icons for visibility toggle */}
                 </span>
               </div>
               <div className="flex-row">
-                <div>
-                  <input type="checkbox" />
-                  <label>Remember me </label>
-                </div>
+              
                 <Link to="/Forget-Password"
                   className="span"
                   style={{ cursor: "pointer" }}
                 // onClick={() => setForgetPassword(true)}
                 >
-                  Forget Password
+                  Forget Password ?
                 </Link>
               </div>
-
               <button className="btn btn-success w-100 mt-4" type="submit">
                 Sign In
               </button>
