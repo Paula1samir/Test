@@ -6,7 +6,6 @@ import Signup from "./components/SignUp";
 import LoginAdmin from "./components/Admin/LoginAdmin";
 import SignUpAdmin from "./components/Admin/SignUpAdmin";
 import ForgetPassword from "./components/ForgetPass/Forget-Password";
-import SupLogin from "./components/supplier/SupLogin";
 import SupSignUp from "./components/supplier/SupSignUp";
 import Header from '../Header_Footer/header.jsx'
 import Footer from '../Header_Footer/footer.jsx'
@@ -35,7 +34,6 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Forget-Password" element={<ForgetPassword />} />
-        <Route path="/SupLogin" element={<SupLogin />} />
         <Route path="/LoginAdmin" element={<LoginAdmin />} />
         <Route path="/SignUpAdmin" element={<SignUpAdmin />} />
         <Route path="/ProductDetails/:name" element={<ProductDetails />} />
