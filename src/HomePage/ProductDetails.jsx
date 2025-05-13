@@ -11,26 +11,31 @@ export default function ProductDetails() {
     const [mainImage, setMainImg] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [errMsg, setErrMsg] = useState("");
-    
+    const [purchaseId, setPurchaseId] = useState(null);
+
+    const imgStyle = {
+        width: "250px",
+        height: "250px",
+    }
 
     useEffect(() => {
         const CustomerToken = localStorage.getItem('CustomerToken');
         if (!CustomerToken) return;
-      
+
         const fetchCustomerProfile = async () => {
-          try {
-            const response = await axios.get('https://bulkify-back-end.vercel.app/api/v1/customers/profile', {
-              headers: { token: CustomerToken }
-            });
-            console.log(response.data); // Handle your data here
-          } catch (err) {
-            console.error('Error fetching customer profile:', err);
-          }
+            try {
+                const response = await axios.get('https://bulkify-back-end.vercel.app/api/v1/customers/profile', {
+                    headers: { token: CustomerToken }
+                });
+                console.log(response.data); // Handle your data here
+            } catch (err) {
+                console.error('Error fetching customer profile:', err);
+            }
         };
-      
+
         fetchCustomerProfile();
-      }, []);
-      
+    }, []);
+
 
     useEffect(() => {
         if (!name) return;
@@ -51,25 +56,26 @@ export default function ProductDetails() {
 
     const handleStartPurchase = async () => {
         const token = localStorage.getItem("CustomerToken");
-    
+
         if (!token) {
             alert("Please log in first.");
             navigate("/login");
             return;
         }
-    
+
         let customerProfile;
         try {
             const profileRes = await axios.get('https://bulkify-back-end.vercel.app/api/v1/customers/profile', {
                 headers: { token }
             });
             customerProfile = profileRes.data.customer;
+
         } catch (err) {
             console.error('Error fetching customer profile:', err);
             setErrMsg("Failed to fetch customer profile.");
             return;
         }
-    
+
         const payload = {
             purchaseQuantity: quantity,
             deliveryAddress: {
@@ -78,7 +84,7 @@ export default function ProductDetails() {
                 homeNumber: customerProfile.homeNumber
             }
         };
-    
+
         try {
             const response = await axios.post(
                 `https://bulkify-back-end.vercel.app/api/v1/purchases/startPurchase/${product._id}`,
@@ -89,7 +95,8 @@ export default function ProductDetails() {
                     }
                 }
             );
-    
+            console.log(response.data);
+            setPurchaseId(response.data.purchaseId);
             if (response.data?.url) {
                 window.location.href = response.data.url;
             } else {
@@ -97,10 +104,44 @@ export default function ProductDetails() {
             }
         } catch (err) {
             setErrMsg(err.response?.data?.message || "An error occurred while starting the purchase.");
+            console.log(err.response);
+        }
+    };
+    const handleVote = async () => {
+        const token = localStorage.getItem("CustomerToken");
+        if (!token) {
+            alert("Please log in first.");
+            navigate("/login");
+            return;
+        }
+    
+        // if (!purchaseId) {
+        //     setErrMsg("Missing product or purchase information.");
+        //     return;
+        // }
+    
+        const votePayload = {
+            quantity,
+            paymentMethod: "Paypal"
+        };
+    
+        try {
+                await axios.post(
+                `https://bulkify-back-end.vercel.app/api/v1/products/${product._id}/purchases/${purchaseId}/vote`,
+                votePayload,
+                {
+                    headers: { token }
+                }
+            );
+    
+            alert("Vote submitted successfully.");
+        } catch (err) {
+            setErrMsg(err.response?.data?.message || "Failed to submit vote.");
         }
     };
     
- 
+    
+
     if (product === null) {
         return (
             <div className="loading-container">
@@ -119,7 +160,7 @@ export default function ProductDetails() {
             <div className="row">
                 <div className="col-md-6">
                     <div className="product-images text-center">
-                        <img id="mainImage" src={mainImage} alt="Product" className="img-fluid" />
+                        <img style={imgStyle} id="mainImage" src={mainImage} alt="Product" />
                     </div>
                     <div className="d-flex justify-content-center mt-2">
                         {product.imageSource.map((image, index) => (
@@ -132,7 +173,7 @@ export default function ProductDetails() {
 
                 <div className="col-md-6">
                     <h2>{product.name}</h2>
-                    <p><strong>Supplier:</strong> {product?.supplierId?.fullName?product.supplierId.fullName : " Not found"}</p>
+                    <p><strong>Supplier:</strong> {product?.supplierId?.fullName ? product.supplierId.fullName : " Not found"}</p>
                     <p><strong>Availability:</strong> {product.quantity > 0 ? "In Stock" : "Out of Stock"}</p>
                     <p><strong>Price:</strong> ${product.price}</p>
                     <p>{product.description}</p>
@@ -148,10 +189,14 @@ export default function ProductDetails() {
                         onChange={(e) => setQuantity(parseInt(e.target.value))}
                     />
 
-                        <button className="btn btn-success w-100" onClick={handleStartPurchase}>
-                            Start Purchase
-                        </button>
-                
+                    <button className="btn btn-success w-100" onClick={handleStartPurchase}>
+                        Start Purchase
+                    </button>
+                    <br />
+                    <button className="btn btn-success w-100 mt-2" onClick={handleVote} >
+                        Vote
+                    </button>
+
                 </div>
             </div>
 

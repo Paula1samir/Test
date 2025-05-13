@@ -11,14 +11,15 @@ import { faCreditCard, faBox } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import Pagination from "./Pagination";
 import ProductCardApi from "./ProductCardApi";
-
+import LivePurchase from "./LivePurchase";
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0); // Total number of products
+  const [nearbyPurchases, setNearbyPurchases] = useState([]);
   // eslint-disable-next-line no-unused-vars
-
+  const CustomerToken = localStorage.getItem('CustomerToken');
   useEffect(() => {
     axios.get(`https://bulkify-back-end.vercel.app/api/v1/products?page=${currentPage}`)
       .then(response => {
@@ -26,13 +27,27 @@ export default function HomePage() {
         setTotalProducts(response.data.total || 0); // Set total products
       })
       .catch(error => console.error("Error fetching products:", error));
+
+    // Fetch nearby purchases
+    axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/u`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'token': `${CustomerToken}`
+      }
+    })
+      .then(response => {
+        if (response.data && response.data.nearby) {
+        setNearbyPurchases(response.data.nearby);
+      }
+    })
+      .catch(error => console.error("Error fetching nearby purchases:", error));
   }, [currentPage]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
   const totalPages = Math.ceil(totalProducts / 5);
-  
+
   return (
     <>
       <div className="HomePage">
@@ -64,8 +79,14 @@ export default function HomePage() {
             />
           </div>
         </div>
+
+        {/* Live Purchases Section */}
+        <div className="mt-5">
+          <LivePurchase nearby={nearbyPurchases} />
+        </div>
+
         <h1 style={{ paddingLeft: '20px', paddingTop: '50px' }}>Products</h1>
-        <div className="flex mt-3 product-list" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
+        <div className="flex mt-3 product-list" style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
           {products.map((product) => (
             <ProductCardApi
               key={product._id}
@@ -81,6 +102,7 @@ export default function HomePage() {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
+          style={{ textAlign: 'center', }}
         />
         <div className='mt-5 d-flex justify-content-center align-items-center'>
           <div className="features mt-5 d-flex justify-content-around align-items-center">

@@ -27,6 +27,7 @@
     "dotenv": "^16.4.7",
     "google-maps": "^4.3.3",
     "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.482.0",
     "react": "^19.0.0",

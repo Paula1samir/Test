@@ -186,7 +186,6 @@ export default function CustomerProfile() {
               <div className="mt-3">
                 <label>Birth Date</label>
                 <CustomDateInput
-                  label="Birth Date"
                   value={customer.birthDate}
                   onChange={(date) => setCustomer(prev => ({ ...prev, birthDate: date }))}
                 />

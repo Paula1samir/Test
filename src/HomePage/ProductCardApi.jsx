@@ -1,9 +1,13 @@
 
 import { Link } from 'react-router-dom';
 const ProductCardApi = ({ name, description, price, quantity, image }) => {
+    const imgStyle = {
+      width: "100px",
+      height: "100px",
+  }
   return (
     <div className="product-card" style={{ width: '300px', margin: 'auto', textAlign: 'center' }}>
-      <img src={image} alt={name} className="product-img" />
+      <img src={image} alt={name} style={imgStyle} />
       <p className="product-name" style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: '10px 0' }}>
         {name}
       </p>

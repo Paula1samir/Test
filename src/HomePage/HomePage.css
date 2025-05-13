@@ -8,14 +8,16 @@
     width: 100%;
     padding-left: 30px;
 }
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     
     .mainContainer{
         display: block !important;
     }
     .HomePage{
-        padding: 20px 30px  !important;
-    
+        padding: 20px 70px  !important;
+    }
+    .product-list {
+      flex-wrap: wrap;
     }
 }
 @media (max-width: 479px) {
@@ -33,7 +35,7 @@
     height: 100px;
 }
 .HomePage{
-    padding: 50px 150px;
+    padding: 50px 120px 0  ;
 
 }
 img{
@@ -48,7 +50,6 @@ img{
     padding: 16px;
     align-items: center;
     cursor: pointer;
-    flex-wrap: wrap;
   }
   
   .product-card {
