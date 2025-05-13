@@ -16,7 +16,15 @@ export default function ProductDetails() {
     const imgStyle = {
         width: "250px",
         height: "250px",
+        objectFit: "cover"
     }
+
+    const getImageUrl = (imageSource) => {
+        if (!imageSource) return 'https://via.placeholder.com/250x250?text=No+Image';
+        if (typeof imageSource === 'string') return imageSource;
+        if (Array.isArray(imageSource) && imageSource.length > 0) return imageSource[0];
+        return 'https://via.placeholder.com/250x250?text=No+Image';
+    };
 
     useEffect(() => {
         const CustomerToken = localStorage.getItem('CustomerToken');
@@ -27,7 +35,7 @@ export default function ProductDetails() {
                 const response = await axios.get('https://bulkify-back-end.vercel.app/api/v1/customers/profile', {
                     headers: { token: CustomerToken }
                 });
-                console.log(response.data); // Handle your data here
+                console.log(response.data);
             } catch (err) {
                 console.error('Error fetching customer profile:', err);
             }
@@ -35,7 +43,6 @@ export default function ProductDetails() {
 
         fetchCustomerProfile();
     }, []);
-
 
     useEffect(() => {
         if (!name) return;
@@ -46,7 +53,7 @@ export default function ProductDetails() {
                 if (data && data.products && data.products.length > 0) {
                     const foundProduct = data.products[0];
                     setProduct(foundProduct);
-                    setMainImg(foundProduct.imageSource?.[0] || "default-image.jpg");
+                    setMainImg(getImageUrl(foundProduct.imageSource));
                 } else {
                     setProduct(null);
                 }
@@ -160,23 +167,42 @@ export default function ProductDetails() {
             <div className="row">
                 <div className="col-md-6">
                     <div className="product-images text-center">
-                        <img style={imgStyle} id="mainImage" src={mainImage} alt="Product" />
+                        <img 
+                            style={imgStyle} 
+                            id="mainImage" 
+                            src={mainImage} 
+                            alt={product?.name || 'Product'} 
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = 'https://via.placeholder.com/250x250?text=No+Image';
+                            }}
+                        />
                     </div>
                     <div className="d-flex justify-content-center mt-2">
-                        {product.imageSource.map((image, index) => (
-                            <div className="thumbnail mx-1" key={index}>
-                                <img src={image} alt={`Thumbnail ${index + 1}`} onClick={() => setMainImg(image)} />
-                            </div>
+                        {product?.imageSource && Array.isArray(product.imageSource) && product.imageSource.map((image, index) => (
+                            image && (
+                                <div className="thumbnail mx-1" key={index}>
+                                    <img 
+                                        src={image} 
+                                        alt={`${product?.name || 'Product'} Thumbnail ${index + 1}`} 
+                                        onClick={() => setMainImg(image)}
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = 'https://via.placeholder.com/50x50?text=No+Image';
+                                        }}
+                                    />
+                                </div>
+                            )
                         ))}
                     </div>
                 </div>
 
                 <div className="col-md-6">
-                    <h2>{product.name}</h2>
-                    <p><strong>Supplier:</strong> {product?.supplierId?.fullName ? product.supplierId.fullName : " Not found"}</p>
-                    <p><strong>Availability:</strong> {product.quantity > 0 ? "In Stock" : "Out of Stock"}</p>
-                    <p><strong>Price:</strong> ${product.price}</p>
-                    <p>{product.description}</p>
+                    <h2>{product?.name || 'Unnamed Product'}</h2>
+                    <p><strong>Supplier:</strong> {product?.supplierId?.fullName || "Not found"}</p>
+                    <p><strong>Availability:</strong> {product?.quantity > 0 ? "In Stock" : "Out of Stock"}</p>
+                    <p><strong>Price:</strong> ${product?.price || '0.00'}</p>
+                    <p>{product?.description || 'No description available'}</p>
 
                     <label htmlFor="quantity">Quantity</label>
                     <input
@@ -184,25 +210,24 @@ export default function ProductDetails() {
                         id="quantity"
                         className="form-control mb-3"
                         min="1"
-                        max={product.quantity}
+                        max={product?.quantity || 1}
                         value={quantity}
-                        onChange={(e) => setQuantity(parseInt(e.target.value))}
+                        onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
                     />
 
                     <button className="btn btn-success w-100" onClick={handleStartPurchase}>
                         Start Purchase
                     </button>
                     <br />
-                    <button className="btn btn-success w-100 mt-2" onClick={handleVote} >
+                    <button className="btn btn-success w-100 mt-2" onClick={handleVote}>
                         Vote
                     </button>
-
                 </div>
             </div>
 
             <div className="mt-5 p-4 bg-light rounded">
                 <h4>Description</h4>
-                <p>{product.description}</p>
+                <p>{product?.description || 'No description available'}</p>
             </div>
         </div>
     );

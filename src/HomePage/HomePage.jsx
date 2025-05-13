@@ -20,6 +20,14 @@ export default function HomePage() {
   const [nearbyPurchases, setNearbyPurchases] = useState([]);
   // eslint-disable-next-line no-unused-vars
   const CustomerToken = localStorage.getItem('CustomerToken');
+
+  const getImageUrl = (imageSource) => {
+    if (!imageSource) return '';
+    if (typeof imageSource === 'string') return imageSource;
+    if (Array.isArray(imageSource) && imageSource.length > 0) return imageSource[0];
+    return '';
+  };
+
   useEffect(() => {
     axios.get(`https://bulkify-back-end.vercel.app/api/v1/products?page=${currentPage}`)
       .then(response => {
@@ -37,11 +45,11 @@ export default function HomePage() {
     })
       .then(response => {
         if (response.data && response.data.nearby) {
-        setNearbyPurchases(response.data.nearby);
-      }
-    })
+          setNearbyPurchases(response.data.nearby);
+        }
+      })
       .catch(error => console.error("Error fetching nearby purchases:", error));
-  }, [currentPage]);
+  }, [currentPage, CustomerToken]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -86,23 +94,25 @@ export default function HomePage() {
         </div>
 
         <h1 style={{ paddingLeft: '20px', paddingTop: '50px' }}>Products</h1>
-        <div className="flex mt-3 product-list" style={{ display: 'flex', justifyContent: 'center', gap: '20px' }}>
-          {products.map((product) => (
-            <ProductCardApi
-              key={product._id}
-              name={product.name}
-              description={product.description}
-              price={product.price}
-              quantity={product.quantity}
-              image={product.imageSource[0]}
-            />
+        <div className="flex mt-3 product-list" style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
+          {products && products.map((product) => (
+            product && (
+              <ProductCardApi
+                key={product?._id || 'temp-key'}
+                name={product?.name || 'Unnamed Product'}
+                description={product?.description || 'No description available'}
+                price={product?.price || 0}
+                quantity={product?.quantity || 0}
+                image={getImageUrl(product?.imageSource)}
+              />
+            )
           ))}
         </div>
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
-          style={{ textAlign: 'center', }}
+          style={{ textAlign: 'center' }}
         />
         <div className='mt-5 d-flex justify-content-center align-items-center'>
           <div className="features mt-5 d-flex justify-content-around align-items-center">

@@ -25,6 +25,7 @@ import ProductRequests from "./components/Admin/ProductRequests.jsx";
 import Reports from "./components/Admin/Reports.jsx";
 import HandleCustomer from "./components/Admin/HandleCustomer.jsx";
 import HandleSuppliers from "./components/Admin/HandleSuppliers.jsx";
+import HandleProducts from "./components/Admin/HandleProducts.jsx";
 function App() {
   return (
     <>
@@ -58,6 +59,7 @@ function App() {
           <Route path="reports" element={<Reports />} />
           <Route path="handle-customer" element={<HandleCustomer />} />
           <Route path="handle-suppliers" element={<HandleSuppliers />} />
+          <Route path="handle-products" element={<HandleProducts />}/>
         </Route>
 
       </Routes>
