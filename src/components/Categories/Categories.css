@@ -1,0 +1,142 @@
+.categories-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.categories-container h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.category-container {
+    display: flex;
+    margin-bottom: 3rem;
+}
+
+.category-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 220px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    height: fit-content;
+}
+
+.category-btn {
+    width: 100%;
+    text-align: left;
+    padding: 0.8rem 1.2rem 0.8rem 2.5rem;
+    border: none;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #333;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.category-btn::before {
+    content: '';
+    position: absolute;
+    left: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid #198754;
+    border-radius: 50%;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.category-btn::after {
+    content: '';
+    position: absolute;
+    left: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+    background-color: #e9ecef;
+    color: #198754;
+    transform: none;
+}
+
+.category-btn.active {
+    background-color: #e9ecef;
+    color: #198754;
+}
+
+.category-btn.active::after {
+    background-color: #198754;
+    margin-left:-2.5px ;
+}
+
+.products-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.loading, .no-products {
+    text-align: center;
+    padding: 3rem 1rem;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+@media (max-width: 1024px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .categories-container {
+        padding: 1rem;
+    }
+
+    .category-container {
+        flex-direction: column;
+    }
+
+    .category-buttons {
+        min-width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .category-btn {
+        width: auto;
+        padding: 0.5rem 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .category-btn {
+        padding: 0.4rem 0.9rem;
+        font-size: 0.85rem;
+    }
+}

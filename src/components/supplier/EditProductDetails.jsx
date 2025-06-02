@@ -138,9 +138,9 @@ export default function EditProductDetails() {
                             <label className="form-label">Category</label>
                             <Select
                                 options={categoryOptions}
-                                value={formData.category}
+                                // value={formData.categoryId?.name || 'UnCategorized'}
                                 onChange={handleCategoryChange}
-                                placeholder="Select category..."
+                                placeholder={formData.categoryId?.name || 'UnCategorized'}
                             />
                         </div>
                         <div className="mb-3">

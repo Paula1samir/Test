@@ -1,35 +1,82 @@
 import React from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 export default function PurchaseDeals() {
+    const [nearbyPurchases, setNearbyPurchases] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const CustomerToken = localStorage.getItem("CustomerToken");
+
+      useEffect(() => {
+        // Fetch nearby purchases
+        if (CustomerToken) {
+          axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/nearby`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'token': CustomerToken
+            }
+          })
+            .then(response => {
+              console.log('Nearby purchases response:', response.data.nearbyProducts);
+              if (response.data && response.data.nearbyProducts) {
+                setNearbyPurchases(response.data.nearbyProducts);
+              }
+            })
+            .catch(error => {
+              console.error("Error fetching nearby purchases:", error.response || error);
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+        } else {
+          console.log('No customer token found');
+          setIsLoading(false);
+        }
+      });
+
+      if (isLoading) {
+        return <div>Loading purchases...</div>;
+    }
+
     return (
         <>
-            <div class="flex-grow-1">
-                <div class="container py-4">
-                    <h4 class="fw-semibold mb-4">Purchase Deals</h4>
-                    <div class="table-responsive">
-                        <table class="table align-middle" id="dealsTable">
+            <div className="flex-grow-1">
+                <div className="container py-4">
+                    <h4 className="fw-semibold mb-4">Purchase Deals</h4>
+                    <div className="table-responsive">
+                        <table className="table align-middle" id="dealsTable">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>NAME</th>
-                                    <th>ADDRESS</th>
-                                    <th>DATE</th>
-                                    <th>Category</th>
+                                    <th>DESCRIPTION</th>
+                                    <th>PRICE</th>
+                                    <th>QUANTITY</th>
                                     <th>STATUS</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr><td>#6545</td><td>macbook pro</td><td>089 Kutch Green Apt. 448</td><td>04 Sep 2025</td><td>Electronics</td><td><span class="badge-status badge-purchased">purchased</span></td></tr>
-                                <tr><td>#9645</td><td>perfume</td><td>979 Immanuel Ferry Suite 526</td><td>28 May 2025</td><td>Personal Care</td><td><span class="badge-status badge-pending">pending</span></td></tr>
-                                <tr><td>#9554</td><td>blanket</td><td>8587 Frida Ports</td><td>23 Nov 2025</td><td>Bedding</td><td><span class="badge-status badge-cancelled">cancelled</span></td></tr>
-                                <tr><td>#3547</td><td>headphone</td><td>768 Destiny Lake Suite 600</td><td>05 Feb 2025</td><td>Electronics</td><td><span class="badge-status badge-shipped">shipped</span></td></tr>
-                                <tr><td>#3547</td><td>blusher huda beauty</td><td>042 Mylene Throughway</td><td>29 Jul 2025</td><td>Beauty</td><td><span class="badge-status badge-arrived">arrived</span></td></tr>
-                                <tr><td>#6857</td><td>Wireless Earbuds</td><td>543 Weinman Mountain</td><td>15 Aug 2025</td><td>Electronics</td><td><span class="badge-status badge-purchased">purchased</span></td></tr>
-                                <tr><td>#8957</td><td>red dress</td><td>New Scottieberg</td><td>21 Dec 2019</td><td>women fashion</td><td><span class="badge-status badge-purchased">purchased</span></td></tr>
-                                <tr><td>#2435</td><td>vanish</td><td>New Jon</td><td>30 Apr 2025</td><td>laundry</td><td><span class="badge-status badge-pending">pending</span></td></tr>
-                                <tr><td>#4526</td><td>black jacket</td><td>124 Lyle Forge Suite 975</td><td>09 Jan 2025</td><td>fashion</td><td><span class="badge-status badge-cancelled">cancelled</span></td></tr>
+                                {nearbyPurchases && nearbyPurchases.map((purchase) => (
+                                    <tr key={purchase._id}>
+                                        <td>#{purchase._id.slice(-5)}</td>
+                                        <td>{purchase.name || 'N/A'}</td>
+                                        <td>{purchase.description || 'N/A'}</td>
+                                        <td>${purchase.price || '0.00'}</td>
+                                        <td>{purchase.quantity || '0'}</td>
+                                        <td>
+                                            <span className={`badge-status badge-${(purchase.purchaseDetails?.status || 'pending').toLowerCase()}`}>
+                                                {purchase.purchaseDetails?.status || 'pending'}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
                         </table>
+                        {(!nearbyPurchases || nearbyPurchases.length === 0) && (
+                            <div className="text-center py-3">
+                                No purchase deals available
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

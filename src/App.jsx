@@ -26,6 +26,9 @@ import Reports from "./components/Admin/Reports.jsx";
 import HandleCustomer from "./components/Admin/HandleCustomer.jsx";
 import HandleSuppliers from "./components/Admin/HandleSuppliers.jsx";
 import HandleProducts from "./components/Admin/HandleProducts.jsx";
+
+import CategoriesPage from './components/Categories/CategoriesPage';
+
 function App() {
   return (
     <>
@@ -42,6 +45,7 @@ function App() {
         <Route path="orderhistory" element={<OrderHistory />} />
         </Route>
         <Route path="/SupSignUp" element={<SupSignUp />} />
+        <Route path="/categories" element={<CategoriesPage />} />
 
         {/* Dashboard for Supplier with nested routes */}
         <Route path="/SuppDashboard/*" element={<SuppDashboard />}>
@@ -60,6 +64,7 @@ function App() {
           <Route path="handle-customer" element={<HandleCustomer />} />
           <Route path="handle-suppliers" element={<HandleSuppliers />} />
           <Route path="handle-products" element={<HandleProducts />}/>
+          <Route path="categories-page" element={<CategoriesPage />} />
         </Route>
 
       </Routes>

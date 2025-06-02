@@ -47,9 +47,9 @@ function Header() {
       </div>
       <hr></hr>
       <div className="lower-header">
-        <a href="/">
+        <a href="/"  className='logo' >
 
-          <img src={logoWhite} style={{ width: '100%' }}></img>
+          <img src={logoWhite} style={{ width: '100%'  }}></img>
         </a>
         <div className='lower-header-box1'>
           <div className="">

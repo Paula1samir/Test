@@ -1,0 +1,31 @@
+.badge-status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.badge-pending {
+    background-color: #fff4de;
+    color: #ffa500;
+}
+
+.badge-purchased, .badge-completed {
+    background-color: #dcf5e7;
+    color: #28a745;
+}
+
+.badge-cancelled {
+    background-color: #ffe4e4;
+    color: #dc3545;
+}
+
+.badge-shipped {
+    background-color: #e0e7ff;
+    color: #4338ca;
+}
+
+.badge-arrived {
+    background-color: #d1fae5;
+    color: #059669;
+}

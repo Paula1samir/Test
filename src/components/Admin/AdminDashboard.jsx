@@ -10,6 +10,7 @@ import CreateAdmin from './CreateAdmin'
 import HandleCustomer from './HandleCustomer'
 import HandleSuppliers from './HandleSuppliers'
 import HandleProducts from './HandleProducts'
+import CategoriesPage from '../Categories/CategoriesPage'
 const SidebarLayout = () => {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [Admin, setAdmin] = useState(null);
@@ -56,6 +57,7 @@ const SidebarLayout = () => {
                             <Link to="categories"><i className="bi bi-grid-3x3-gap-fill me-2"></i> Available Categories</Link>
                             <Link to="create-admin"><i className="bi bi-person-dash-fill me-2"></i> Create Admin </Link>
                             <Link to="handle-products"><i className="bi bi-person-dash-fill me-2"></i> handle-products </Link>
+                            <Link to="categories-page"><i className="bi bi-person-dash-fill me-2"></i> Categories Page </Link>
                             <button
                                 className="nav-link"
                                 onClick={() => {
@@ -95,7 +97,7 @@ const SidebarLayout = () => {
                                 <Route path="handle-customer" element={<HandleCustomer />} />
                                 <Route path="handle-suppliers" element={<HandleSuppliers />} />
                                 <Route path="handle-products" element={<HandleProducts />}/>
-
+                                <Route path='categories-page' element={<CategoriesPage />} />
                                 {/* Add more routes as needed */}
                                 <Route path="*" element={<div>Select an option from the sidebar.</div>} />
 

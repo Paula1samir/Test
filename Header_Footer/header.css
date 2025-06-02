@@ -240,6 +240,11 @@ hr{
   
 }
 
+@media (min-width: 768px) {
+  .logo{
+margin-right: 140px;
+}
+}
 /* For mobile devices */
 @media (max-width: 480px) {
   .upper-header{

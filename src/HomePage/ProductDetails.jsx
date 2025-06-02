@@ -47,7 +47,12 @@ export default function ProductDetails() {
     useEffect(() => {
         if (!name) return;
 
-        fetch(`https://bulkify-back-end.vercel.app/api/v1/products?name=${encodeURIComponent(name)}`)
+        fetch(`https://bulkify-back-end.vercel.app/api/v1/products/regular?name=${encodeURIComponent(name)}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                
+            }
+        })
             .then((response) => response.json())
             .then((data) => {
                 if (data && data.products && data.products.length > 0) {

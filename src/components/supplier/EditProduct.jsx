@@ -7,8 +7,14 @@ export default function EditProduct() {
     const [products, setProducts] = useState([]);
     const navigate = useNavigate();
 
+    const SupplierToken = localStorage.getItem("SupplierToken");
     useEffect(() => {
-        axios.get('https://bulkify-back-end.vercel.app/api/v1/products')
+        axios.get('https://bulkify-back-end.vercel.app/api/v1/products?limit=10', {
+            headers: {
+                'Content-Type': 'application/json',
+                'token': `${SupplierToken}`
+            }
+        })
             .then(response => {
                 setProducts(response.data.products);
             })
@@ -54,7 +60,7 @@ export default function EditProduct() {
                                                     />
                                                 </td>
                                                 <td>{product.name}</td>
-                                                <td>{product.categoryId || 'Uncategorized'}</td>
+                                                <td>{product.categoryId?.name || 'Uncategorized'}</td>
                                                 <td>{`EGP ${product.price}`}</td>
                                                 <td>{product.bulkThreshold}</td>
                                                 <td>{`EGP ${product.price * product.bulkThreshold}`}</td>
