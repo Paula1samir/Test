@@ -185,12 +185,12 @@ export default function HomePage() {
                 </div>
                 <div className='mt-5 category-section'>
                     <h2>Categories</h2>
-                    <div className="category-buttons" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <div className="category-buttons" style={{ display: 'flex',flexDirection:"row", gap: '10px',  justifyContent: 'center' }}>
                         {categories.map(category => (
                             <Link 
                                 key={category._id}
                                 to={`/categories?category=${category.name}`}
-                                className="btn btn-outline-primary"
+                                className="btn btn-success"
                             >
                                 {category.name}
                             </Link>

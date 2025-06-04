@@ -68,8 +68,6 @@ const SignUp = () => {
       // Validate if the phone number contains only numbers
       newErrors.phoneNumber = "Phone number should contain only digits";
     }
-
-
     if (!city.trim()) newErrors.city = "City is required";
     if (!street.trim()) newErrors.street = "Street is required";
     if (!homeNumber.trim()) newErrors.homeNumber = "Home number is required";

@@ -49,7 +49,7 @@ const CategoriesPage = () => {
             const productsData = productsResponse.data.products || [];
             setProducts(productsData);
             // Filter products immediately if category is selected
-            if (initialCategory && initialCategory !== 'All Products') {
+            if (initialCategory  !== 'All Products') {
                 const filtered = productsData.filter(product => 
                     product.categoryId && product.categoryId.name.toLowerCase() === initialCategory.toLowerCase()
                 );
