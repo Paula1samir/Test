@@ -45,7 +45,7 @@ const LivePurchase = ({ nearby, isLoading }) => {
     }
 
     if (!nearby || nearby.length === 0) {
-        return <div className="live-purchases-container"style={{height:"100vh"}}>No live purchases available in your area</div>;
+        return <div className="live-purchases-container"style={{textAlign:"center"}}>No live purchases available in your area</div>;
     }
 
     return (

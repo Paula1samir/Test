@@ -12,14 +12,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-html, body, #root {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
 #root{
   width: -webkit-fill-available;
-  height: 100vh;
+  min-height: 100vh;
 }
 a {
   font-weight: 500;
@@ -42,10 +37,6 @@ body {
   min-width: 320px;
   min-height: 50vh !important;
   width: 100%;
-  background-color: #fff;
-}
-html{
-    background-color: #fff;
 
 }
 h1 {
