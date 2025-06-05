@@ -41,11 +41,11 @@ const LivePurchase = ({ nearby, isLoading }) => {
 
     // Loading and empty states
     if (isLoading) {
-        return <div className="live-purchases-container">Loading nearby purchases...</div>;
+        return <div className="live-purchases-container" style={{height:"100vh"}}>Loading nearby purchases...</div>;
     }
 
     if (!nearby || nearby.length === 0) {
-        return <div className="live-purchases-container">No live purchases available in your area</div>;
+        return <div className="live-purchases-container"style={{height:"100vh"}}>No live purchases available in your area</div>;
     }
 
     return (

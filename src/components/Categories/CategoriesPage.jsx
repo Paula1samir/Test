@@ -97,7 +97,7 @@ const CategoriesPage = () => {
 
     // Loading state handling
     if (isLoading) {
-        return <div className="loading">Loading products...</div>;
+        return <div className="loading" style={{height:"100vh"}}>Loading products...</div>;
     }
 
     // Component render

@@ -156,7 +156,7 @@ export default function ProductDetails() {
 
     if (product === null) {
         return (
-            <div className="loading-container">
+            <div className="loading-container" style={{height:"100vh"}}>
                 <Spinner animation="border" variant="success" />
                 <p>Loading product...</p>
             </div>

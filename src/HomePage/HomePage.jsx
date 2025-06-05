@@ -66,7 +66,7 @@ export default function HomePage() {
 
         // Fetch nearby purchases
         if (CustomerToken) {
-            axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/nearby`, {
+            axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/nearby?limit=2000`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'token': CustomerToken
@@ -103,7 +103,6 @@ export default function HomePage() {
     return (
         <>
             <div className="HomePage">
-
                 <div className='mainContainer' style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
                     <ProductCard
                         title="Nike Air Max Systm"

@@ -6,7 +6,7 @@ const ProductCardApi = ({ name, description, price, quantity, image }) => {
       height: "100px",
   }
   return (
-    <div className="product-card" style={{ width: '300px', margin: 'auto', textAlign: 'center' }}>
+    <div className="product-card" style={{ width: '300px', textAlign: 'center' }}>
       <img src={image} alt={name} style={imgStyle} />
       <p className="product-name" style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: '10px 0' }}>
         {name}
