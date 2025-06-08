@@ -1,6 +1,7 @@
-
 import { Link } from 'react-router-dom';
-const ProductCardApi = ({ name, description, price, quantity, image }) => {
+import RatingDisplay from '../components/Rating/RatingDisplay';
+
+const ProductCardApi = ({ _id, name, description, price, quantity, image }) => {
     const imgStyle = {
       width: "100px",
       height: "100px",
@@ -11,6 +12,7 @@ const ProductCardApi = ({ name, description, price, quantity, image }) => {
       <p className="product-name" style={{ fontSize: '1.2rem', fontWeight: 'bold', margin: '10px 0' }}>
         {name}
       </p>
+      <RatingDisplay productId={_id} />
       <p className="product-description" style={{ fontSize: '1rem', color: '#555', marginBottom: '10px' }}>
         {description}
       </p>
@@ -26,4 +28,5 @@ const ProductCardApi = ({ name, description, price, quantity, image }) => {
     </div>
   );
 };
+
 export default ProductCardApi;

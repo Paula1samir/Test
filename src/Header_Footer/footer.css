@@ -22,8 +22,17 @@
   background-color: #191C1F;
 }
 
+.footer .contanier {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
+}
+
 .footer .item {
   float: left;
+  flex: 1;
+  min-width: 200px;
 }
 
 .footer .item img {
@@ -74,10 +83,26 @@
   color: #FFFFFF;
 }
 
+.footer .item ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
 .footer .item ul li {
   font-weight: 500;
   font-size: 18px;
   line-height: 30px;
+  margin-bottom: 0.5rem;
+}
+.footer .item ul li a {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer .item ul li a:hover {
+    color: #198754;
 }
 ul{
   list-style-type: none; /* Removes the bullet points */
@@ -99,7 +124,9 @@ ul{
     list-style-type: none; /* Removes the bullet points */
     padding-left: 0;  
   }
-  
+  .footer .item {
+        flex: 1 1 100%;
+    }
 }
 
 /* For mobile devices */

@@ -1,14 +1,14 @@
 import React from "react";
-import {  Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Login from "./components/Login";
+import Login from "../src/components/Login.jsx";
 import Signup from "./components/SignUp";
 import LoginAdmin from "./components/Admin/LoginAdmin";
 import SignUpAdmin from "./components/Admin/SignUpAdmin";
 import ForgetPassword from "./components/ForgetPass/Forget-Password";
 import SupSignUp from "./components/supplier/SupSignUp";
-import Header from '../Header_Footer/header.jsx'
-import Footer from '../Header_Footer/footer.jsx'
+import Header from '../src/Header_Footer/header.jsx';
+import Footer from '../src/Header_Footer/footer.jsx';
 import HomePage from "./HomePage/HomePage.jsx";
 import ProductDetails from "./HomePage/ProductDetails.jsx";
 import SuppDashboard from "./components/supplier/SuppDashboard.jsx";
@@ -28,6 +28,7 @@ import HandleSuppliers from "./components/Admin/HandleSuppliers.jsx";
 import HandleProducts from "./components/Admin/HandleProducts.jsx";
 
 import CategoriesPage from './components/Categories/CategoriesPage';
+import LiveProductPurchase from './components/LiveProductPurchase/LiveProductPurchase.jsx';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
         </Route>
         <Route path="/SupSignUp" element={<SupSignUp />} />
         <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/live-product/:id" element={<LiveProductPurchase />} />
 
         {/* Dashboard for Supplier with nested routes */}
         <Route path="/SuppDashboard/*" element={<SuppDashboard />}>

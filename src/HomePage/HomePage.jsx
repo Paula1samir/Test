@@ -40,7 +40,7 @@ export default function HomePage() {
      */
     const fetchCategories = async () => {
         try {
-            const res = await axios.get("https://bulkify-back-end.vercel.app/api/v1/categories");
+            const res = await axios.get("https://bulkify-back-end.vercel.app/api/v1/categories?limit=10000");
             setCategories(res.data.categories || []);
         } catch (err) {
             console.error("Failed to fetch categories", err);
@@ -66,7 +66,7 @@ export default function HomePage() {
 
         // Fetch nearby purchases
         if (CustomerToken) {
-            axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/nearby?limit=2000`, {
+            axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/nearby?limit=20000`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'token': CustomerToken
@@ -135,6 +135,7 @@ export default function HomePage() {
                         product && (
                             <ProductCardApi
                                 key={product?._id || 'temp-key'}
+                                _id={product?._id}
                                 name={product?.name || 'Unnamed Product'}
                                 description={product?.description || 'No description available'}
                                 price={product?.price || 0}
@@ -184,7 +185,7 @@ export default function HomePage() {
                 </div>
                 <div className='mt-5 category-section'>
                     <h2>Categories</h2>
-                    <div className="category-buttons" style={{ display: 'flex',flexDirection:"row", gap: '10px',  justifyContent: 'center' }}>
+                    <div className="category-buttons" style={{ display: 'flex',flexDirection:"row", gap: '10px' }}>
                         {categories.map(category => (
                             <Link 
                                 key={category._id}

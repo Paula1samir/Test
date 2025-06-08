@@ -45,14 +45,22 @@ const LocationPicker = ({ setValue1, setValue2 }) => {
     }
   };
 
-  const handleLocationSelect = (location) => {
-    setSelectedLocation(location);
-    // Set the latitude and longitude using setValue1 and setValue2 if they are valid functions
-    if (typeof setValue1 === 'function' && typeof setValue2 === 'function') {
-      setValue1(location.lat);
-      setValue2(location.lng);
-    } else {
-      console.error('setValue1 or setValue2 is not a function');
+
+  const handleMapClick = async (location) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${location.lat}&lon=${location.lng}`
+      );
+      const data = await response.json();
+      setSelectedLocation(location);
+      setSearchQuery(data.display_name);
+      
+      if (typeof setValue1 === 'function' && typeof setValue2 === 'function') {
+        setValue1(location.lat);
+        setValue2(location.lng);
+      }
+    } catch (error) {
+      console.error('Error getting location name:', error);
     }
   };
 
@@ -61,10 +69,18 @@ const LocationPicker = ({ setValue1, setValue2 }) => {
       lat: parseFloat(result.lat),
       lng: parseFloat(result.lon),
     };
-    handleLocationSelect(location); // Update selected location and pass lat/lng to parent
-    setSearchResults([]);
+    setSelectedLocation(location);
     setSearchQuery(result.display_name);
+    setSearchResults([]);
     
+    if (mapRef.current) {
+      mapRef.current.setView(location, 13);
+    }
+
+    if (typeof setValue1 === 'function' && typeof setValue2 === 'function') {
+      setValue1(location.lat);
+      setValue2(location.lng);
+    }
   };
 
   useEffect(() => {
@@ -118,10 +134,10 @@ const LocationPicker = ({ setValue1, setValue2 }) => {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <MapEvents onLocationSelect={handleLocationSelect} />
+          <MapEvents onLocationSelect={handleMapClick} />
           {selectedLocation && (
             <Marker
-              position={new LatLng(selectedLocation.lat.toFixed(6), selectedLocation.lng.toFixed(6))}
+              position={new LatLng(selectedLocation.lat, selectedLocation.lng)}
               icon={customIcon}
             />
           )}

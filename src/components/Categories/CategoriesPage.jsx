@@ -19,6 +19,9 @@ const CategoriesPage = () => {
     const [selectedCategory, setSelectedCategory] = useState(initialCategory);
     const [isLoading, setIsLoading] = useState(true);
     const [categories, setCategories] = useState([]);
+    const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
+    const [tempPriceRange, setTempPriceRange] = useState({ min: 0, max: 1000 });
+    const [isFilterVisible, setIsFilterVisible] = useState(false);
 
     /**
      * Fetches all available categories from the API
@@ -70,17 +73,29 @@ const CategoriesPage = () => {
      * Filters products based on selected category
      * @param {string} categoryName - The name of the selected category
      */
-    const filterProducts = (categoryName) => {
+    const filterProducts = (categoryName, priceFilter = priceRange) => {
         setSelectedCategory(categoryName);
         
-        if (categoryName === 'All Products') {
-            setFilteredProducts(products);
-        } else {
-            const filtered = products.filter(product => {
-                return product.categoryId && product.categoryId.name.toLowerCase() === categoryName.toLowerCase();
-            });
-            setFilteredProducts(filtered);
+        let filtered = products;
+
+        // Category filter
+        if (categoryName !== 'All Products') {
+            filtered = filtered.filter(product => 
+                product.categoryId && product.categoryId.name.toLowerCase() === categoryName.toLowerCase()
+            );
         }
+
+        // Price filter
+        filtered = filtered.filter(product => 
+            product.price >= priceFilter.min && product.price <= priceFilter.max
+        );
+
+        setFilteredProducts(filtered);
+    };
+
+    const handlePriceFilter = () => {
+        setPriceRange(tempPriceRange);
+        filterProducts(selectedCategory, tempPriceRange);
     };
 
     /**
@@ -101,44 +116,128 @@ const CategoriesPage = () => {
     }
 
     // Component render
-return (
-    <div className="categories-container">
-        <h1>Browse by Category</h1>
+    return (
+        <div className="categories-container">
+            <h1>Browse by Category</h1>
 
-        <div className="category-container">
-            <div className="category-buttons">
-                {categories.map(category => (
-                    <button
-                        key={category.name}
-                        className={`category-btn ${selectedCategory === category.name ? 'active' : ''}`}
-                        onClick={() => filterProducts(category.name)}
-                    >
-                        {category.name}
-                    </button>
-                ))}
-            </div>
+            <div className="category-container">
+                {/* Desktop Filters */}
+                <div className="filters-sidebar">
+                    <div className="category-buttons">
+                        {categories.map(category => (
+                            <button
+                                key={category.name}
+                                className={`category-btn ${selectedCategory === category.name ? 'active' : ''}`}
+                                onClick={() => filterProducts(category.name)}
+                            >
+                                {category.name}
+                            </button>
+                        ))}
+                    </div>
 
-            <div className="products-grid">
-                {filteredProducts.length > 0 ? (
-                    filteredProducts.map(product => (
-                        <ProductCardApi
-                            key={product._id}
-                            name={product.name}
-                            description={product.description}
-                            price={product.price}
-                            quantity={product.quantity}
-                            image={getImageUrl(product.imageSource)}
-                        />
-                    ))
-                ) : (
-                    <div className="no-products">
-                        No products found in this category
+                    <div className="price-filter">
+                        <h3>Price Range</h3>
+                        <div className="price-inputs">
+                            <input
+                                type="number"
+                                value={tempPriceRange.min}
+                                onChange={(e) => setTempPriceRange(prev => ({ ...prev, min: Number(e.target.value) }))}
+                                placeholder="Min"
+                            />
+                            <span>to</span>
+                            <input
+                                type="number"
+                                value={tempPriceRange.max}
+                                onChange={(e) => setTempPriceRange(prev => ({ ...prev, max: Number(e.target.value) }))}
+                                placeholder="Max"
+                            />
+                        </div>
+                        <button className="btn-success btn" onClick={handlePriceFilter}>
+                            Apply
+                        </button>
+                    </div>
+                </div>
+
+                {/* Mobile Filters */}
+                <button 
+                    className="filter-button-mobile"
+                    onClick={() => setIsFilterVisible(true)}
+                >
+                    <i className="fas fa-filter"></i> Filters
+                </button>
+
+                {isFilterVisible && (
+                    <div className="filters-overlay" onClick={() => setIsFilterVisible(false)}>
+                        <div 
+                            className={`filters-modal ${isFilterVisible ? 'active' : ''}`}
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <div className="category-buttons">
+                                {categories.map(category => (
+                                    <button
+                                        key={category.name}
+                                        className={`category-btn ${selectedCategory === category.name ? 'active' : ''}`}
+                                        onClick={() => filterProducts(category.name)}
+                                    >
+                                        {category.name}
+                                    </button>
+                                ))}
+                            </div>
+
+                            <div className="price-filter">
+                                <h3>Price Range</h3>
+                                <div className="price-inputs">
+                                    <input
+                                        type="number"
+                                        value={tempPriceRange.min}
+                                        onChange={(e) => setTempPriceRange(prev => ({ ...prev, min: Number(e.target.value) }))}
+                                        placeholder="Min"
+                                    />
+                                    <span>to</span>
+                                    <input
+                                        type="number"
+                                        value={tempPriceRange.max}
+                                        onChange={(e) => setTempPriceRange(prev => ({ ...prev, max: Number(e.target.value) }))}
+                                        placeholder="Max"
+                                    />
+                                </div>
+                                <button className="btn-success btn" onClick={handlePriceFilter}>
+                                    Apply
+                                </button>
+                            </div>
+                            
+                            <button 
+                                className="btn btn-secondary mt-3"
+                                onClick={() => setIsFilterVisible(false)}
+                            >
+                                Close
+                            </button>
+                        </div>
                     </div>
                 )}
+
+                <div className="products-grid">
+                    {filteredProducts.length > 0 ? (
+                        filteredProducts.map(product => (
+                            <ProductCardApi
+                                key={product._id}
+                                _id={product._id}  // Add this line to pass the ID
+                                name={product.name}
+                                description={product.description}
+                                price={product.price}
+                                quantity={product.quantity}
+                                image={getImageUrl(product.imageSource)}
+                            />
+                        ))
+                    ) : (
+                        <div className="no-products">
+                            No products found in this category
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
-    </div>
-);
+    );
 
 };
 

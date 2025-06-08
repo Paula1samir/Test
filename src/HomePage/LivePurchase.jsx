@@ -50,7 +50,7 @@ const LivePurchase = ({ nearby, isLoading }) => {
 
     return (
         <div className="live-purchases-container">
-            <h2>Trending Group Purchases</h2>
+            <h2>Trending Group Purchases In Your Area</h2>
             <Carousel
                 responsive={responsive}
                 infinite={true}
@@ -98,8 +98,8 @@ const LivePurchase = ({ nearby, isLoading }) => {
                             </p>
                         </div>
                         <Link 
-                            to={`/ProductDetails/${purchase._id}`} 
-                            className=" btn btn-success" 
+                            to={`/live-product/${purchase._id}`} 
+                            className="btn btn-success" 
                             style={{bottom:"5px", position:"absolute"}}
                         >
                             View Details

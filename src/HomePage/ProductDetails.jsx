@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import './ProductDetails.css';
 import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
+import RatingStars from '../components/Rating/RatingStars';
+import ProductComments from '../components/Comments/ProductComments';
 
 export default function ProductDetails() {
     const { name } = useParams();
@@ -11,7 +13,7 @@ export default function ProductDetails() {
     const [mainImage, setMainImg] = useState(null);
     const [quantity, setQuantity] = useState(1);
     const [errMsg, setErrMsg] = useState("");
-    const [purchaseId, setPurchaseId] = useState(null);
+    const [averageRating, setAverageRating] = useState(0);
 
     const imgStyle = {
         width: "250px",
@@ -59,6 +61,7 @@ export default function ProductDetails() {
                     const foundProduct = data.products[0];
                     setProduct(foundProduct);
                     setMainImg(getImageUrl(foundProduct.imageSource));
+                    setAverageRating(foundProduct.averageRating || 0);
                 } else {
                     setProduct(null);
                 }
@@ -108,7 +111,6 @@ export default function ProductDetails() {
                 }
             );
             console.log(response.data);
-            setPurchaseId(response.data.purchaseId);
             if (response.data?.url) {
                 window.location.href = response.data.url;
             } else {
@@ -119,39 +121,9 @@ export default function ProductDetails() {
             console.log(err.response);
         }
     };
-    const handleVote = async () => {
-        const token = localStorage.getItem("CustomerToken");
-        if (!token) {
-            alert("Please log in first.");
-            navigate("/login");
-            return;
-        }
-    
-        // if (!purchaseId) {
-        //     setErrMsg("Missing product or purchase information.");
-        //     return;
-        // }
-    
-        const votePayload = {
-            quantity,
-            paymentMethod: "Paypal"
-        };
-    
-        try {
-                await axios.post(
-                `https://bulkify-back-end.vercel.app/api/v1/products/${product._id}/purchases/${purchaseId}/vote`,
-                votePayload,
-                {
-                    headers: { token }
-                }
-            );
-    
-            alert("Vote submitted successfully.");
-        } catch (err) {
-            setErrMsg(err.response?.data?.message || "Failed to submit vote.");
-        }
-    };
-    
+
+
+
     
 
     if (product === null) {
@@ -204,8 +176,15 @@ export default function ProductDetails() {
 
                 <div className="col-md-6">
                     <h2>{product?.name || 'Unnamed Product'}</h2>
+                    <div className="mb-3">
+                        <RatingStars 
+                            productId={product?._id} 
+                            initialRating={averageRating}
+                            onRatingChange={(newRating) => setAverageRating(newRating)}
+                        />
+                    </div>
                     <p><strong>Supplier:</strong> {product?.supplierId?.fullName || "Not found"}</p>
-                    <p><strong>Availability:</strong> {product?.quantity > 0 ? "In Stock" : "Out of Stock"}</p>
+                    <p><strong>Availability:</strong> <span style={{color:'#198754', fontWeight:'bold'}}>{product?.quantity > 0 ? `${product.quantity} In Stock` : "Out of Stock"} </span></p>
                     <p><strong>Price:</strong> ${product?.price || '0.00'}</p>
                     <p>{product?.description || 'No description available'}</p>
 
@@ -224,15 +203,17 @@ export default function ProductDetails() {
                         Start Purchase
                     </button>
                     <br />
-                    <button className="btn btn-success w-100 mt-2" onClick={handleVote}>
-                        Vote
-                    </button>
                 </div>
             </div>
 
             <div className="mt-5 p-4 bg-light rounded">
                 <h4>Description</h4>
                 <p>{product?.description || 'No description available'}</p>
+            </div>
+
+            {/* Add Comments Section */}
+            <div className="mt-4">
+                <ProductComments productId={product?._id} />
             </div>
         </div>
     );
