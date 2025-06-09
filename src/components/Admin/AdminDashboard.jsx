@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, Routes, Route } from 'react-router-dom'
+import { Link, Routes, Route, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import ProductRequests from './ProductRequests'
 import Logo from "../images/Layer_1.png"
@@ -13,6 +13,7 @@ import HandleProducts from './HandleProducts'
 const SidebarLayout = () => {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [Admin, setAdmin] = useState(null);
+    const navigate = useNavigate();
 
     const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
 
@@ -22,6 +23,16 @@ const SidebarLayout = () => {
             setAdmin(JSON.parse(storedSAdmin));
         }
     }, []);
+
+    useEffect(() => {
+        const adminToken = localStorage.getItem("AdminToken");
+
+        if (!adminToken ) {
+            navigate('/Error404');
+            return;
+        }
+    }, [navigate]);
+
     return (
         <>
 
@@ -48,7 +59,7 @@ const SidebarLayout = () => {
                     >
                         <img src={Logo} className="mb-4 mt-5 img-fluid" alt="logo" />
                         <div className="col-md-2 sidebar  flex-column position-relative w-auto" style={{ width: "-webkit-fill-available" }}>
-                            <Link to="reports" className="active"><i className="bi bi-grid-fill me-2"></i> Dashboard</Link>
+                            <Link to="reports" className="active"><i className="bi bi-grid-fill me-2"></i> Reports </Link>
                             <Link to="handle-suppliers"><i className="bi bi-person-lines-fill me-2"></i> Edit Supplier</Link>
                             <Link to="purchase-deals"><i className="bi bi-bag-check-fill me-2"></i> Purchase Deals</Link>
                             <Link to="product-requests"><i className="bi bi-box-seam me-2"></i> Product Requests</Link>

@@ -1,24 +1,38 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import AddProduct from "./AddProduct";
 import EditProduct from "./EditProduct";
 import LivePurchase from "./LivePurchase";
 import OrderStatus from "./OrderStatus";
 import Logo from "../images/Layer_1.png";
 import EditProductDetails from "./EditProductDetails";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+    faPlus, 
+    faEdit, 
+    faShoppingCart, 
+    faTruck, 
+    faSignOutAlt 
+} from '@fortawesome/free-solid-svg-icons';
 
 const SidebarLayout = () => {
+    const navigate = useNavigate();
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [supplier, setSupplier] = useState(null);
 
     const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
 
     useEffect(() => {
-        const storedSupplier = localStorage.getItem("supplier");
-        if (storedSupplier) {
-            setSupplier(JSON.parse(storedSupplier));
+        const supplierToken = localStorage.getItem("SupplierToken");
+        const supplierData = localStorage.getItem("supplier");
+
+        if (!supplierToken || !supplierData) {
+            navigate('/Error404');
+            return;
         }
-    }, []);
+
+        setSupplier(JSON.parse(supplierData));
+    }, [navigate]);
 
     const SuuplierToken = localStorage.getItem("SuuplierToken");
     return (
@@ -46,28 +60,27 @@ const SidebarLayout = () => {
                 >
                     <img src={Logo} className="mb-4 img-fluid" alt="logo" />
                     <div className="nav flex-column">
-                        <Link to="add" className="nav-link" onClick={() => setSidebarVisible(false)}>
-                            Add Product
+                        <Link to="add" className="nav-link d-flex align-items-center gap-2" onClick={() => setSidebarVisible(false)}>
+                            <FontAwesomeIcon icon={faPlus} /> Add Product
                         </Link>
-                        <Link to="edit" className="nav-link" onClick={() => setSidebarVisible(false)}>
-                            Edit Products
+                        <Link to="edit" className="nav-link d-flex align-items-center gap-2" onClick={() => setSidebarVisible(false)}>
+                            <FontAwesomeIcon icon={faEdit} /> Edit Products
                         </Link>
-                        <Link to="live" className="nav-link" onClick={() => setSidebarVisible(false)}>
-                            Live Purchase Deals
+                        <Link to="live" className="nav-link d-flex align-items-center gap-2" onClick={() => setSidebarVisible(false)}>
+                            <FontAwesomeIcon icon={faShoppingCart} /> Live Purchase Deals
                         </Link>
-                        <Link to="order" className="nav-link" onClick={() => setSidebarVisible(false)}>
-                            Order Status
+                        <Link to="order" className="nav-link d-flex align-items-center gap-2" onClick={() => setSidebarVisible(false)}>
+                            <FontAwesomeIcon icon={faTruck} /> Order Status
                         </Link>
                         <Link
-                            className="nav-link"
+                            className="nav-link d-flex align-items-center gap-2"
                             onClick={() => {
                                 localStorage.removeItem("SupplierToken");
                                 localStorage.removeItem("supplier");
                                 window.location.href = "/Login";
                             }}
                         >
-                            <i className="fas fa-sign-out-alt"></i>
-                            Log-out
+                            <FontAwesomeIcon icon={faSignOutAlt} /> Log-out
                         </Link>
                     </div>
                 </div>

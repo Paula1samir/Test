@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Routes, Route } from 'react-router-dom';
 
 import Login from "../src/components/Login.jsx";
 import Signup from "./components/SignUp";
@@ -29,11 +29,30 @@ import HandleProducts from "./components/Admin/HandleProducts.jsx";
 
 import CategoriesPage from './components/Categories/CategoriesPage';
 import LiveProductPurchase from './components/LiveProductPurchase/LiveProductPurchase.jsx';
+import Error404 from './pages/Error404/Error404';
+import Breadcrumb from './components/common/Breadcrumb/Breadcrumb';
+import Loader from './components/common/Loader/Loader';
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <>
       <Header />
+      <Breadcrumb />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/Login" element={<Login />} />
@@ -60,7 +79,6 @@ function App() {
         {/* Dashboard for Admin with nested routes */}
         <Route path="/AdminDashboard/*" element={<AdminDashboard />}>
           <Route path="categories" element={<Categories />} />
-          {/* <Route path="categories" element={<Categories />} /> */}
           <Route path="product-requests" element={<ProductRequests />} />
           <Route path="reports" element={<Reports />} />
           <Route path="handle-customer" element={<HandleCustomer />} />
@@ -69,6 +87,12 @@ function App() {
           <Route path="categories-page" element={<CategoriesPage />} />
         </Route>
 
+        {/* Protected Routes */}
+        <Route path="/supplier/*" element={<Error404 />} />
+        <Route path="/admin/*" element={<Error404 />} />
+        
+        {/* 404 catch-all */}
+        <Route path="*" element={<Error404 />} />
       </Routes>
       <Footer />
     </>
