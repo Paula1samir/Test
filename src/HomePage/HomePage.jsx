@@ -13,6 +13,7 @@ import Pagination from "./Pagination";
 import ProductCardApi from "./ProductCardApi";
 import LivePurchase from "./LivePurchase";
 import { Link } from "react-router-dom";
+import RecommendedProducts from '../components/Recommendations/RecommendedProducts';
 
 /**
  * HomePage Component
@@ -196,6 +197,10 @@ export default function HomePage() {
                             </Link>
                         ))}
                     </div>
+                </div>
+                {/* Add Recommendations section after Products section */}
+                <div className="mt-5">
+                    <RecommendedProducts />
                 </div>
             </div>
         </>
