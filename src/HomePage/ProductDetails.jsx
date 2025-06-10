@@ -18,7 +18,7 @@ export default function ProductDetails() {
     const imgStyle = {
         width: "250px",
         height: "250px",
-        objectFit: "cover"
+        objectFit: "contain"
     }
 
     const getImageUrl = (imageSource) => {

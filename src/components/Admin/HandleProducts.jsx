@@ -12,6 +12,7 @@ const HandleProducts = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [successMsg, setSuccessMsg] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -150,6 +151,8 @@ const HandleProducts = () => {
         ));
         setShowEditModal(false);
         setError(null);
+        setSuccessMsg('Product updated successfully!');
+        setTimeout(() => setSuccessMsg(null), 3000); // Hide after 3 seconds
       }
     } catch (err) {
       const errorMessage = err.response?.data?.message || 
@@ -187,6 +190,25 @@ const HandleProducts = () => {
 
   return (
     <div className="handle-products">
+      {successMsg && (
+        <div 
+          className="alert alert-success text-center"
+          style={{
+            position: 'fixed',
+            top: '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 1050,
+            animation: 'fadeInOut 3s ease',
+            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+            borderRadius: '8px',
+            padding: '1rem 2rem'
+          }}
+        >
+          <i className="bi bi-check-circle me-2"></i>
+          {successMsg}
+        </div>
+      )}
       <h2>Manage Products</h2>
       <div className="products-list" style={{ 
         display: 'grid', 

@@ -62,7 +62,7 @@ const SidebarLayout = () => {
                     >
                         <img src={Logo} className="mb-4 mt-5 img-fluid" alt="logo" />
                         <div className="col-md-2 sidebar  flex-column position-relative w-auto" style={{ width: "-webkit-fill-available" }}>
-                            <Link to="reports" className="active"><i className="bi bi-grid-fill me-2"></i> Reports </Link>
+                            <Link to="reports" className=""><i className="bi bi-grid-fill me-2"></i> Reports </Link>
                             <Link to="handle-suppliers"><i className="bi bi-person-lines-fill me-2"></i> Edit Supplier</Link>
                             <Link to="purchase-deals"><i className="bi bi-bag-check-fill me-2"></i> Purchase Deals</Link>
                             <Link to="product-requests"><i className="bi bi-box-seam me-2"></i> Product Requests</Link>
