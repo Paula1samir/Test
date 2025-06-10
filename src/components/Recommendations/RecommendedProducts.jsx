@@ -21,14 +21,26 @@ const RecommendedProducts = () => {
                     }
                 );
 
-                // Fetch product details for recommended products
+                // Fetch product details and handle 404s
                 const products = await Promise.all(
-                    recommendResponse.data.recommendations.map(productId => 
-                        axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/${productId}`)
-                    )
+                    recommendResponse.data.recommendations.map(async productId => {
+                        try {
+                            const response = await axios.get(
+                                `https://bulkify-back-end.vercel.app/api/v1/products/${productId}`
+                            );
+                            return response.data.product;
+                        } catch (error) {
+                            if (error.response?.status === 404) {
+                                console.log(`Product ${productId} not found`);
+                                return null;
+                            }
+                            throw error;
+                        }
+                    })
                 );
 
-                setRecommendations(products.map(p => p.data.product));
+                // Filter out null values (404 products) and set recommendations
+                setRecommendations(products.filter(product => product !== null));
             } catch (error) {
                 console.error('Error fetching recommendations:', error);
             } finally {
