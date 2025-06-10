@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Pagination from '../../HomePage/Pagination';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 const HandleProducts = () => {
   const [products, setProducts] = useState([]);
@@ -8,6 +9,9 @@ const HandleProducts = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -49,6 +53,18 @@ const HandleProducts = () => {
     fetchProducts();
   }, [currentPage]);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get('https://bulkify-back-end.vercel.app/api/v1/categories');
+        setCategories(response.data.categories || []);
+      } catch (err) {
+        console.error('Error fetching categories:', err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   const handleDelete = async (productId) => {
     if (!window.confirm('Are you sure you want to delete this product?')) {
       return;
@@ -76,6 +92,71 @@ const HandleProducts = () => {
     } catch (err) {
       setError('Error deleting product. Please try again later.');
       console.error("Error deleting product:", err);
+    }
+  };
+
+  const handleEdit = async (productId) => {
+    const adminToken = localStorage.getItem('AdminToken');
+    if (!adminToken) return;
+
+    try {
+      const response = await axios.get(
+        `https://bulkify-back-end.vercel.app/api/v1/products/${productId}`,
+        {
+          headers: { token: adminToken }
+        }
+      );
+      setEditingProduct(response.data.product);
+      setShowEditModal(true);
+    } catch {
+      setError('Error fetching product details');
+    }
+  };
+
+  const handleSubmitEdit = async (e) => {
+    e.preventDefault();
+    const adminToken = localStorage.getItem('AdminToken');
+    if (!adminToken || !editingProduct || !editingProduct._id) {
+        setError('Invalid product data or authentication');
+        return;
+    }
+
+    try {
+        const productData = {
+            name: editingProduct.name || '',
+            description: editingProduct.description || '',
+            price: Number(editingProduct.price) || 0,
+            quantity: Number(editingProduct.quantity) || 0,
+            bulkThreshold: Number(editingProduct.bulkThreshold) || 0,
+            categoryId: editingProduct.categoryId === 'uncategorized' ? 
+                null : 
+                (editingProduct.categoryId?._id || editingProduct.categoryId || null)
+        };
+
+        const response = await axios.put(
+            `https://bulkify-back-end.vercel.app/api/v1/products/admin/${editingProduct._id}`,
+            productData,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': adminToken
+                }
+            }
+        );
+
+      if (response.data && response.data.product) {
+        setProducts(products.map(p => 
+          p._id === editingProduct._id ? response.data.product : p
+        ));
+        setShowEditModal(false);
+        setError(null);
+      }
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 
+                           err.response?.data?.err?.[0] || 
+                           'Error updating product';
+      setError(errorMessage);
+      console.error('Error updating product:', err);
     }
   };
 
@@ -149,6 +230,21 @@ const HandleProducts = () => {
               </div>
               <div className="product-actions" style={{ marginTop: '10px' }}>
                 <button 
+                  onClick={() => handleEdit(product._id)}
+                  className="edit-btn mb-2"
+                  style={{
+                    backgroundColor: '#198754',
+                    color: 'white',
+                    padding: '8px 16px',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer',
+                    width: '100%'
+                  }}
+                >
+                  Edit Product
+                </button>
+                <button 
                   onClick={() => product?._id && handleDelete(product._id)}
                   className="delete-btn"
                   style={{
@@ -165,6 +261,74 @@ const HandleProducts = () => {
                   Delete Product
                 </button>
               </div>
+
+              {/* Edit Modal */}
+              <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+                <Modal.Header closeButton>
+                  <Modal.Title>Edit Product</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form onSubmit={handleSubmitEdit}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Name</Form.Label>
+                      <Form.Control
+                        type="text"
+                        value={editingProduct?.name || ''}
+                        onChange={e => setEditingProduct({
+                          ...editingProduct,
+                          name: e.target.value
+                        })}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label>Description</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        value={editingProduct?.description || ''}
+                        onChange={e => setEditingProduct({
+                          ...editingProduct,
+                          description: e.target.value
+                        })}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label>Price</Form.Label>
+                      <Form.Control
+                        type="number"
+                        value={editingProduct?.price || 0}
+                        onChange={e => setEditingProduct({
+                          ...editingProduct,
+                          price: Number(e.target.value)
+                        })}
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label>Category</Form.Label>
+                      <Form.Select
+                        value={editingProduct?.categoryId || 'uncategorized'}
+                        onChange={e => setEditingProduct({
+                          ...editingProduct,
+                          categoryId: e.target.value
+                        })}
+                      >
+                        <option value="uncategorized">Uncategorized</option>
+                        {categories.map(category => (
+                          <option key={category._id} value={category._id}>
+                            {category.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </Form.Group>
+
+                    <Button variant="success" type="submit">
+                      Save Changes
+                    </Button>
+                  </Form>
+                </Modal.Body>
+              </Modal>
             </div>
           )
         ))}
