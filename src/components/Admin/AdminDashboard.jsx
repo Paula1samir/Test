@@ -10,6 +10,9 @@ import CreateAdmin from './CreateAdmin'
 import HandleCustomer from './HandleCustomer'
 import HandleSuppliers from './HandleSuppliers'
 import HandleProducts from './HandleProducts'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+
 const SidebarLayout = () => {
     const [sidebarVisible, setSidebarVisible] = useState(false);
     const [Admin, setAdmin] = useState(null);
@@ -65,18 +68,16 @@ const SidebarLayout = () => {
                             <Link to="product-requests"><i className="bi bi-box-seam me-2"></i> Product Requests</Link>
                             <Link to="handle-customer"><i className="bi bi-person-dash-fill me-2"></i> Edit / delete Customer</Link>
                             <Link to="categories"><i className="bi bi-grid-3x3-gap-fill me-2"></i> Available Categories</Link>
-                            <Link to="create-admin"><i className="bi bi-person-dash-fill me-2"></i> Create Admin </Link>
-                            <Link to="handle-products"><i className="bi bi-person-dash-fill me-2"></i> handle-products </Link>
-                            <Link to="categories"><i className="bi bi-person-dash-fill me-2"></i> Categories Page </Link>
+                            <Link to="create-admin"><i className="bi bi-person-plus-fill me-2"></i> Create Admin </Link>
+                            <Link to="handle-products"><i className="bi bi-boxes me-2"></i> Handle Products </Link>
                             <button
-                                className="nav-link"
+                                className="nav-link d-flex align-items-center gap-2 "
                                 onClick={() => {
                                     localStorage.removeItem("AdminToken");
                                     window.location.href = "/Login";
                                 }}
                             >
-                                <i className="fas fa-sign-out-alt"></i>
-                                Log-out
+                                <FontAwesomeIcon icon={faSignOutAlt} /> Log-out
                             </button>
                         </div>
                     </div>

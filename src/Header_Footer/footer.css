@@ -43,7 +43,15 @@
 .footer .item h4 {
   margin: 0;
 }
-
+.footer-contanier{
+      display: flex
+;
+    margin: 25px;
+    text-align: center;
+    justify-content: space-evenly;
+    flex: auto;
+    flex-wrap: wrap;
+}
 .footer .item button {
   background-color: #303639;
   display: block;

@@ -8,7 +8,7 @@ const Breadcrumb = () => {
     const pathnames = location.pathname.split('/').filter(x => x);
 
     return (
-        <nav aria-label="breadcrumb" className="bg-light py-2 px-3 mb-4">
+        <nav aria-label="breadcrumb" className="bg-light py-2 px-3 m-4">
             <ol className="breadcrumb m-0 justify-content-center" >
                 <li className="breadcrumb-item">
                     <Link to="/" className="text-success">

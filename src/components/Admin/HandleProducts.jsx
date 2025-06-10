@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Pagination from '../../HomePage/Pagination';
 
 const HandleProducts = () => {
   const [products, setProducts] = useState([]);
@@ -10,15 +11,36 @@ const HandleProducts = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      const adminToken = localStorage.getItem('AdminToken');
+      if (!adminToken) {
+        setError('Admin authentication required');
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
-        const response = await axios.get(`https://bulkify-back-end.vercel.app/api/v1/products?page=${currentPage}`);
-        setProducts(response.data.products || []);
-        setTotalProducts(response.data.total || 0);
-        setError(null);
+        const response = await axios.get(
+          `https://bulkify-back-end.vercel.app/api/v1/products?page=${currentPage} `,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'token': adminToken
+            }
+          }
+        );
+        
+        if (response.data && response.data.products) {
+          setProducts(response.data.products);
+          setTotalProducts(response.data.total || 0);
+          setError(null);
+        } else {
+          throw new Error('Invalid response format');
+        }
       } catch (err) {
-        setError('Error fetching products. Please try again later.');
+        setError(err.response?.data?.message || 'Error fetching products. Please try again later.');
         console.error("Error fetching products:", err);
+        setProducts([]);
       } finally {
         setLoading(false);
       }
@@ -69,6 +91,14 @@ const HandleProducts = () => {
     }
     
     return '';
+  };
+
+  // Calculate total pages
+  const totalPages = Math.ceil(totalProducts / 10); // Assuming 10 products per page
+
+  // Handle page change
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   if (loading) return <div>Loading...</div>;
@@ -138,6 +168,15 @@ const HandleProducts = () => {
             </div>
           )
         ))}
+      </div>
+      
+      {/* Add Pagination */}
+      <div className="mt-4 d-flex justify-content-center">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ function Footer() {
     return (
         <footer>
             <div className="footer">
-                <div className="contanier">
+                <div className="footer-contanier">
                     <div className="item">
                         <img src={logo} alt="not found" />
                         <h5>Customer Supports:</h5>
