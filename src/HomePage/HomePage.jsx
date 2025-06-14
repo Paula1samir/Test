@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import './HomePage.css';
 import ProductCard from './ProductCard';
-import nikeImg from "../images/nike.png";
-import protienImg from "../images/protien.png";
-import appleWatchImg from "../images/appleWatch.png";
-import gucciBag from "../images/gucciBag.png";
-import softChair from "../images/softChair.png";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCreditCard, faBox } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
@@ -27,6 +22,7 @@ export default function HomePage() {
     const [nearbyPurchases, setNearbyPurchases] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [categories, setCategories] = useState([]);
+    const [featuredProducts, setFeaturedProducts] = useState([]);
     const CustomerToken = localStorage.getItem('CustomerToken');
 
     const getImageUrl = (imageSource) => {
@@ -49,11 +45,23 @@ export default function HomePage() {
     };
 
     /**
+     * Fetches featured products from the API
+     */
+    const fetchFeaturedProducts = async () => {
+        try {
+            const response = await axios.get("https://bulkify-back-end.vercel.app/api/v1/products/regular?limit=5");
+            setFeaturedProducts(response.data.products || []);
+        } catch (error) {
+            console.error("Error fetching featured products:", error);
+        }
+    };
+
+    /**
      * Fetches initial data: products, categories, and nearby purchases
      */
     useEffect(() => {
         fetchCategories();
-
+        fetchFeaturedProducts();
         axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/regular?page=${currentPage}&limit=5`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -64,7 +72,6 @@ export default function HomePage() {
                 setTotalProducts(response.data.total || 0); // Set total products
             })
             .catch(error => console.error("Error fetching products:", error));
-
         // Fetch nearby purchases
         if (CustomerToken) {
             axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/nearby?limit=20000`, {
@@ -74,10 +81,10 @@ export default function HomePage() {
                 }
             })
                 .then(response => {
-                    console.log('Nearby purchases response:', response.data.nearbyProducts);
-                    if (response.data && response.data.nearbyProducts) {
+
                         setNearbyPurchases(response.data.nearbyProducts);
-                    }
+                        console.log(response.data.nearbyProducts);
+
                 })
                 .catch(error => {
                     console.error("Error fetching nearby purchases:", error.response || error);
@@ -90,7 +97,6 @@ export default function HomePage() {
             setIsLoading(false);
         }
     }, [currentPage, CustomerToken]);
-
     /**
      * Updates current page for pagination
      */
@@ -105,29 +111,33 @@ export default function HomePage() {
         <>
             <div className="HomePage">
                 <div className='mainContainer' style={{ marginTop: '2rem', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
-                    <ProductCard
-                        title="Nike Air Max Systm"
-                        description="Mesh for breathability and comfort at every step"
-                        image={nikeImg}
-                        onPurchase={() => alert('Purchasing Nike Air Max Systm')}
-                        style={{ backgroundColor: '#F2F4F5', display: 'flex' }}
-                    />
-                    <div className="sideContainer">
-                        <ProductCard
-                            title="Protein Powder Double Rich"
-                            description="29% OFF"
-                            image={protienImg}
-                            onPurchase={() => alert('Purchasing Protein Powder')}
-                            style={{ backgroundColor: '#191C1F', color: '#fff' }}
-                        />
-                        <ProductCard
-                            title="Pixel Watch3 with Fitbit"
-                            description="Advanced health tracking and smartwatch features"
-                            image={appleWatchImg}
-                            onPurchase={() => alert('Purchasing Pixel Watch3')}
-                            style={{ backgroundColor: '#F2F4F5' }}
-                        />
-                    </div>
+                    {featuredProducts.length > 0 && (
+                        <>
+                            <ProductCard
+                                title={featuredProducts[0]?.name || "Loading..."}
+                                description={featuredProducts[0]?.description || ""}
+                                image={getImageUrl(featuredProducts[0]?.imageSource)}
+                                onPurchase={() => alert(`Purchasing ${featuredProducts[0]?.name}`)}
+                                style={{ backgroundColor: '#F2F4F5', display: 'flex' }}
+                            />
+                            <div className="sideContainer">
+                                <ProductCard
+                                    title={featuredProducts[1]?.name || "Loading..."}
+                                    description={`$${featuredProducts[1]?.price || 0}`}
+                                    image={getImageUrl(featuredProducts[1]?.imageSource)}
+                                    onPurchase={() => alert(`Purchasing ${featuredProducts[1]?.name}`)}
+                                    style={{ backgroundColor: '#191C1F', color: '#fff' }}
+                                />
+                                <ProductCard
+                                    title={featuredProducts[2]?.name || "Loading..."}
+                                    description={featuredProducts[2]?.description || ""}
+                                    image={getImageUrl(featuredProducts[2]?.imageSource)}
+                                    onPurchase={() => alert(`Purchasing ${featuredProducts[2]?.name}`)}
+                                    style={{ backgroundColor: '#F2F4F5' }}
+                                />
+                            </div>
+                        </>
+                    )}
                 </div>
 
                 <h1 style={{ paddingLeft: '20px', paddingTop: '50px' }}>Products</h1>
@@ -169,20 +179,26 @@ export default function HomePage() {
                     </div>
                 </div>
                 <div className="sideContainer2 mt-5">
-                    <ProductCard
-                        title="Large waterproof Bean bag"
-                        description="Collapses into a seat that forms to fit your body."
-                        image={softChair}
-                        onPurchase={() => alert('Purchasing Bean Bag')}
-                        style={{ backgroundColor: '#F2F4F5', color: '#000' }}
-                    />
-                    <ProductCard
-                        title="Gucci Fashion Handbag, brown, leather"
-                        description="Stay on top of the latest fashion trends"
-                        image={gucciBag}
-                        onPurchase={() => alert('Purchasing Gucci Bag')}
-                        style={{ backgroundColor: '#191C1F', color: '#fff' }}
-                    />
+                    {featuredProducts.length > 3 && (
+                        <>
+                            <ProductCard
+                                title={featuredProducts[3]?.name || "Loading..."}
+                                description={featuredProducts[3]?.description || ""}
+                                image={getImageUrl(featuredProducts[3]?.imageSource)}
+                                onPurchase={() => alert(`Purchasing ${featuredProducts[3]?.name}`)}
+                                style={{ backgroundColor: '#F2F4F5', color: '#000' }}
+                            />
+                            {featuredProducts[4] && (
+                                <ProductCard
+                                    title={featuredProducts[4]?.name || "Loading..."}
+                                    description={featuredProducts[4]?.description || ""}
+                                    image={getImageUrl(featuredProducts[4]?.imageSource)}
+                                    onPurchase={() => alert(`Purchasing ${featuredProducts[4]?.name}`)}
+                                    style={{ backgroundColor: '#191C1F', color: '#fff' }}
+                                />
+                            )}
+                        </>
+                    )}
                 </div>
                 <div className='mt-5 category-section'>
                     <h2>Categories</h2>

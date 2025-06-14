@@ -11,6 +11,7 @@ const RecommendedProducts = () => {
             try {
                 const customerData = JSON.parse(localStorage.getItem('Customer'));
                 if (!customerData?.id) return;
+                console.log(customerData);
 
                 // Get recommendations
                 const recommendResponse = await axios.post(
@@ -31,7 +32,6 @@ const RecommendedProducts = () => {
                             return response.data.product;
                         } catch (error) {
                             if (error.response?.status === 404) {
-                                console.log(`Product ${productId} not found`);
                                 return null;
                             }
                             throw error;

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import RatingDisplay from '../components/Rating/RatingDisplay';
 
-const ProductCardApi = ({ _id, name, description, price, quantity, image }) => {
+const ProductCardApi = ({ _id, name, price, quantity, image }) => {
     const imgStyle = {
       width: "100px",
       height: "100px",
@@ -13,9 +13,6 @@ const ProductCardApi = ({ _id, name, description, price, quantity, image }) => {
         {name}
       </p>
       <RatingDisplay productId={_id} />
-      <p className="product-description" style={{ fontSize: '1rem', color: '#555', marginBottom: '10px' }}>
-        {description}
-      </p>
       <div className="details d-flex justify-content-center align-items-center"
         style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
         <p style={{ margin: 0, fontSize: '1rem', fontWeight: 'bold' }}>Price:</p>

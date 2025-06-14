@@ -8,6 +8,7 @@ import axios from "axios";
 import Alert from "./Alert.jsx";
 const Login_URL = "https://bulkify-back-end.vercel.app/api/v1/customers/login";
 const suppLogin_URL = "https://bulkify-back-end.vercel.app/api/v1/suppliers/login";
+const AdminLogin_URL = "https://bulkify-back-end.vercel.app/api/v1/admins/login";
 export default function Login() {
   const { setAuth } = useContext(AuthContext);
   const userRef = useRef();
@@ -48,10 +49,11 @@ export default function Login() {
       localStorage.setItem("CustomerToken", token);
       navigate("/CustomerProfile");
       return;
-    } catch (err) {
-      if (!err.response || err.response.status !== 401) {
-        // If it's not an auth error, or there's no response at all, stop
-        setErrMsg(err.response?.data?.message || "Customer login failed");
+    } catch (customerErr) {
+      // Updated error handling for customer login
+      const errorMessage = customerErr.response?.data?.message || "Customer login failed";
+      setErrMsg(errorMessage);
+      if (customerErr.response?.status !== 401) {
         return;
       }
     }
@@ -73,8 +75,36 @@ export default function Login() {
       localStorage.setItem("SupplierToken", token);
       navigate("/SuppDashboard");
       return;
-    } catch (err) {
-      setErrMsg(err.response?.data?.message || "Supplier login failed");
+    } catch (supplierErr) {
+      // Updated error handling for supplier login
+      const errorMessage = supplierErr.response?.data?.message || "Supplier login failed";
+      setErrMsg(errorMessage);
+      if (supplierErr.response?.status !== 401) {
+        return;
+      }
+    }
+
+    try {
+      // Try admin login if both customer and supplier login failed
+      const adminResponse = await axios.post(
+        AdminLogin_URL,
+        { email, password },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      const token = adminResponse?.data?.token;
+      const admin = adminResponse?.data?.admin;
+      const roles = adminResponse?.data?.roles;
+
+      setAuth({ email, token, roles });
+      localStorage.setItem("admin", JSON.stringify(admin));
+      localStorage.setItem("AdminToken", token);
+      navigate("/AdminDashboard");
+      return;
+    } catch (adminErr) {
+      // Updated error handling for admin login
+      const errorMessage = adminErr.response?.data?.message || "Invalid credentials";
+      setErrMsg(errorMessage);
       errRef.current?.scrollIntoView({ behavior: "smooth" });
       errRef.current?.focus();
     }
@@ -135,14 +165,6 @@ export default function Login() {
           </button>
         </form>   
 
-        <div className="or-text">OR</div>
-
-        <a className="btn btn-success w-100 mt-4"
-          href={'/LoginAdmin'}
-          style={{ cursor: "pointer" }}
-        >
-          Sign in As Admin
-        </a>
         <br />
         <p>
           Don't have an account?{" "}

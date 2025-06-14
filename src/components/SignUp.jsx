@@ -32,9 +32,8 @@ const SignUp = () => {
   const [errors, setErrors] = useState({}); // New state for field-specific errors
   const [success, setSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-
-
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [value1, setValue1] = useState(null); // For latitude
   const [value2, setValue2] = useState(null); // For longitude
@@ -57,6 +56,13 @@ const SignUp = () => {
     if (!lastName.trim()) newErrors.lastName = "Last name is required";
     if (!email.trim()) newErrors.email = "Email is required";
     if (!password.trim()) newErrors.password = "Password is required";
+    else if (password.length < 8) newErrors.password = "Password must be at least 8 characters";
+    
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your password";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
     // Check if the phone number is empty
     if (!phoneNumber.trim()) {
       newErrors.phoneNumber = "Phone number is required";
@@ -86,14 +92,16 @@ const SignUp = () => {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      // Safely handle alert element scrolling
       const alertElement = document.getElementById("alert");
       if (alertElement) {
         alertElement.scrollIntoView({ behavior: "smooth" });
       }
       return;
-    } else {
-      setErrors({}); // Clear errors if no validation issues
     }
+    
+    setErrors({});
+    setErrMsg(""); // Clear any previous error messages
 
     const payload = {
       firstName,
@@ -120,23 +128,25 @@ const SignUp = () => {
       setStreet("");
       setHomeNumber("");
       setPhoneNumber("");
-      console.log("Server Response:", response.data); // Log the server response
+      console.log("Server Response:", response.data);
 
       const customerData = payload;
-      localStorage.setItem("CustomerData", JSON.stringify(customerData)); // Store customer data in local storage
+      localStorage.setItem("CustomerData", JSON.stringify(customerData));
     } catch (err) {
-      if (err.response) {
-        const alert = document.getElementById("alert");
-        if (alert && err.response.data && err.response.data.err) {
-          for (let index = 0; index < err.response.data.err.length; index++) {
-            setErrMsg(err.response.data.err[index]);
-          }
-        }
-        if (errRef.current) {
-          errRef.current.scrollIntoView({ behavior: "smooth" });
-        }
+      if (err.response?.status === 409) {
+        setErrMsg("Email already exists. Please use a different email or try logging in.");
+      } else if (err.response?.data?.err) {
+        setErrMsg(Array.isArray(err.response.data.err) 
+          ? err.response.data.err.join('\n') 
+          : err.response.data.err);
+      } else {
+        setErrMsg("Registration failed. Please try again.");
       }
-      errRef.current.focus(); // Focus the error message
+      
+      // Safely handle ref scrolling
+      if (errRef?.current) {
+        errRef.current.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
@@ -241,6 +251,27 @@ const SignUp = () => {
                         {showPassword ? "🙈" : "👁"}
                       </span>
                       {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <label>Confirm Password</label>
+                    <div className="input-group">
+                      <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                      />
+                      <span
+                        className="input-group-text"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {showConfirmPassword ? "🙈" : "👁"}
+                      </span>
+                      {errors.confirmPassword && (
+                        <div className="invalid-feedback">{errors.confirmPassword}</div>
+                      )}
                     </div>
                   </div>
                   <div className="mt-3">

@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 
 import Login from "../src/components/Login.jsx";
 import Signup from "./components/SignUp";
-import LoginAdmin from "./components/Admin/LoginAdmin";
 import SignUpAdmin from "./components/Admin/SignUpAdmin";
 import ForgetPassword from "./components/ForgetPass/Forget-Password";
 import SupSignUp from "./components/supplier/SupSignUp";
@@ -58,7 +57,6 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/Signup" element={<Signup />} />
         <Route path="/Forget-Password" element={<ForgetPassword />} />
-        <Route path="/LoginAdmin" element={<LoginAdmin />} />
         <Route path="/SignUpAdmin" element={<SignUpAdmin />} />
         <Route path="/ProductDetails/:name" element={<ProductDetails />} />
         <Route path="/CustomerProfile/*" element={<CustomerProfile />}>

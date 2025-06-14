@@ -81,7 +81,7 @@ export default function CreateAdmin() {
                     "token": AdminToken,
                 },
             });
-            setErrMsg("Server Response:", response.data.message); // Log the server response
+            setErrMsg(response.data.message); // Log the server response
             console.log("Server Response:", response); // Log the server response
             setMsgType("success");
 
