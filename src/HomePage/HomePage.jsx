@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom"; // Add useNavigate import
 import './HomePage.css';
 import ProductCard from './ProductCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,7 +8,6 @@ import axios from "axios";
 import Pagination from "./Pagination";
 import ProductCardApi from "./ProductCardApi";
 import LivePurchase from "./LivePurchase";
-import { Link } from "react-router-dom";
 import RecommendedProducts from '../components/Recommendations/RecommendedProducts';
 
 /**
@@ -15,6 +15,7 @@ import RecommendedProducts from '../components/Recommendations/RecommendedProduc
  * Main landing page displaying featured products, categories, and live purchases
  */
 export default function HomePage() {
+    const navigate = useNavigate(); // Add navigate hook
     // State declarations
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -62,7 +63,7 @@ export default function HomePage() {
     useEffect(() => {
         fetchCategories();
         fetchFeaturedProducts();
-        axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/regular?page=${currentPage}&limit=5`, {
+        axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/regular?page=${currentPage}&limit=6`, {
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -104,6 +105,10 @@ export default function HomePage() {
         setCurrentPage(page);
     };
 
+    const handleProductClick = (productId) => {
+        navigate(`/product/${productId}`);
+    };
+
     // Calculate total pages for pagination
     const totalPages = Math.ceil(totalProducts / 5);
 
@@ -117,7 +122,7 @@ export default function HomePage() {
                                 title={featuredProducts[0]?.name || "Loading..."}
                                 description={featuredProducts[0]?.description || ""}
                                 image={getImageUrl(featuredProducts[0]?.imageSource)}
-                                onPurchase={() => alert(`Purchasing ${featuredProducts[0]?.name}`)}
+                                onPurchase={() => handleProductClick(featuredProducts[0]?._id)}
                                 style={{ backgroundColor: '#F2F4F5', display: 'flex' }}
                             />
                             <div className="sideContainer">
@@ -125,14 +130,14 @@ export default function HomePage() {
                                     title={featuredProducts[1]?.name || "Loading..."}
                                     description={`$${featuredProducts[1]?.price || 0}`}
                                     image={getImageUrl(featuredProducts[1]?.imageSource)}
-                                    onPurchase={() => alert(`Purchasing ${featuredProducts[1]?.name}`)}
+                                    onPurchase={() => handleProductClick(featuredProducts[1]?._id)}
                                     style={{ backgroundColor: '#191C1F', color: '#fff' }}
                                 />
                                 <ProductCard
                                     title={featuredProducts[2]?.name || "Loading..."}
                                     description={featuredProducts[2]?.description || ""}
                                     image={getImageUrl(featuredProducts[2]?.imageSource)}
-                                    onPurchase={() => alert(`Purchasing ${featuredProducts[2]?.name}`)}
+                                    onPurchase={() => handleProductClick(featuredProducts[2]?._id)}
                                     style={{ backgroundColor: '#F2F4F5' }}
                                 />
                             </div>
@@ -185,7 +190,7 @@ export default function HomePage() {
                                 title={featuredProducts[3]?.name || "Loading..."}
                                 description={featuredProducts[3]?.description || ""}
                                 image={getImageUrl(featuredProducts[3]?.imageSource)}
-                                onPurchase={() => alert(`Purchasing ${featuredProducts[3]?.name}`)}
+                                onPurchase={() => handleProductClick(featuredProducts[3]?._id)}
                                 style={{ backgroundColor: '#F2F4F5', color: '#000' }}
                             />
                             {featuredProducts[4] && (
@@ -193,7 +198,7 @@ export default function HomePage() {
                                     title={featuredProducts[4]?.name || "Loading..."}
                                     description={featuredProducts[4]?.description || ""}
                                     image={getImageUrl(featuredProducts[4]?.imageSource)}
-                                    onPurchase={() => alert(`Purchasing ${featuredProducts[4]?.name}`)}
+                                    onPurchase={() => handleProductClick(featuredProducts[4]?._id)}
                                     style={{ backgroundColor: '#191C1F', color: '#fff' }}
                                 />
                             )}

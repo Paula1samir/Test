@@ -20,11 +20,25 @@ const SupSignUp = () => {
   const [homeNumber, setHomeNumber] = useState("");
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
-  
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  
+  const validatePasswords = () => {
+    if (password !== confirmPassword) {
+      setErrMsg("Passwords do not match");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validatePasswords()) {
+      return;
+    }
+
     const payload = {
       fullName,
       email,
@@ -140,14 +154,42 @@ const SupSignUp = () => {
                   </div>
                   <div className="mt-3">
                     <label>Password</label>
-                    <div className="input-group">
+                              <div className="d-flex input-group" >
+            <input
+              type={showPassword ? "text" : "password"} // Toggle between text and password
+              className="input form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your Password"
+              required
+            />
+            <span
+              className="input-group-text"
+              onClick={() => setShowPassword(!showPassword)} // Toggle visibility
+              style={{ cursor: "pointer" }}
+            >
+              {showPassword ? "🙈" : "👀"} {/* Icons for visibility toggle */}
+            </span>
+          </div>
+                  </div>
+                  <div className="mt-3">
+                    <label>Confirm Password</label>
+                    <div className="d-flex input-group">
                       <input
-                        type="password"
-                        className="form-control"
-                        id="password"
-                        onChange={(e) => setPassword(e.target.value)}
+                        type={showConfirmPassword ? "text" : "password"}
+                        className="input form-control"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Confirm your Password"
                         required
                       />
+                      <span
+                        className="input-group-text"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {showConfirmPassword ? "🙈" : "👀"}
+                      </span>
                     </div>
                   </div>
                   <div className="mt-3">

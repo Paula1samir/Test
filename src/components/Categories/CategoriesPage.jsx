@@ -19,8 +19,8 @@ const CategoriesPage = () => {
     const [selectedCategory, setSelectedCategory] = useState(initialCategory);
     const [isLoading, setIsLoading] = useState(true);
     const [categories, setCategories] = useState([]);
-    const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
-    const [tempPriceRange, setTempPriceRange] = useState({ min: 0, max: 1000 });
+    const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000 });
+    const [tempPriceRange, setTempPriceRange] = useState({ min: 0, max: 10000000 });
     const [isFilterVisible, setIsFilterVisible] = useState(false);
 
     /**

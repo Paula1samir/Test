@@ -116,9 +116,6 @@ export default function CustomerProfile() {
           <i className="fas fa-layer-group"></i>
           Dashboard
         </button>
-        <button className="nav-link" onClick={() => setActiveView("orderHistory")}>
-          Order History
-        </button>
         <button
           className="nav-link"
           onClick={() => {
