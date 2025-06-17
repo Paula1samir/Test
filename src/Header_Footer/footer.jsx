@@ -20,7 +20,7 @@ function Footer() {
     }, []);
 
     return (
-        <footer>
+        <footer style={{ height: '300px' }}>
             <div className="footer">
                 <div className="footer-contanier">
                     <div className="item">
@@ -32,15 +32,22 @@ function Footer() {
 
                     <div className="item">
                         <h3>Categories</h3>
-                        <ul>
-                            {categories.map(category => (
-                                <li key={category._id}>
-                                    <Link to={`/categories?category=${category.name}`}>
-                                        {category.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
+                        <div style={{ 
+                            maxHeight: '200px',
+                            overflow: 'auto',
+                            columnCount: 2,
+                            columnGap: '20px'
+                        }}>
+                            <ul style={{ margin: 0, breakInside: 'avoid' }}>
+                                {categories.map(category => (
+                                    <li key={category._id}>
+                                        <Link to={`/categories?category=${category.name}`}>
+                                            {category.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
 
                     <div className="item">

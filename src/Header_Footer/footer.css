@@ -20,6 +20,8 @@
   width: 100%;
   padding: 25px 0;
   background-color: #191C1F;
+  min-height: 300px;
+  overflow: hidden;
 }
 
 .footer .contanier {
@@ -102,6 +104,8 @@
   font-size: 18px;
   line-height: 30px;
   margin-bottom: 0.5rem;
+  margin-bottom: 10px;
+  break-inside: avoid-column;
 }
 .footer .item ul li a {
     color: #666;
