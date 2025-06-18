@@ -1,26 +1,39 @@
 import './header.css';
-import logoWhite from '../images/logo-white.png';
+import logoWhite from '../components/images/Logo.svg';
 // import person from '../images/icons8-person-30.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTwitter, faInstagram, faFacebook, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import { Link, useLocation } from 'react-router-dom';
+import { faSignOutAlt, faTachometerAlt, faSignInAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Icon from '@mui/material/Icon';
 
 <Icon>star</Icon>;
 
 function Header() {
+  const navigate = useNavigate();
   const location = useLocation();
   const CustomerToken = localStorage.getItem("CustomerToken");
   const SupplierToken = localStorage.getItem("SupplierToken");
   const AdminToken = localStorage.getItem("AdminToken");
-  const Admin = JSON.parse(localStorage.getItem("Admin") || '{}');
+  const Admin = JSON.parse(localStorage.getItem("admin") || '{}');
   const Supplier = JSON.parse(localStorage.getItem("supplier") || '{}');
   const Customer = JSON.parse(localStorage.getItem("Customer") || '{}');
   // const suppiler = JSON.parse(localStorage.getItem("supplier") || '{}');
+  const handleLogout = () => {
+    localStorage.removeItem("CustomerToken");
+    localStorage.removeItem("Customer");
+    localStorage.removeItem("SupplierToken");
+    localStorage.removeItem("supplier");
+    localStorage.removeItem("AdminToken");
+    localStorage.removeItem("admin");
+    localStorage.removeItem("CustomerData");
+    navigate('/');
+    window.location.reload();
+  };
+
   return (
 
     <>
-      <div className="upper-header">
+      {/* <div className="upper-header">
         <h5>Welcome to bulkify online Community Purchase.</h5>
         <div className='theCard'>
           <p className='card-header'>Follow us on :</p>
@@ -44,7 +57,7 @@ function Header() {
         </div>
 
 
-      </div>
+      </div> */}
       <hr></hr>
       <div className="lower-header">
         <a href="/"  className='logo' >
@@ -54,41 +67,68 @@ function Header() {
         <div className='lower-header-box1'>
           <div className="">
             {!CustomerToken && !SupplierToken && !AdminToken && (
-              <div className="tab-switch">
-                <a 
-                style={{fontSize:'20px', color:"#ffffff !important", paddingRight:"5px"}} 
-                  href="/Login"
-                  className={`link ${location.pathname === '/Login' ? 'active' : ''}`}
+              <div className="d-flex align-items-center gap-2">
+                <Link 
+                  to="/Login"
+                  className={`btn btn-success btn-sm ${location.pathname === '/Login' ? 'active' : ''}`}
                 >
-                  <span className="material-icons-outlined">
-                  </span>
+                  <FontAwesomeIcon icon={faSignInAlt} className="me-2" />
                   Login
-                </a>
-                <strong>|</strong>
-                <a
-                style={{fontSize:'20px', color:"#ffffff !important" ,paddingLeft:"5px"}} 
-                  href="/Signup"
-                  className={`link ${location.pathname === '/Signup' ? 'active' : ''}`}
+                </Link>
+                <Link
+                  to="/Signup"
+                  className={`btn btn-success btn-sm ${location.pathname === '/Signup' ? 'active' : ''}`}
                 >
+                  <FontAwesomeIcon icon={faUserPlus} className="me-2" />
                   Sign Up
-                </a>
+                </Link>
               </div>
             )}
             {CustomerToken && (
-              <Link  to="/CustomerProfile" className={`link ${location.pathname === '/CustomerProfile' ? 'active' : ''}`}>
-              {Customer.fullName}    Dashboard 
-              </Link>
+              <div className="d-flex align-items-center gap-2">
+                <Link 
+                  to="/CustomerProfile" 
+                  className={`btn btn-success btn-sm ${location.pathname === '/CustomerProfile' ? 'active' : ''}`}
+                >
+                  <FontAwesomeIcon icon={faTachometerAlt} className="me-2" />
+                  {Customer.fullName} Dashboard
+                </Link>
+                <button onClick={handleLogout} className="btn btn-danger btn-sm">
+                  <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />
+                  Logout
+                </button>
+              </div>
             )}
-            {SupplierToken  && (
-              <Link   to="/SuppDashboard" className={`link ${location.pathname === '/SuppDashboard' ? 'active' : ''}`}>
-              {Supplier.fullName}    Dashboard 
-              </Link>
+            {SupplierToken && (
+              <div className="d-flex align-items-center gap-2">
+                <Link 
+                  to="/SuppDashboard" 
+                  className={`btn btn-success btn-sm ${location.pathname === '/SuppDashboard' ? 'active' : ''}`}
+                >
+                  <FontAwesomeIcon icon={faTachometerAlt} className="me-2" />
+                  {Supplier.fullName} Dashboard
+                </Link>
+                <button onClick={handleLogout} className="btn btn-danger btn-sm">
+                  <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />
+                  Logout
+                </button>
+              </div>
             )}
             {
               AdminToken && (
-                <Link   to="/AdminDashboard" className={` link${location.pathname === '/AdminDashboard' ? 'active' : ''}`}>
-                {Admin.fullName}  Dashboard 
-                </Link>
+                <div className="d-flex align-items-center gap-2">
+                  <Link 
+                    to="/AdminDashboard" 
+                    className={`btn btn-success btn-sm ${location.pathname === '/AdminDashboard' ? 'active' : ''}`}
+                  >
+                    <FontAwesomeIcon icon={faTachometerAlt} className="me-2" />
+                    {Admin.fullName} Dashboard
+                  </Link>
+                  <button onClick={handleLogout} className="btn btn-danger btn-sm">
+                    <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />
+                    Logout
+                  </button>
+                </div>
               )}
             
           </div>

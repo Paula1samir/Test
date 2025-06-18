@@ -164,7 +164,7 @@ export default function CustomerProfile() {
             <div className="row mb-3">
               <div className="col-md-6">
                 <label>Email</label>
-                <input type="email" name="email" className="form-control" value={customer.email} onChange={handleChange} />
+                <input type="email" name="email" className="form-control" value={customer.email} onChange={handleChange}  disabled/>
               </div>
               <div className="col-md-6">
                 <label>Phone Number</label>
@@ -174,7 +174,7 @@ export default function CustomerProfile() {
             <div className="row mb-3">
               <div className="col-md-6">
                 <label>Gender</label>
-                <input type="text" name="gender" className="form-control" value={customer.gender} onChange={handleChange} />
+                <input type="text" name="gender" className="form-control" value={customer.gender} onChange={handleChange}   />
               </div>
               <div className="col-md-6">
                 <label>City</label>

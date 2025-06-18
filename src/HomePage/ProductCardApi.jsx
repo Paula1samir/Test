@@ -3,8 +3,9 @@ import RatingDisplay from '../components/Rating/RatingDisplay';
 
 const ProductCardApi = ({ _id, name, price, quantity, image }) => {
     const imgStyle = {
-      width: "100px",
-      height: "100px",
+      width: "100%",
+      height: "150px", 
+      objectFit:"contain"     
   }
   return (
     <div className="product-card" style={{ width: '300px', textAlign: 'center' }}>
@@ -15,8 +16,8 @@ const ProductCardApi = ({ _id, name, price, quantity, image }) => {
       <RatingDisplay productId={_id} />
       <div className="details d-flex justify-content-center align-items-center"
         style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-        <p style={{ margin: 0, fontSize: '1rem', fontWeight: 'bold' }}>Price:</p>
-        <p className="product-price" style={{ margin: 0, fontSize: '1rem', color: '#007BFF' }}>${price}</p>
+        <p style={{ margin: 0, fontSize: '1rem', fontWeight: 'bold' ,marginRight:"3px"}}>Price:   </p>
+        <p className="product-price" style={{ margin: 0, fontSize: '1rem', color: '#007BFF' }}> EGP {price}   </p>
       </div>
       <p className="product-quantity" style={{ fontSize: '0.9rem', color: '#777' }}>Quantity: {quantity}</p>
       <Link to={`/ProductDetails/${encodeURIComponent(name)}`} className="btn btn-success">

@@ -36,7 +36,10 @@
     font-weight: bold;
     animation: fadeIn 0.8s ease-in-out;
 }
-
+.loading-container > P {
+margin-top: 12px;
+margin-left: 6px;
+}
 /* Loading Animation (Pulse Effect) */
 @keyframes pulse {
     0% { transform: scale(1); opacity: 1; }

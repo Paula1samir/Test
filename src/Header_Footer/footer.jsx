@@ -25,9 +25,8 @@ function Footer() {
                 <div className="footer-contanier">
                     <div className="item">
                         <img src={logo} alt="not found" />
-                        <h5>Customer Supports:</h5>
-                        <p>4517 Washington Ave. Manchester, Kentucky 39495</p>
-                        <a href="">info@kinbo.com</a>
+                        <h5 style={{color:"wheat"}}>Customer Supports:</h5>
+                        <a href="mailto:admin@bulkify.com">admin@bulkify.com</a>
                     </div>
 
                     <div className="item">
@@ -53,7 +52,6 @@ function Footer() {
                     <div className="item">
                         <h3>Quick links</h3>
                         <ul>
-                            <li><a href="#">Track Order</a></li>
                             <li><a href="mailto:admin@bulkify.com">Customer Help</a></li>
                             <li><a href="#">About Us</a></li>
                         </ul>

@@ -9,13 +9,14 @@ import Pagination from "./Pagination";
 import ProductCardApi from "./ProductCardApi";
 import LivePurchase from "./LivePurchase";
 import RecommendedProducts from '../components/Recommendations/RecommendedProducts';
-
 /**
  * HomePage Component
  * Main landing page displaying featured products, categories, and live purchases
  */
 export default function HomePage() {
     const navigate = useNavigate(); // Add navigate hook
+    // Add products per page constant
+    const PRODUCTS_PER_PAGE = 8;
     // State declarations
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -63,14 +64,15 @@ export default function HomePage() {
     useEffect(() => {
         fetchCategories();
         fetchFeaturedProducts();
-        axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/regular?page=${currentPage}&limit=6`, {
+        // Update API call with products per page
+        axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/regular?page=${currentPage}&limit=${PRODUCTS_PER_PAGE}`, {
             headers: {
                 'Content-Type': 'application/json',
             }
         })
             .then(response => {
                 setProducts(response.data.products || []);
-                setTotalProducts(response.data.total || 0); // Set total products
+                setTotalProducts(response.data.total || 0);
             })
             .catch(error => console.error("Error fetching products:", error));
         // Fetch nearby purchases
@@ -105,12 +107,12 @@ export default function HomePage() {
         setCurrentPage(page);
     };
 
-    const handleProductClick = (productId) => {
-        navigate(`/product/${productId}`);
+    const handleProductClick = (product) => {
+        navigate(`/product/${product._id}`, { state: { product } });
     };
 
-    // Calculate total pages for pagination
-    const totalPages = Math.ceil(totalProducts / 5);
+    // Update total pages calculation to use PRODUCTS_PER_PAGE
+    const totalPages = Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
 
     return (
         <>
@@ -119,25 +121,19 @@ export default function HomePage() {
                     {featuredProducts.length > 0 && (
                         <>
                             <ProductCard
-                                title={featuredProducts[0]?.name || "Loading..."}
-                                description={featuredProducts[0]?.description || ""}
-                                image={getImageUrl(featuredProducts[0]?.imageSource)}
-                                onPurchase={() => handleProductClick(featuredProducts[0]?._id)}
+                                product={featuredProducts[0]}
+                                onPurchase={() => handleProductClick(featuredProducts[0])}
                                 style={{ backgroundColor: '#F2F4F5', display: 'flex' }}
                             />
                             <div className="sideContainer">
                                 <ProductCard
-                                    title={featuredProducts[1]?.name || "Loading..."}
-                                    description={`$${featuredProducts[1]?.price || 0}`}
-                                    image={getImageUrl(featuredProducts[1]?.imageSource)}
-                                    onPurchase={() => handleProductClick(featuredProducts[1]?._id)}
+                                    product={featuredProducts[1]}
+                                    onPurchase={() => handleProductClick(featuredProducts[1])}
                                     style={{ backgroundColor: '#191C1F', color: '#fff' }}
                                 />
                                 <ProductCard
-                                    title={featuredProducts[2]?.name || "Loading..."}
-                                    description={featuredProducts[2]?.description || ""}
-                                    image={getImageUrl(featuredProducts[2]?.imageSource)}
-                                    onPurchase={() => handleProductClick(featuredProducts[2]?._id)}
+                                    product={featuredProducts[2]}
+                                    onPurchase={() => handleProductClick(featuredProducts[2])}
                                     style={{ backgroundColor: '#F2F4F5' }}
                                 />
                             </div>
@@ -187,18 +183,14 @@ export default function HomePage() {
                     {featuredProducts.length > 3 && (
                         <>
                             <ProductCard
-                                title={featuredProducts[3]?.name || "Loading..."}
-                                description={featuredProducts[3]?.description || ""}
-                                image={getImageUrl(featuredProducts[3]?.imageSource)}
-                                onPurchase={() => handleProductClick(featuredProducts[3]?._id)}
+                                product={featuredProducts[3]}
+                                onPurchase={() => handleProductClick(featuredProducts[3])}
                                 style={{ backgroundColor: '#F2F4F5', color: '#000' }}
                             />
                             {featuredProducts[4] && (
                                 <ProductCard
-                                    title={featuredProducts[4]?.name || "Loading..."}
-                                    description={featuredProducts[4]?.description || ""}
-                                    image={getImageUrl(featuredProducts[4]?.imageSource)}
-                                    onPurchase={() => handleProductClick(featuredProducts[4]?._id)}
+                                    product={featuredProducts[4]}
+                                    onPurchase={() => handleProductClick(featuredProducts[4])}
                                     style={{ backgroundColor: '#191C1F', color: '#fff' }}
                                 />
                             )}

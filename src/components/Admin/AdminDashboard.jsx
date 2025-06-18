@@ -21,7 +21,7 @@ const SidebarLayout = () => {
     const toggleSidebar = () => setSidebarVisible(!sidebarVisible);
 
     useEffect(() => {
-        const storedSAdmin = localStorage.getItem("Admin");
+        const storedSAdmin = localStorage.getItem("admin");
         if (storedSAdmin) {
             setAdmin(JSON.parse(storedSAdmin));
         }

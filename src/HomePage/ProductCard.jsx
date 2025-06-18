@@ -1,17 +1,50 @@
 import React from 'react'
-import { Card, CardContent, Button, } from '@mui/material';
-const ProductCard = ({ title, description, image, onPurchase, style }) => {
-  const cardStyle = style ? style : {};
+import { Card } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import './ProductCard.css'; // <-- Add this import for custom styles
+
+const ProductCard = ({ product, style }) => {
+  const imgStyle = {
+    width: "100%",
+    height: "150px",
+    objectFit: "contain",
+    marginLeft: "5px"
+  };
+  const navigate = useNavigate();
+  const getImageUrl = (imageSource) => {
+      if (!imageSource) return '';
+      if (typeof imageSource === 'string') return imageSource;
+      if (Array.isArray(imageSource) && imageSource.length > 0) return imageSource[0];
+      return '';
+  };
+
+  const handleStartPurchase = () => {
+      if (product?.name) {
+          navigate(`/ProductDetails/${encodeURIComponent(product.name)}`);
+      }
+  };
 
   return (
-    <Card style={{ ...cardStyle, padding: '16px', margin: '16px', width: "-webkit-fill-available" ,boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', borderRadius: '8px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' ,alignItems:'center'} }>
-        <div>
-          <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px' }}>{title}</h2>
-          <p style={{ color: '#6b7280', marginBottom: '16px' }}>{description}</p>
-          <button className="btn btn-success w-100 h-100 mt-4" type="submit" onClick={onPurchase}>Start Purchase</button>      
-            </div>
-        <img src={image} alt={title} style={{ width: '50%', objectFit: 'cover', borderRadius: '8px' }} />
+    <Card
+      className="custom-product-card"
+      style={{
+        ...style,
+        padding: '16px',
+        margin: '10px',
+        width: "-webkit-fill-available",
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        borderRadius: '8px'
+      }}
+    >
+      <div className="custom-product-card-content">
+          <img src={getImageUrl(product?.imageSource)} alt={product?.name} style={imgStyle} />
+        <div className="custom-product-card-image">
+        </div>
+        <div className="custom-product-card-details">
+          <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px' }}>{product?.name || "Loading..."}</h2>
+          <p className='productCardDescription' style={{ color: '#6b7280', marginBottom: '16px' }}>{product?.description || ""}</p>
+          <button className="btn btn-success h-100 mt-4" type="button" onClick={handleStartPurchase}>Start Purchase</button>
+        </div>
       </div>
     </Card>
   );

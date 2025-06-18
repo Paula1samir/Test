@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import ProductCardApi from '../../HomePage/ProductCardApi';
 
@@ -6,7 +6,7 @@ const RecommendedProducts = () => {
     const [recommendations, setRecommendations] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+    useState(() => {
         const fetchRecommendations = async () => {
             try {
                 const customerData = JSON.parse(localStorage.getItem('Customer'));
@@ -18,7 +18,7 @@ const RecommendedProducts = () => {
                     'https://recommendation-system-production-4877.up.railway.app/recommend',
                     {
                         user_id: customerData.id,
-                        num_recommendations: 5
+                        num_recommendations: 6
                     }
                 );
 

@@ -94,7 +94,7 @@ export default function LiveProductPurchase() {
 
     if (!product) {
         return (
-            <div className="loading-container" style={{height:"100vh"}}>
+            <div className="loading-container" style={{ height: "100vh" }}>
                 <Spinner animation="border" variant="success" />
                 <p>Loading product...</p>
             </div>
@@ -106,21 +106,20 @@ export default function LiveProductPurchase() {
             {errMsg && (
                 <p className="alert alert-danger text-center">{errMsg}</p>
             )}
-
             <div className="row">
                 <div className="col-md-6">
                     <div className="product-images text-center">
-                        <img 
+                        <img
                             style={{ width: "250px", height: "250px", objectFit: "cover" }}
-                            src={mainImage} 
-                            alt={product.name} 
+                            src={mainImage}
+                            alt={product.name}
                         />
                     </div>
                     <div className="d-flex justify-content-center mt-2">
                         {product.imageSource.map((image, index) => (
                             <div className="thumbnail mx-1" key={index}>
-                                <img 
-                                    src={image} 
+                                <img
+                                    src={image}
                                     alt={`${product.name} Thumbnail ${index + 1}`}
                                     onClick={() => setMainImg(image)}
                                     style={{ width: "50px", height: "50px", cursor: "pointer" }}
@@ -135,7 +134,10 @@ export default function LiveProductPurchase() {
                     <p><strong>Supplier:</strong> {product.supplierId?.fullName}</p>
                     <p><strong>Availability:</strong> {product.quantity > 0 ? "In Stock" : "Out of Stock"}</p>
                     <p><strong>Price:</strong> ${product.price}</p>
+                    <p><strong>Total Quantity:</strong> {product.purchaseDetails?.totalQuantity}</p>
+                    <p><strong>Committed Quantity:</strong> {product.purchaseDetails?.committedQuantity}</p>
                     <p><strong>Progress:</strong> {product.purchaseDetails?.progress}%</p>
+                    <p><strong>Remaining Quantity To Compelete Purchase :</strong> {product.purchaseDetails?.remainingQuantity}</p>
                     <p><strong>End Date:</strong> {new Date(product.purchaseDetails?.endDate).toLocaleDateString()}</p>
                     <p>{product.description}</p>
 
@@ -148,26 +150,23 @@ export default function LiveProductPurchase() {
                             min="1"
                             max={product.quantity}
                             value={quantity}
-                            onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                        />
+                            onChange={(e) => setQuantity(parseInt(e.target.value) || 1)} />
 
-                        <button 
+                        <button
                             className="btn btn-success w-100 mb-2"
                             onClick={handleVote}
-                            disabled={!product.purchaseDetails?.purchaseId}
-                        >
+                            disabled={!product.purchaseDetails?.purchaseId}>
                             Join Group Purchase
                         </button>
-                        
+
                         {paymentUrl && (
                             <div className="alert alert-info mt-3">
                                 <p>Please complete your payment for {purchaseData?.productName}</p>
-                                <a 
-                                    href={paymentUrl} 
-                                    target="_blank" 
+                                <a
+                                    href={paymentUrl}
+                                    target="_blank"
                                     rel="noopener noreferrer"
-                                    className="btn btn-primary mt-2"
-                                >
+                                    className="btn btn-primary mt-2">
                                     Complete Payment
                                 </a>
                             </div>
