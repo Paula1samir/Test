@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Pagination from "../../HomePage/Pagination";
+import { Pagination as MuiPagination, Button } from "@mui/material";
 
 export default function HandleCustomer() {
-  const CUSTOMERS_PER_PAGE = 6; // Add this constant
+  const CUSTOMERS_PER_PAGE = 6;
   const [customers, setCustomers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCustomers, setTotalCustomers] = useState(0);
@@ -11,6 +11,7 @@ export default function HandleCustomer() {
 
   useEffect(() => {
     fetchCustomers(currentPage);
+    // eslint-disable-next-line
   }, [currentPage]);
 
   const fetchCustomers = async (page) => {
@@ -43,11 +44,10 @@ export default function HandleCustomer() {
     }
   };
 
-  // Update totalPages calculation
   const totalPages = Math.ceil(totalCustomers / CUSTOMERS_PER_PAGE);
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+  const handlePageChange = (_, value) => {
+    setCurrentPage(value);
   };
 
   return (
@@ -81,32 +81,33 @@ export default function HandleCustomer() {
               <div style={{ margin: "5px 0" }}>
                 Coordinates: <span style={{ fontWeight: "bold" }}>{customer.coordinates?.[1]}, {customer.coordinates?.[0]}</span>
               </div>
-              <button
-                onClick={() => handleDelete(customer._id)}
-                style={{
+              <Button
+                variant="contained"
+                color="error"
+                sx={{
                   marginTop: "10px",
                   padding: "8px 12px",
-                  backgroundColor: "#f44336",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "5px",
-                  cursor: "pointer",
                   fontWeight: "bold",
+                  borderRadius: "5px",
+                  width: "100%",
                 }}
+                onClick={() => handleDelete(customer._id)}
               >
                 Delete
-              </button>
+              </Button>
             </div>
           </div>
         ))}
       </div>
 
       <div className="d-flex justify-content-center mt-4">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />zz
+        <MuiPagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          variant="outlined"
+          color="success"
+        />
       </div>
     </div>
   );

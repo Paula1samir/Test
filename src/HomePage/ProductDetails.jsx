@@ -53,6 +53,7 @@ export default function ProductDetails() {
             headers: {
                 'Content-Type': 'application/json',
                 
+                
             }
         })
             .then((response) => response.json())
