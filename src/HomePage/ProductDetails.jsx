@@ -118,10 +118,14 @@ export default function ProductDetails() {
             }
             
         } catch (err) {
-            if(err.response.data.message =="Another purchase is in progress within 2km"){
-                navigate("/");
+            if(err.response?.data?.message === "Another purchase is in progress within 2km"){
+                setErrMsg(err.response?.data?.message || "An error occurred while starting the purchase.");
+                setTimeout(() => {
+                    navigate(`/live-product/${product._id}`);
+                }, 7000);
+            } else {
+                setErrMsg(err.response?.data?.message || "An error occurred while starting the purchase.");
             }
-            setErrMsg(err.response?.data?.message || "An error occurred while starting the purchase.");
         }
     };
 
