@@ -7,7 +7,7 @@ const Loader = () => {
         <div className="loader-container">
             <div className="loader-content">
                 <img src={Logo} alt="Logo" className="loader-logo" />
-                <h1>Your Best Choice ! 👌</h1>
+                <h1>Your Best Choice ! </h1>
                 <div className="loader-spinner"></div>
             </div>
         </div>

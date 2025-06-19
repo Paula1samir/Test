@@ -120,7 +120,7 @@ export default function CreateAdmin() {
                 <form onSubmit={handleSubmit}>
                     <div className="row mt-3">
                         <h1>Create Admin </h1>
-                        <div className="col-md-6">
+                        <div>
                             <label>fullName</label>
                             <input
                                 type="text"

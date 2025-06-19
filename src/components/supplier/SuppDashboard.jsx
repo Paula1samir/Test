@@ -12,7 +12,6 @@ import {
     faEdit, 
     faShoppingCart, 
     faTruck, 
-    faSignOutAlt 
 } from '@fortawesome/free-solid-svg-icons';
 
 const SidebarLayout = () => {
@@ -72,16 +71,6 @@ const SidebarLayout = () => {
                         <Link to="order" className="nav-link d-flex align-items-center gap-2" onClick={() => setSidebarVisible(false)}>
                             <FontAwesomeIcon icon={faTruck} /> Order Status
                         </Link>
-                        <Link
-                            className="nav-link d-flex align-items-center gap-2"
-                            onClick={() => {
-                                localStorage.removeItem("SupplierToken");
-                                localStorage.removeItem("supplier");
-                                window.location.href = "/Login";
-                            }}
-                        >
-                            <FontAwesomeIcon icon={faSignOutAlt} /> Log-out
-                        </Link>
                     </div>
                 </div>
 
@@ -90,7 +79,7 @@ const SidebarLayout = () => {
                     {/* Topbar */}
                     <div className="d-flex flex-row flex-md-row justify-content-between align-items-center mb-3">
                         <input type="text" className="mr-3 form-control mb-2 mb-md-0 w-100 w-md-50" placeholder="Search" />
-                        <div className="d-flex align-items-center ms-md-3">
+                        <div className="d-flex align-items-center">
                             <div>
                                 <strong>{supplier ? supplier.fullName : "Loading..."}</strong><br />
                                 <small className="text-muted">Supplier</small>

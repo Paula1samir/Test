@@ -1,6 +1,5 @@
 .custom-product-card-content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 .custom-product-card-details {
@@ -10,7 +9,7 @@
   justify-content: center;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1300px) {
   .custom-product-card-content {
     flex-direction: column;
     align-items: stretch;
@@ -21,5 +20,11 @@
   }
   .custom-product-card-image {
     margin-bottom: 12px;
+  }
+  .custom-product-card{
+    height: min-content !important;
+  }
+  .mainContainer{
+    align-items: center;
   }
 }

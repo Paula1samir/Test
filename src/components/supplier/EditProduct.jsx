@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import './SuppDashboard.css';
 
 export default function EditProduct() {
+    const PRODUCTS_PER_PAGE = 8;
     const [products, setProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
     const navigate = useNavigate();
 
     const SupplierToken = localStorage.getItem("SupplierToken");
     useEffect(() => {
-        axios.get('https://bulkify-back-end.vercel.app/api/v1/products?limit=10', {
+        axios.get('https://bulkify-back-end.vercel.app/api/v1/products?limit=10000', {
             headers: {
                 'Content-Type': 'application/json',
                 'token': `${SupplierToken}`
@@ -26,6 +28,17 @@ export default function EditProduct() {
     const handleEdit = (product) => {
         const encodedName = encodeURIComponent(product.name);
         navigate(`/SuppDashboard/edit-product/${encodedName}`, { state: { product } });
+    };
+
+    // Pagination logic
+    const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+    const paginatedProducts = products.slice(
+        (currentPage - 1) * PRODUCTS_PER_PAGE,
+        currentPage * PRODUCTS_PER_PAGE
+    );
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
     };
 
     return (
@@ -50,7 +63,7 @@ export default function EditProduct() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {products.map((product) => (
+                                        {paginatedProducts.map((product) => (
                                             <tr key={product._id}>
                                                 <td>
                                                     <img
@@ -77,6 +90,18 @@ export default function EditProduct() {
                                         ))}
                                     </tbody>
                                 </table>
+                            </div>
+                            {/* Pagination UI */}
+                            <div className="d-flex justify-content-center mt-3">
+                                {Array.from({ length: totalPages }, (_, idx) => (
+                                    <button
+                                        key={idx + 1}
+                                        className={`btn btn-sm mx-1 ${currentPage === idx + 1 ? 'btn-success' : 'btn-outline-success'}`}
+                                        onClick={() => handlePageChange(idx + 1)}
+                                    >
+                                        {idx + 1}
+                                    </button>
+                                ))}
                             </div>
                         </div>
                     </div>

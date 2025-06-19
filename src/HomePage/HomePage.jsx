@@ -9,6 +9,7 @@ import Pagination from "./Pagination";
 import ProductCardApi from "./ProductCardApi";
 import LivePurchase from "./LivePurchase";
 import RecommendedProducts from '../components/Recommendations/RecommendedProducts';
+import { Button } from "@mui/material";
 /**
  * HomePage Component
  * Main landing page displaying featured products, categories, and live purchases
@@ -124,17 +125,20 @@ export default function HomePage() {
                                 product={featuredProducts[0]}
                                 onPurchase={() => handleProductClick(featuredProducts[0])}
                                 style={{ backgroundColor: '#F2F4F5', display: 'flex' }}
+                                ButtonComponent={Button}
                             />
                             <div className="sideContainer">
                                 <ProductCard
                                     product={featuredProducts[1]}
                                     onPurchase={() => handleProductClick(featuredProducts[1])}
                                     style={{ backgroundColor: '#191C1F', color: '#fff' }}
+                                    ButtonComponent={Button}
                                 />
                                 <ProductCard
                                     product={featuredProducts[2]}
                                     onPurchase={() => handleProductClick(featuredProducts[2])}
                                     style={{ backgroundColor: '#F2F4F5' }}
+                                    ButtonComponent={Button}
                                 />
                             </div>
                         </>
@@ -186,12 +190,14 @@ export default function HomePage() {
                                 product={featuredProducts[3]}
                                 onPurchase={() => handleProductClick(featuredProducts[3])}
                                 style={{ backgroundColor: '#F2F4F5', color: '#000' }}
+                                ButtonComponent={Button}
                             />
                             {featuredProducts[4] && (
                                 <ProductCard
                                     product={featuredProducts[4]}
                                     onPurchase={() => handleProductClick(featuredProducts[4])}
                                     style={{ backgroundColor: '#191C1F', color: '#fff' }}
+                                    ButtonComponent={Button}
                                 />
                             )}
                         </>
@@ -201,13 +207,15 @@ export default function HomePage() {
                     <h2>Categories</h2>
                     <div className="category-buttons" style={{ display: 'flex',flexDirection:"row", gap: '10px' }}>
                         {categories.map(category => (
-                            <Link 
+                            <Button
                                 key={category._id}
+                                component={Link}
                                 to={`/categories?category=${category.name}`}
-                                className="btn btn-success"
+                                variant="contained"
+                                color="success"
                             >
                                 {category.name}
-                            </Link>
+                            </Button>
                         ))}
                     </div>
                 </div>

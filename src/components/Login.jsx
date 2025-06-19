@@ -47,7 +47,7 @@ export default function Login() {
       setAuth({ email, token });
       localStorage.setItem("Customer", JSON.stringify(customer));
       localStorage.setItem("CustomerToken", token);
-      navigate("/CustomerProfile");
+      navigate("/");
       return;
     } catch (customerErr) {
       // Updated error handling for customer login

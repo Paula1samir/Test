@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
 
 const Breadcrumb = () => {
     const location = useLocation();
@@ -18,9 +18,9 @@ const Breadcrumb = () => {
                 {pathnames.map((name, index) => {
                     const routeTo = `/${pathnames.slice(0, index + 1).join('/')}`;
                     const isLast = index === pathnames.length - 1;
-                    
-                    // Format the name to be more readable
-                    const formattedName = name
+                    // Decode URI and format the name to be more readable
+                    const decodedName = decodeURIComponent(name);
+                    const formattedName = decodedName
                         .split('-')
                         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                         .join(' ');
@@ -37,11 +37,6 @@ const Breadcrumb = () => {
                                     <Link to={routeTo} className="text-success">
                                         {formattedName}
                                     </Link>
-                                    <FontAwesomeIcon 
-                                        icon={faChevronRight} 
-                                        className="mx-2" 
-                                        size="xs" 
-                                    />
                                 </>
                             )}
                         </li>

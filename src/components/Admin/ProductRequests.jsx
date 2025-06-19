@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function ProductRequests() {
     const [products, setProducts] = useState([]);
     const AdminToken = localStorage.getItem("AdminToken");
 
-    useState(() => {
+    useEffect(() => {
         fetchProducts();
     }, []);
 

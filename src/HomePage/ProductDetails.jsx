@@ -99,7 +99,6 @@ export default function ProductDetails() {
                 homeNumber: customerProfile.homeNumber
             }
         };
-
         try {
             const response = await axios.post(
                 `https://bulkify-back-end.vercel.app/api/v1/purchases/startPurchase/${product._id}`,
@@ -116,15 +115,14 @@ export default function ProductDetails() {
             } else {
                 setErrMsg("Unexpected response from server.");
             }
+            
         } catch (err) {
+            if(err.response.data.message =="Another purchase is in progress within 2km"){
+                navigate("/");
+            }
             setErrMsg(err.response?.data?.message || "An error occurred while starting the purchase.");
-            console.log(err.response);
         }
     };
-
-
-
-    
 
     if (product === null) {
         return (
@@ -173,7 +171,6 @@ export default function ProductDetails() {
                         ))}
                     </div>
                 </div>
-
                 <div className="col-md-6">
                     <h2>{product?.name || 'Unnamed Product'}</h2>
                     <div className="mb-3">
@@ -187,7 +184,6 @@ export default function ProductDetails() {
                     <p><strong>Availability:</strong> <span style={{color:'#198754', fontWeight:'bold'}}>{product?.quantity > 0 ? `${product.quantity} In Stock` : "Out of Stock"} </span></p>
                     <p><strong>Price:</strong> ${product?.price || '0.00'}</p>
                     <p>{product?.description || 'No description available'}</p>
-
                     <label htmlFor="quantity">Quantity</label>
                     <input
                         type="number"

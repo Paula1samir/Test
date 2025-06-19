@@ -5,6 +5,7 @@ import "../signUp.css";
 import { Routes, Route, Link } from "react-router-dom";
 // import Login from "./Login";
 import axios from "axios";
+import { Button } from "@mui/material";
 
 const SignUpAdmin = () => {
   const REGISTER_URL =
@@ -186,12 +187,14 @@ const SignUpAdmin = () => {
                     />
                     {errors.phoneNumber && <div className="invalid-feedback">{errors.phoneNumber}</div>}
                   </div>                
-                  <button
-                    className="btn btn-success mt-4 d-flex justify-content-center w-100"
+                  <Button
+                    variant="contained"
+                    color="success"
+                    sx={{ mt: 4, width: "100%" }}
                     type="submit"
                   >
                     Register
-                  </button>
+                  </Button>
                 </form>
               }
             />
