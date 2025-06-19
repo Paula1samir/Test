@@ -1,80 +1,147 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Pagination as MuiPagination, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 
-export default function OrderHistory() {
-    const [orders, setOrders] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const OrderHistory = () => {
+  // State for orders and pagination
+  const [orders, setOrders] = useState([]);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalPages: 1,
+    totalOrders: 0,
+    limit: 10,
+  });
+  const [sortBy, setSortBy] = useState("createdAt");
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState("");
 
-    useEffect(() => {
-        const fetchOrders = async () => {
-            const customerToken = localStorage.getItem('CustomerToken');
-            if (!customerToken) {
-                setError('Authentication required');
-                setLoading(false);
-                return;
-            }
+  // Fetch order history from API
+  useEffect(() => {
+    const fetchOrders = async () => {
+      setLoading(true);
+      setApiError("");
+      try {
+        const token = localStorage.getItem("CustomerToken");
+        const res = await axios.get(
+          `https://bulkify-back-end.vercel.app/api/v1/customers/orders-history?page=${pagination.currentPage}&limit=${pagination.limit}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+          { headers: { "Content-Type": "application/json", token } }
+        );
+        setOrders(res.data.data.orders || []);
+        setPagination(res.data.data.pagination || pagination);
+      } catch (error) {
+        setOrders([]);
+        setPagination(prev => ({ ...prev, totalPages: 1, totalOrders: 0 }));
+        setApiError(
+          error.response?.data?.err?.join(", ") ||
+          error.response?.data?.msg ||
+          "Error fetching order history."
+        );
+      }
+      setLoading(false);
+    };
+    fetchOrders();
+    // eslint-disable-next-line
+  }, [pagination.currentPage, sortBy, sortOrder]);
 
-            try {
-                const response = await axios.get(
-                    'https://bulkify-back-end.vercel.app/api/v1/customers/purchases',
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'token': customerToken
-                        }
-                    }
-                );
+  // Handle page change
+  const handlePageChange = (_, value) => {
+    setPagination(prev => ({ ...prev, currentPage: value }));
+  };
 
-                setOrders(response.data.purchases || []);
-                setError(null);
-            } catch (err) {
-                setError('Failed to fetch order history');
-                console.error('Error fetching orders:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchOrders();
-    }, []);
-
-    if (loading) return <div>Loading order history...</div>;
-    if (error) return <div className="alert alert-danger">{error}</div>;
-
-    return (
-        <div className="d-flex">
-            <div className="content w-100">
-                <h2>ORDER HISTORY</h2>
-                {orders.length > 0 ? (
-                    <table className="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Product</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {orders.map(order => (
-                                <tr key={order._id}>
-                                    <td>#{order._id.slice(-6).toUpperCase()}</td>
-                                    <td>{order.productId?.name || 'Unknown Product'}</td>
-                                    <td className={`status-${order.status?.toLowerCase()}`}>
-                                        {order.status?.toUpperCase()}
-                                    </td>
-                                    <td>{new Date(order.createdAt).toLocaleString()}</td>
-                                    <td>${order.productId?.price || 0} bulk</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                ) : (
-                    <div className="alert alert-info">No orders found</div>
-                )}
-            </div>
+  return (
+    <div className="order-history-container">
+      <h2>Order History</h2>
+      {/* Sorting Controls */}
+      <div className="d-flex align-items-center mb-3 gap-3">
+        <FormControl size="small">
+          <InputLabel id="sort-by-label" >Sort By</InputLabel>
+          <Select
+            labelId="sort-by-label"
+            value={sortBy}
+            label="Sort By"
+            onChange={e => setSortBy(e.target.value)}
+          >
+            <MenuItem value="createdAt">Date</MenuItem>
+            <MenuItem value="updatedAt">Updated</MenuItem>
+            <MenuItem value="purchaseQuantity">Purchase Quantity</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl size="small">
+          <InputLabel id="sort-order-label">Order</InputLabel>
+          <Select
+            labelId="sort-order-label"
+            value={sortOrder}
+            label="Order"
+            onChange={e => setSortOrder(e.target.value)}
+          >
+            <MenuItem value="desc">Descending</MenuItem>
+            <MenuItem value="asc">Ascending</MenuItem>
+          </Select>
+        </FormControl>
+      </div>
+      {/* Error Message */}
+      {apiError && <div className="alert alert-danger text-center">{apiError}</div>}
+      {/* Loading State */}
+      {loading ? (
+        <div style={{minHeight:"100vh"}}>Loading...</div>
+      ) : orders.length === 0 ? (
+        <div>No orders found.</div>
+      ) : (
+        // Orders Table
+        <div className="table-responsive">
+          <table className="table align-middle">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Product</th>
+                <th>Image</th>
+                <th>Category</th>
+                <th>Purchase Quantity</th>
+                <th>Status</th>
+                <th>Payment Method</th>
+                <th>Order Date</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order, idx) => (
+                <tr key={order._id}>
+                  <td>{(pagination.currentPage - 1) * pagination.limit + idx + 1}</td>
+                  <td>{order.product?.name || "N/A"}</td>
+                  <td>
+                    {order.product?.imageSource?.[0] && (
+                      <img
+                        src={order.product.imageSource[0]}
+                        alt={order.product?.name}
+                        style={{ width: 50, height: 50, objectFit: "cover", borderRadius: 6 }}
+                      />
+                    )}
+                  </td>
+                  <td>{order.product?.category?.name || "N/A"}</td>
+                  <td>{order.purchaseQuantity}</td>
+                  <td>{order.status}</td>
+                  <td>{order.paymentMethod}</td>
+                  <td>{order.createdAt ? new Date(order.createdAt).toLocaleString() : ""}</td>
+                  <td>{order.product?.price ? `EGP ${order.product.price}` : "N/A"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {/* Pagination */}
+          <div className="d-flex justify-content-center mt-4">
+            <MuiPagination
+              count={pagination.totalPages}
+              page={pagination.currentPage}
+              onChange={handlePageChange}
+              variant="outlined"
+              color="success"
+            />
+          </div>
         </div>
-    );
-}
+      )}
+    </div>
+  );
+};
+
+export default OrderHistory;

@@ -9,7 +9,7 @@ import Pagination from "./Pagination";
 import ProductCardApi from "./ProductCardApi";
 import LivePurchase from "./LivePurchase";
 import RecommendedProducts from '../components/Recommendations/RecommendedProducts';
-import { Button, Pagination as MuiPagination } from "@mui/material";
+import { Button, Pagination as MuiPagination, Skeleton } from "@mui/material";
 /**
  * HomePage Component
  * Main landing page displaying featured products, categories, and live purchases
@@ -67,7 +67,8 @@ export default function HomePage() {
         fetchFeaturedProducts();
         // Update API call with products per page
         axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/regular?page=${currentPage}&limit=${PRODUCTS_PER_PAGE}`, {
-            headers: {
+            headers:
+            {
                 'Content-Type': 'application/json',
             }
         })
@@ -86,8 +87,8 @@ export default function HomePage() {
             })
                 .then(response => {
 
-                        setNearbyPurchases(response.data.nearbyProducts);
-                        console.log(response.data.nearbyProducts);
+                    setNearbyPurchases(response.data.nearbyProducts);
+                    console.log(response.data.nearbyProducts);
 
                 })
                 .catch(error => {
@@ -114,6 +115,16 @@ export default function HomePage() {
 
     // Update total pages calculation to use PRODUCTS_PER_PAGE
     const totalPages = Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
+
+    // Loading skeleton component
+    const ProductSkeleton = () => (
+        <div style={{ width: '250px' }}>
+            <Skeleton variant="rectangular" height={200} sx={{ borderRadius: 2 }} />
+            <Skeleton variant="text" sx={{ mt: 1, fontSize: '1.5rem' }} />
+            <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+            <Skeleton variant="rectangular" height={40} sx={{ mt: 2, borderRadius: 1 }} />
+        </div>
+    );
 
     return (
         <>
@@ -147,22 +158,28 @@ export default function HomePage() {
 
                 <h1 style={{ paddingLeft: '20px', paddingTop: '50px' }}>Products</h1>
                 <div className="flex mt-3 product-list" style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-                    {products && products.map((product) => (
-                        product && (
-                            <ProductCardApi
-                                key={product?._id || 'temp-key'}
-                                _id={product?._id}
-                                name={product?.name || 'Unnamed Product'}
-                                description={product?.description || 'No description available'}
-                                price={product?.price || 0}
-                                quantity={product?.quantity || 0}
-                                image={getImageUrl(product?.imageSource)}
-                            />
-                        )
-                    ))}
-                </div>
-                <MuiPagination
-                    count={totalPages}
+                    {isLoading ? (
+                        [...Array(PRODUCTS_PER_PAGE)].map((_, index) => (
+                            <ProductSkeleton key={index} />
+                        ))
+                    ) : (
+        products.map((product) => (
+            product && (
+                <ProductCardApi
+                    key={product?._id || 'temp-key'}
+                    _id={product?._id}
+                    name={product?.name || 'Unnamed Product'}
+                    description={product?.description || 'No description available'}
+                    price={product?.price || 0}
+                    quantity={product?.quantity || 0}
+                    image={getImageUrl(product?.imageSource)}
+                />
+            )
+        ))
+    )}
+</div>
+<MuiPagination
+    count={totalPages}
                     page={currentPage}
                     onChange={(_, value) => handlePageChange(value)}
                     variant="outlined"
@@ -207,7 +224,7 @@ export default function HomePage() {
                 </div>
                 <div className='mt-5 category-section'>
                     <h2>Categories</h2>
-                    <div className="category-buttons" style={{ display: 'flex',flexDirection:"row", gap: '10px' }}>
+                    <div className="category-buttons" style={{ display: 'flex', flexDirection: "row", gap: '10px' }}>
                         {categories.map(category => (
                             <Button
                                 key={category._id}

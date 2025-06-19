@@ -10,8 +10,6 @@ import CreateAdmin from './CreateAdmin'
 import HandleCustomer from './HandleCustomer'
 import HandleSuppliers from './HandleSuppliers'
 import HandleProducts from './HandleProducts'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 const SidebarLayout = () => {
     const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -70,15 +68,6 @@ const SidebarLayout = () => {
                             <Link to="categories"><i className="bi bi-grid-3x3-gap-fill me-2"></i> Available Categories</Link>
                             <Link to="create-admin"><i className="bi bi-person-plus-fill me-2"></i> Create Admin </Link>
                             <Link to="handle-products"><i className="bi bi-boxes me-2"></i> Handle Products </Link>
-                            <button
-                                className="nav-link d-flex align-items-center gap-2 "
-                                onClick={() => {
-                                    localStorage.removeItem("AdminToken");
-                                    window.location.href = "/Login";
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faSignOutAlt} /> Log-out
-                            </button>
                         </div>
                     </div>
 

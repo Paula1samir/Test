@@ -106,7 +106,7 @@ export default function HandleCustomer() {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
-        />
+        />zz
       </div>
     </div>
   );
