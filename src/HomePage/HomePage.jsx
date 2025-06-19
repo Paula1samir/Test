@@ -9,7 +9,7 @@ import Pagination from "./Pagination";
 import ProductCardApi from "./ProductCardApi";
 import LivePurchase from "./LivePurchase";
 import RecommendedProducts from '../components/Recommendations/RecommendedProducts';
-import { Button } from "@mui/material";
+import { Button, Pagination as MuiPagination } from "@mui/material";
 /**
  * HomePage Component
  * Main landing page displaying featured products, categories, and live purchases
@@ -161,11 +161,13 @@ export default function HomePage() {
                         )
                     ))}
                 </div>
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={handlePageChange}
-                    style={{ textAlign: 'center' }}
+                <MuiPagination
+                    count={totalPages}
+                    page={currentPage}
+                    onChange={(_, value) => handlePageChange(value)}
+                    variant="outlined"
+                    color="success"
+                    sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}
                 />
                 {/* Live Purchases Section - Moved to top */}
                 <div className="live-purchases-wrapper">
