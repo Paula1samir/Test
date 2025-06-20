@@ -41,21 +41,19 @@ const OrderHistory = () => {
     const getStatusColor = (status) => {
         switch (status?.toLowerCase()) {
             case 'pending':
-                return { color: 'warning', variant: 'filled' };
+                return { color: 'warning', variant: 'outlined' };
             case 'confirmed':
-                return { color: 'info', variant: 'filled' };
+                return { color: 'info', variant: 'outlined' };
             case 'shipped':
-                return { color: 'primary', variant: 'filled' };
+                return { color: 'primary', variant: 'outlined' };
             case 'delivered':
                 return { color: 'success', variant: 'filled' };
             case 'cancelled':
                 return { color: 'error', variant: 'filled' };
             case 'refunded':
-                return { color: 'secondary', variant: 'filled' };
-            case 'waiting payment':
-                return { color: 'info', variant: 'filled' };
+                return { color: 'secondary', variant: 'outlined' };
             default:
-                return { color: 'default', variant: 'filled' };
+                return { color: 'default', variant: 'outlined' };
         }
     };
 
@@ -200,12 +198,6 @@ const OrderHistory = () => {
                         </thead>
                         <tbody>
                             {orders.map((order, idx) => {
-                                // Find the purchaseId for the pending status for this product
-                                let purchaseId = null;
-                                if (order.status === "Pending" && order.purchase?._id) {
-                                    purchaseId = order.purchase._id;
-                                }
-                                
                                 const statusConfig = getStatusColor(order.status);
                                 
                                 return (
@@ -247,18 +239,6 @@ const OrderHistory = () => {
                                                     {cancelLoadingId === order._id ? "Cancelling..." : "Cancel Purchase"}
                                                 </Button>
                                             )}
-                                            {order.status === "Waiting payment" && (
-                                                <Button
-                                                    variant="outlined"
-                                                    color="error"
-                                                    size="small"
-                                                    disabled={cancelLoadingId === order._id}
-                                                    onClick={() => handleCancelClick(order._id, order.product?.name || "this product")}
-                                                >
-                                                    {cancelLoadingId === order._id ? "Cancelling..." : "Cancel Purchase"}
-                                                </Button>
-                                            )}
-
                                         </td>
                                     </tr>
                                 );

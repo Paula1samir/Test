@@ -3,11 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./signUp.css";
 import axios from "axios";
-import LocationPicker from "../LocationApi/LocationPicker";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import LocationPicker from "./LocationApi/LocationPicker";
+import { Routes, Route } from "react-router-dom";
 import Login from "./Login";
-import Alert from "../Alert.jsx";
-import CustomDateInput from '../DatePicker.jsx'; // adjust path if needed
+import Alert from "./Alert.jsx";
+import CustomDateInput from '../components/DatePicker'; // adjust path if needed
 
 
 const SignUp = () => {
@@ -16,7 +16,6 @@ const SignUp = () => {
 
   const userRef = useRef();
   const errRef = useRef();
-  const navigate = useNavigate();
 
   // Form state variables
   const [firstName, setUserFirstName] = useState("");
@@ -133,7 +132,6 @@ const SignUp = () => {
 
       const customerData = payload;
       localStorage.setItem("CustomerData", JSON.stringify(customerData));
-      navigate("/login");
     } catch (err) {
       if (err.response?.status === 409) {
         setErrMsg("Email already exists. Please use a different email or try logging in.");
@@ -416,7 +414,7 @@ const SignUp = () => {
                               <strong>Items You Cannot Return</strong>
                               <ul>
                                 <li>Food or other items that spoil.</li>
-                                <li>Items marked as "final sale" or "no returns."</li>
+                                <li>Items marked as “final sale” or “no returns.”</li>
                               </ul>
                               <strong>Refunds</strong>
                               <ul>

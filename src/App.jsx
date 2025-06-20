@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route } from 'react-router-dom';
 
-import Login from "../src/components/verification/Login.jsx";
-import Signup from "./components/verification/SignUp";
+import Login from "../src/components/Login.jsx";
+import Signup from "./components/SignUp";
 import SignUpAdmin from "./components/Admin/SignUpAdmin";
 import ForgetPassword from "./components/ForgetPass/Forget-Password";
 import SupSignUp from "./components/supplier/SupSignUp";
@@ -16,7 +16,7 @@ import EditProduct from "./components/supplier/EditProduct.jsx";
 import LivePurchase from "./components/supplier/LivePurchase.jsx";
 import OrderStatus from "./components/supplier/OrderStatus.jsx";
 import Categories from "./components/Categories/Categories.jsx";
-import UserProfile from "./components/Customer/UserProfile.jsx";
+import CustomerProfile from "./components/Customer/CustomerProfile.jsx";
 import OrderHistory from "./components/Customer/OrderHistory.jsx";
 
 import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
@@ -61,7 +61,7 @@ function App() {
         <Route path="/Forget-Password" element={<ForgetPassword />} />
         <Route path="/SignUpAdmin" element={<SignUpAdmin />} />
         <Route path="/ProductDetails/:name" element={<ProductDetails />} />
-        <Route path="/UserProfile/*" element={<UserProfile />}>
+        <Route path="/CustomerProfile/*" element={<CustomerProfile />}>
         <Route path="orderhistory" element={<OrderHistory />} />
         </Route>
         <Route path="/SupSignUp" element={<SupSignUp />} />

@@ -1,5 +1,5 @@
 import React from 'react'
-import "../verification/signUp.css";
+import "../signUp.css";
 import { Routes, Route, Link } from "react-router-dom";
 // import Login from "./Login";
 import axios from "axios";
