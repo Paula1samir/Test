@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import './CustomerProfile.css';
 import axios from 'axios';
 import OrderHistory from './OrderHistory';
-import CustomDateInput from '../DatePicker';
-import LocationPicker from "../LocationApi/LocationPicker";
+// import CustomDateInput from '../DatePicker';
+// import LocationPicker from "../LocationApi/LocationPicker";
 import { format } from 'date-fns';
 
 
