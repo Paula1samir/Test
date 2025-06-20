@@ -16,7 +16,7 @@ import EditProduct from "./components/supplier/EditProduct.jsx";
 import LivePurchase from "./components/supplier/LivePurchase.jsx";
 import OrderStatus from "./components/supplier/OrderStatus.jsx";
 import Categories from "./components/Categories/Categories.jsx";
-import CustomerProfile from "./components/Customer/CustomerProfile.jsx";
+import UserProfile from "./components/Customer/UserProfile.jsx";
 import OrderHistory from "./components/Customer/OrderHistory.jsx";
 
 import AdminDashboard from "./components/Admin/AdminDashboard.jsx";
@@ -61,7 +61,7 @@ function App() {
         <Route path="/Forget-Password" element={<ForgetPassword />} />
         <Route path="/SignUpAdmin" element={<SignUpAdmin />} />
         <Route path="/ProductDetails/:name" element={<ProductDetails />} />
-        <Route path="/CustomerProfile/*" element={<CustomerProfile />}>
+        <Route path="/UserProfile/*" element={<UserProfile />}>
         <Route path="orderhistory" element={<OrderHistory />} />
         </Route>
         <Route path="/SupSignUp" element={<SupSignUp />} />

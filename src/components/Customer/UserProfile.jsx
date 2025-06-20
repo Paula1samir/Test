@@ -7,7 +7,7 @@ import LocationPicker from "../LocationApi/LocationPicker.jsx";
 import { format } from 'date-fns';
 
 
-export default function CustomerProfile() {
+export default function UserProfile() {
   const [msg, setMsg] = useState("");
   const [msgType, setMsgType] = useState("");
   const [value1, setValue1] = useState(null); // For latitude
