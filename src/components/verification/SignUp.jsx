@@ -3,11 +3,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./signUp.css";
 import axios from "axios";
-import LocationPicker from "./LocationApi/LocationPicker";
+import LocationPicker from "../LocationApi/LocationPicker";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Login from "./Login";
-import Alert from "./Alert.jsx";
-import CustomDateInput from '../components/DatePicker'; // adjust path if needed
+import Alert from "../Alert.jsx";
+import CustomDateInput from '../DatePicker.jsx'; // adjust path if needed
 
 
 const SignUp = () => {

@@ -1,7 +1,7 @@
 import React, { useState , useRef } from "react";
 import "./ForgetPassword.css";
-import Login from "../Login";
-import SignUp from "../SignUp";
+import Login from "../verification/Login";
+import SignUp from "../verification/SignUp";
 import axios from "axios";
 import ResetPass from "../OTP/ResetPass";
 import Alert from "../Alert";

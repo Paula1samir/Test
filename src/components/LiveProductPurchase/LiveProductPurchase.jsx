@@ -110,7 +110,7 @@ export default function LiveProductPurchase() {
                 <div className="col-md-6">
                     <div className="product-images text-center">
                         <img
-                            style={{ width: "250px", height: "250px", objectFit: "cover" }}
+                            style={{ width: "250px", height: "250px", objectFit: "contain" }}
                             src={mainImage}
                             alt={product.name}
                         />

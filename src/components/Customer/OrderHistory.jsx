@@ -247,6 +247,18 @@ const OrderHistory = () => {
                                                     {cancelLoadingId === order._id ? "Cancelling..." : "Cancel Purchase"}
                                                 </Button>
                                             )}
+                                            {order.status === "Waiting payment" && (
+                                                <Button
+                                                    variant="outlined"
+                                                    color="error"
+                                                    size="small"
+                                                    disabled={cancelLoadingId === order._id}
+                                                    onClick={() => handleCancelClick(order._id, order.product?.name || "this product")}
+                                                >
+                                                    {cancelLoadingId === order._id ? "Cancelling..." : "Cancel Purchase"}
+                                                </Button>
+                                            )}
+
                                         </td>
                                     </tr>
                                 );

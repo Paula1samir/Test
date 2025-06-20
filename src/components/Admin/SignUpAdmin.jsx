@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import "../signUp.css";
+import "../verification/signUp.css";
 import { Routes, Route, Link } from "react-router-dom";
 // import Login from "./Login";
 import axios from "axios";

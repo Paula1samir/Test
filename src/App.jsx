@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route } from 'react-router-dom';
 
-import Login from "../src/components/Login.jsx";
-import Signup from "./components/SignUp";
+import Login from "../src/components/verification/Login.jsx";
+import Signup from "./components/verification/SignUp";
 import SignUpAdmin from "./components/Admin/SignUpAdmin";
 import ForgetPassword from "./components/ForgetPass/Forget-Password";
 import SupSignUp from "./components/supplier/SupSignUp";
