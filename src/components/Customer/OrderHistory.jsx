@@ -41,19 +41,21 @@ const OrderHistory = () => {
     const getStatusColor = (status) => {
         switch (status?.toLowerCase()) {
             case 'pending':
-                return { color: 'warning', variant: 'outlined' };
+                return { color: 'warning', variant: 'filled' };
             case 'confirmed':
-                return { color: 'info', variant: 'outlined' };
+                return { color: 'info', variant: 'filled' };
             case 'shipped':
-                return { color: 'primary', variant: 'outlined' };
+                return { color: 'primary', variant: 'filled' };
             case 'delivered':
                 return { color: 'success', variant: 'filled' };
             case 'cancelled':
                 return { color: 'error', variant: 'filled' };
             case 'refunded':
-                return { color: 'secondary', variant: 'outlined' };
+                return { color: 'secondary', variant: 'filled' };
+            case 'waiting payment':
+                return { color: 'info', variant: 'filled' };
             default:
-                return { color: 'default', variant: 'outlined' };
+                return { color: 'default', variant: 'filled' };
         }
     };
 

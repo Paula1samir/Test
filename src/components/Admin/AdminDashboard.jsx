@@ -56,8 +56,7 @@ const SidebarLayout = () => {
                     )}
                     <div className={`bg-light  ${sidebarVisible ? "d-block" : "d-none"} d-md-block col-md-2`}
                         style={{ position: sidebarVisible ? "fixed" : "", zIndex: 1020 ,    padding: "9px",
-                            width: "max-content" }}
-                    >
+                            width: "max-content" }}>
                         <img src={Logo} className="mb-4 mt-5 img-fluid" alt="logo" />
                         <div className="col-md-2 sidebar  flex-column position-relative w-auto" style={{ width: "-webkit-fill-available" }}>
                             <Link to="reports" className=""><i className="bi bi-grid-fill me-2"></i> Reports </Link>
