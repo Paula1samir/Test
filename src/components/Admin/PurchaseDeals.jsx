@@ -47,7 +47,7 @@ export default function PurchaseDeals() {
   );
 
   return (
-    <div className="purchase-deals-container" style={{ padding: 24 }}>
+    <div className="purchase-deals-container" >
       <h4 style={{ marginBottom: 24, fontWeight: 600 }}>Customer Purchases</h4>
       <div className="purchase-cards-grid">
         {isLoading
@@ -65,7 +65,7 @@ export default function PurchaseDeals() {
               else statusClass += " badge-purchased";
 
               return (
-                <div className="purchase-card" key={purchase._id} style={{ width: 340, minWidth: 340 }}>
+                <div className="purchase-card" key={purchase._id} style={{ width: 430, minWidth: 340 }}>
                   <div className="purchase-card-header">
                     <img
                       src={product.imageSource?.[0]}
@@ -77,7 +77,8 @@ export default function PurchaseDeals() {
                       <div className="purchase-card-title">{product.name}</div>
                       <div className="purchase-card-customer">
                         {customer.firstName} {customer.lastName}
-                        <br /> &bull; {customer.email}
+                        <br /> 
+                        <span className='purchase-card-customer-email'>&bull; {customer.email}</span>
                       </div>
                     </div>
                     <span className={statusClass}>{status}</span>

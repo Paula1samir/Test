@@ -122,7 +122,7 @@ export default function ProductDetails() {
                 setErrMsg(err.response?.data?.message || "An error occurred while starting the purchase.");
                 setTimeout(() => {
                     navigate(`/live-product/${product._id}`);
-                }, 7000);
+                }, 5000);
             } else {
                 setErrMsg(err.response?.data?.message || "An error occurred while starting the purchase.");
             }

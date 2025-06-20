@@ -32,6 +32,8 @@ import Error404 from './pages/Error404/Error404';
 import Breadcrumb from './components/common/Breadcrumb/Breadcrumb';
 import Loader from './components/common/Loader/Loader';
 
+import AboutUs from './components/AboutUs/AboutUs';
+
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -65,7 +67,7 @@ function App() {
         <Route path="/SupSignUp" element={<SupSignUp />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/live-product/:id" element={<LiveProductPurchase />} />
-
+        <Route path="/about-us" element={<AboutUs />} />
         {/* Dashboard for Supplier with nested routes */}
         <Route path="/SuppDashboard/*" element={<SuppDashboard />}>
           <Route path="add" element={<AddProduct />} />
