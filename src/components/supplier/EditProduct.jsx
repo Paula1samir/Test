@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Snackbar, Alert } from '@mui/material';
 import './SuppDashboard.css';
 
 export default function EditProduct() {
     const PRODUCTS_PER_PAGE = 8;
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const navigate = useNavigate();
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
 
+    const navigate = useNavigate();
+    const location = useLocation();
     const SupplierToken = localStorage.getItem("SupplierToken");
+
     useEffect(() => {
         axios.get('https://bulkify-back-end.vercel.app/api/v1/products?limit=10000', {
             headers: {
@@ -25,21 +29,32 @@ export default function EditProduct() {
             });
     }, []);
 
+    useEffect(() => {
+        if (location.state?.updated) {
+            setSnackbarOpen(true);
+            // clear navigation state
+            window.history.replaceState({}, document.title);
+        }
+    }, [location.state]);
+
     const handleEdit = (product) => {
         const encodedName = encodeURIComponent(product.name);
         navigate(`/SuppDashboard/edit-product/${encodedName}`, { state: { product } });
     };
 
-    // Pagination logic
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
     const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
     const paginatedProducts = products.slice(
         (currentPage - 1) * PRODUCTS_PER_PAGE,
         currentPage * PRODUCTS_PER_PAGE
     );
-
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
 
     return (
         <div className="">
@@ -91,7 +106,7 @@ export default function EditProduct() {
                                     </tbody>
                                 </table>
                             </div>
-                            {/* Pagination UI */}
+
                             <div className="d-flex justify-content-center mt-3">
                                 {Array.from({ length: totalPages }, (_, idx) => (
                                     <button
@@ -107,6 +122,16 @@ export default function EditProduct() {
                     </div>
                 </div>
             </div>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                    Product updated successfully
+                </Alert>
+            </Snackbar>
         </div>
     );
 }
