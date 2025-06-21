@@ -11,3 +11,6 @@
 .table th {
     background-color: #f8f9fa;
 }
+.content{
+    min-height: 100vh;
+}

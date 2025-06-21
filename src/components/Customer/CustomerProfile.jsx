@@ -116,15 +116,8 @@ export default function CustomerProfile() {
           <i className="fas fa-layer-group"></i>
           Dashboard
         </button>
-        <button
-          className="nav-link"
-          onClick={() => {
-            localStorage.removeItem("CustomerToken");
-            window.location.href = "/Login";
-          }}
-        >
-          <i className="fas fa-sign-out-alt"></i>
-          Log-out
+        <button className="nav-link" onClick={() => setActiveView("orderHistory")}>
+          Order History
         </button>
       </div>
 

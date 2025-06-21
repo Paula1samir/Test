@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Pagination from '../../HomePage/Pagination';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { Pagination as MuiPagination, Skeleton } from "@mui/material";
+import './HandleProducts.css';
 
 const HandleProducts = () => {
   const [products, setProducts] = useState([]);
@@ -22,7 +23,6 @@ const HandleProducts = () => {
         setLoading(false);
         return;
       }
-
       try {
         setLoading(true);
         const response = await axios.get(
@@ -34,7 +34,7 @@ const HandleProducts = () => {
             }
           }
         );
-        
+
         if (response.data && response.data.products) {
           setProducts(response.data.products);
           setTotalProducts(response.data.total || 0);
@@ -67,17 +67,17 @@ const HandleProducts = () => {
   }, []);
 
   const handleDelete = async (productId) => {
-    if (!window.confirm('Are you sure you want to delete this product?')) {
+    // Show confirmation dialog before deleting
+    const confirmed = window.confirm('Are you sure you want to delete this product?');
+    if (!confirmed) {
       return;
     }
-
     try {
       const adminToken = localStorage.getItem('AdminToken');
       if (!adminToken) {
         setError('Admin authentication required');
         return;
       }
-
       await axios.delete(
         `https://bulkify-back-end.vercel.app/api/v1/products/admin/${productId}`,
         {
@@ -86,8 +86,6 @@ const HandleProducts = () => {
           }
         }
       );
-
-      // Update the products list after successful deletion
       setProducts(products.filter(product => product._id !== productId));
       setTotalProducts(prev => prev - 1);
     } catch (err) {
@@ -118,35 +116,35 @@ const HandleProducts = () => {
     e.preventDefault();
     const adminToken = localStorage.getItem('AdminToken');
     if (!adminToken || !editingProduct || !editingProduct._id) {
-        setError('Invalid product data or authentication');
-        return;
+      setError('Invalid product data or authentication');
+      return;
     }
 
     try {
-        const productData = {
-            name: editingProduct.name || '',
-            description: editingProduct.description || '',
-            price: Number(editingProduct.price) || 0,
-            quantity: Number(editingProduct.quantity) || 0,
-            bulkThreshold: Number(editingProduct.bulkThreshold) || 0,
-            categoryId: editingProduct.categoryId === 'uncategorized' ? 
-                null : 
-                (editingProduct.categoryId?._id || editingProduct.categoryId || null)
-        };
+      const productData = {
+        name: editingProduct.name || '',
+        description: editingProduct.description || '',
+        price: Number(editingProduct.price) || 0,
+        quantity: Number(editingProduct.quantity) || 0,
+        bulkThreshold: Number(editingProduct.bulkThreshold) || 0,
+        categoryId: editingProduct.categoryId === 'uncategorized' ?
+          null :
+          (editingProduct.categoryId?._id || editingProduct.categoryId || null)
+      };
 
-        const response = await axios.put(
-            `https://bulkify-back-end.vercel.app/api/v1/products/admin/${editingProduct._id}`,
-            productData,
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'token': adminToken
-                }
-            }
-        );
+      const response = await axios.put(
+        `https://bulkify-back-end.vercel.app/api/v1/products/admin/${editingProduct._id}`,
+        productData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'token': adminToken
+          }
+        }
+      );
 
       if (response.data && response.data.product) {
-        setProducts(products.map(p => 
+        setProducts(products.map(p =>
           p._id === editingProduct._id ? response.data.product : p
         ));
         setShowEditModal(false);
@@ -155,9 +153,9 @@ const HandleProducts = () => {
         setTimeout(() => setSuccessMsg(null), 3000); // Hide after 3 seconds
       }
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 
-                           err.response?.data?.err?.[0] || 
-                           'Error updating product';
+      const errorMessage = err.response?.data?.message ||
+        err.response?.data?.err?.[0] ||
+        'Error updating product';
       setError(errorMessage);
       console.error('Error updating product:', err);
     }
@@ -165,15 +163,15 @@ const HandleProducts = () => {
 
   const getImageUrl = (imageSource) => {
     if (!imageSource) return ''; // Return empty string if no image source
-    
+
     // If imageSource is already a string URL, return it
     if (typeof imageSource === 'string') return imageSource;
-    
+
     // If imageSource is an array, take the first image
     if (Array.isArray(imageSource)) {
       return imageSource[0] || '';
     }
-    
+
     return '';
   };
 
@@ -181,17 +179,49 @@ const HandleProducts = () => {
   const totalPages = Math.ceil(totalProducts / 10); // Assuming 10 products per page
 
   // Handle page change
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
   };
 
-  if (loading) return <div>Loading...</div>;
+  // Loading skeleton component
+  const ProductSkeleton = () => (
+    <div className="product-item" style={{
+      border: '1px solid #ddd',
+      borderRadius: '8px',
+      padding: '15px',
+      backgroundColor: 'white'
+    }}>
+      <Skeleton variant="rectangular" height={100} sx={{ borderRadius: 1 }} />
+      <Skeleton variant="text" sx={{ mt: 1, fontSize: '1.5rem' }} />
+      <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+      <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+        <Skeleton variant="rectangular" height={35} width="50%" />
+        <Skeleton variant="rectangular" height={35} width="50%" />
+      </div>
+    </div>
+  );
+
+  if (loading) {
+    return (
+      <div className="products-list" style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+        gap: '20px',
+        padding: '20px'
+      }}>
+        {[...Array(8)].map((_, index) => (
+          <ProductSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
+
   if (error) return <div className="error-message">{error}</div>;
 
   return (
     <div className="handle-products">
       {successMsg && (
-        <div 
+        <div
           className="alert alert-success text-center"
           style={{
             position: 'fixed',
@@ -210,8 +240,8 @@ const HandleProducts = () => {
         </div>
       )}
       <h2>Manage Products</h2>
-      <div className="products-list" style={{ 
-        display: 'grid', 
+      <div className="products-list" style={{
+        display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
         gap: '20px',
         padding: '20px'
@@ -228,16 +258,16 @@ const HandleProducts = () => {
                 {product && product.imageSource && (
                   <div className="product-image" style={{
                     width: '100%',
-                    height: '200px',
+                    height: '100px',
                     marginBottom: '10px'
                   }}>
-                    <img 
+                    <img
                       src={getImageUrl(product.imageSource)}
                       alt={product?.name || 'Product'}
                       style={{
                         width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
+                        height: '100px',
+                        objectFit: 'contain',
                         borderRadius: '4px'
                       }}
                       onError={(e) => {
@@ -247,17 +277,17 @@ const HandleProducts = () => {
                     />
                   </div>
                 )}
-                <h3 style={{ margin: '10px 0' }}>{product?.name || 'Unnamed Product'}</h3>
+                <h5 style={{ margin: '10px 0' }}>{product?.name || 'Unnamed Product'}</h5>
                 <p style={{ margin: '5px 0' }}>Price: ${product?.price || '0.00'}</p>
               </div>
-              <div className="product-actions" style={{ marginTop: '10px' }}>
-                <button 
+              <div className="product-actions" style={{ marginTop: '10px', display: 'flex', gap: '8px' }}>
+                <button
                   onClick={() => handleEdit(product._id)}
-                  className="edit-btn mb-2"
+                  className="edit-btn "
                   style={{
                     backgroundColor: '#198754',
                     color: 'white',
-                    padding: '8px 16px',
+                    padding: '5px 16px',
                     border: 'none',
                     borderRadius: '4px',
                     cursor: 'pointer',
@@ -266,13 +296,12 @@ const HandleProducts = () => {
                 >
                   Edit Product
                 </button>
-                <button 
+                <button
                   onClick={() => product?._id && handleDelete(product._id)}
                   className="delete-btn"
                   style={{
                     backgroundColor: '#ff4444',
                     color: 'white',
-                    padding: '8px 16px',
                     border: 'none',
                     borderRadius: '4px',
                     cursor: 'pointer',
@@ -355,13 +384,15 @@ const HandleProducts = () => {
           )
         ))}
       </div>
-      
+
       {/* Add Pagination */}
       <div className="mt-4 d-flex justify-content-center">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
+        <MuiPagination
+          count={totalPages}
+          page={currentPage}
+          onChange={handlePageChange}
+          variant="outlined"
+          color="success"
         />
       </div>
     </div>

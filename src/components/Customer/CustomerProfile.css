@@ -1,9 +1,9 @@
-.container-fluid {
+
+.container-fluid{
   display: flex;
   flex-direction: row;
-
+  
 }
-
 .sidebar .nav-link {
   padding: 12px 20px;
   color: #000;
@@ -39,8 +39,7 @@
   margin-bottom: 20px;
 }
 
-.save-btn,
-.change-btn {
+.save-btn, .change-btn {
   background-color: #61AE45;
   color: white;
   border: none;
@@ -63,7 +62,7 @@
   padding: 1rem 2rem;
   min-width: 180px;
   text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
 }
 
 .bg-light-blue {
@@ -109,9 +108,8 @@
     flex-direction: column;
     align-items: center;
   }
-
-  .container-fluid {
+  .container-fluid{
     display: block !important;
-
+    
   }
 }

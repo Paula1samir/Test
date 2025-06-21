@@ -53,7 +53,7 @@ function Footer() {
                         <h3>Quick links</h3>
                         <ul>
                             <li><a href="mailto:admin@bulkify.com">Customer Help</a></li>
-                            <li><a href="#">About Us</a></li>
+                            <li><a href="/about-us">About Us</a></li>
                         </ul>
                     </div>
 

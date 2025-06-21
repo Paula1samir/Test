@@ -10,8 +10,6 @@ import CreateAdmin from './CreateAdmin'
 import HandleCustomer from './HandleCustomer'
 import HandleSuppliers from './HandleSuppliers'
 import HandleProducts from './HandleProducts'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 const SidebarLayout = () => {
     const [sidebarVisible, setSidebarVisible] = useState(false);
@@ -63,22 +61,13 @@ const SidebarLayout = () => {
                         <img src={Logo} className="mb-4 mt-5 img-fluid" alt="logo" />
                         <div className="col-md-2 sidebar  flex-column position-relative w-auto" style={{ width: "-webkit-fill-available" }}>
                             <Link to="reports" className=""><i className="bi bi-grid-fill me-2"></i> Reports </Link>
-                            <Link to="handle-suppliers"><i className="bi bi-person-lines-fill me-2"></i> Edit Supplier</Link>
+                            <Link to="handle-products"><i className="bi bi-boxes me-2"></i> Handle Products </Link>
+                            <Link to="handle-suppliers"><i className="bi bi-person-lines-fill me-2"></i> Handle Supplier</Link>
+                            <Link to="handle-customer"><i className="bi bi-person-dash-fill me-2"></i> Handle Customer</Link>
                             <Link to="purchase-deals"><i className="bi bi-bag-check-fill me-2"></i> Purchase Deals</Link>
                             <Link to="product-requests"><i className="bi bi-box-seam me-2"></i> Product Requests</Link>
-                            <Link to="handle-customer"><i className="bi bi-person-dash-fill me-2"></i> Edit / delete Customer</Link>
                             <Link to="categories"><i className="bi bi-grid-3x3-gap-fill me-2"></i> Available Categories</Link>
                             <Link to="create-admin"><i className="bi bi-person-plus-fill me-2"></i> Create Admin </Link>
-                            <Link to="handle-products"><i className="bi bi-boxes me-2"></i> Handle Products </Link>
-                            <button
-                                className="nav-link d-flex align-items-center gap-2 "
-                                onClick={() => {
-                                    localStorage.removeItem("AdminToken");
-                                    window.location.href = "/Login";
-                                }}
-                            >
-                                <FontAwesomeIcon icon={faSignOutAlt} /> Log-out
-                            </button>
                         </div>
                     </div>
 
