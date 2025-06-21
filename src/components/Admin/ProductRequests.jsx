@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Snackbar, Alert } from '@mui/material';
 
 export default function ProductRequests() {
     const [products, setProducts] = useState([]);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
     const AdminToken = localStorage.getItem("AdminToken");
 
     useEffect(() => {
@@ -28,22 +30,16 @@ export default function ProductRequests() {
                 { isApproved: true },
                 { headers: { "token": AdminToken } }
             );
-
-            // showApprovedModal();
-            fetchProducts(); // refresh the list after approval
+            setSnackbarOpen(true); // show MUI snackbar
+            fetchProducts();
         } catch (err) {
             console.error('Error approving product:', err);
         }
     };
 
-    // const showApprovedModal = () => {
-    //     const modal = new window.bootstrap.Modal(document.getElementById('approvedModal'));
-    //     modal.show();
-    // };
-
-    // const deleteRow = (index) => {
-    //     alert(`Deny product at index ${index}`);
-    // };
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
 
     return (
         <div style={{ width: "100%" }}>
@@ -86,10 +82,7 @@ export default function ProductRequests() {
                                         >
                                             Accept
                                         </button>
-                                        <button
-                                            className="btn btn-danger btn-sm"
-                                            // onClick={() => deleteRow(index)}
-                                        >
+                                        <button className="btn btn-danger btn-sm">
                                             Deny
                                         </button>
                                     </td>
@@ -100,22 +93,16 @@ export default function ProductRequests() {
                 </div>
             </div>
 
-            <div className="modal fade" id="approvedModal" tabIndex="-1" aria-hidden="true">
-                <div className="modal-dialog">
-                    <div className="modal-content p-4">
-                        <h5>APPROVED !</h5>
-                        <div className="modal-footer border-0">
-                            <button
-                                type="button"
-                                className="btn btn-success px-4"
-                                data-bs-dismiss="modal"
-                            >
-                                OK
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+                    Product accepted successfully
+                </Alert>
+            </Snackbar>
         </div>
     );
 }

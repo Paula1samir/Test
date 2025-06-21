@@ -11,7 +11,6 @@ import {
     faPlus, 
     faEdit, 
     faShoppingCart, 
-    faTruck, 
 } from '@fortawesome/free-solid-svg-icons';
 
 const SidebarLayout = () => {
@@ -68,12 +67,8 @@ const SidebarLayout = () => {
                         <Link to="live" className="nav-link d-flex align-items-center gap-2" onClick={() => setSidebarVisible(false)}>
                             <FontAwesomeIcon icon={faShoppingCart} /> Live Purchase Deals
                         </Link>
-                        <Link to="order" className="nav-link d-flex align-items-center gap-2" onClick={() => setSidebarVisible(false)}>
-                            <FontAwesomeIcon icon={faTruck} /> Order Status
-                        </Link>
                     </div>
                 </div>
-
                 {/* Main content */}
                 <div className="col py-3" style={{ width: "0" }}>
                     {/* Topbar */}
@@ -86,7 +81,6 @@ const SidebarLayout = () => {
                             </div>
                         </div>
                     </div>
-
                     {/* Dynamically rendered content via routing */}
                     <div className="p-3">
                         <Routes>
