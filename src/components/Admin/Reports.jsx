@@ -126,23 +126,7 @@ export default function Reports() {
                     </div>
                 </div>
             </div>
-            <div className="col-md-3" style={{ animationDelay: '0.3s' }}>
-                <div className="card-box">
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 className="stats-label">Total Sales</h6>
-                            <h4 className="stats-number">{stats.totalSales}</h4>
-                            <div className="stats-trend trend-down">
-                                <FontAwesomeIcon icon={faArrowDown} />
-                                <span>4.3% Down from yesterday</span>
-                            </div>
-                        </div>
-                        <div className="icon-box bg-light-success">
-                            <i className="bi bi-graph-up-arrow text-success fs-4"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
 
             <div className="col-md-3" style={{ animationDelay: '0.4s' }}>
                 <div className="card-box">
@@ -161,6 +145,26 @@ export default function Reports() {
                     </div>
                 </div>
             </div>
+
+            <div className="col-md-3" style={{ animationDelay: '0.3s' }}>
+                <div className="card-box">
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 className="stats-label">Total Sales</h6>
+                            <h4 className="stats-number">{stats.totalSales}</h4>
+                            <div className="stats-trend trend-down">
+                                <FontAwesomeIcon icon={faArrowDown} />
+                                <span>4.3% Down from yesterday</span>
+                            </div>
+                        </div>
+                        <div className="icon-box bg-light-success">
+                            <i className="bi bi-graph-up-arrow text-success fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
 
         </div>
     );

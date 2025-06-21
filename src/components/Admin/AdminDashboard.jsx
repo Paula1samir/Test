@@ -76,7 +76,6 @@ const SidebarLayout = () => {
                     <div className="col py-3 mx-3 prodReqContainer" style={{width: "0"}}>
                         {/* Topbar */}
                         <div className="d-flex flex-row flex-md-row justify-content-between align-items-center mb-3">
-                            <input type="text" className="form-control mb-2 mb-md-0 w-100 w-md-50" placeholder="Search" />
                             <div className="d-flex align-items-center ms-md-3">
                                 <div>
                                     <strong>{Admin ? Admin.fullName : "Loading..."}</strong><br />

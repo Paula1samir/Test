@@ -30,12 +30,12 @@ export default function EditProduct() {
     }, []);
 
     useEffect(() => {
-        if (location.state?.updated) {
+        const updated = location.state?.updated;
+        if (updated) {
             setSnackbarOpen(true);
-            // clear navigation state
-            window.history.replaceState({}, document.title);
+            navigate(location.pathname, { replace: true });
         }
-    }, [location.state]);
+    }, []);
 
     const handleEdit = (product) => {
         const encodedName = encodeURIComponent(product.name);
@@ -122,6 +122,7 @@ export default function EditProduct() {
                     </div>
                 </div>
             </div>
+
             <Snackbar
                 open={snackbarOpen}
                 autoHideDuration={3000}
