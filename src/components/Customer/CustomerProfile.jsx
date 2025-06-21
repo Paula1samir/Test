@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import './CustomerProfile.css';
 import axios from 'axios';
 import OrderHistory from './OrderHistory';
-// import CustomDateInput from '../DatePicker';
-// import LocationPicker from "../LocationApi/LocationPicker";
+import CustomDateInput from '../DatePicker';
+import LocationPicker from "../LocationApi/LocationPicker";
 import { format } from 'date-fns';
 
 
@@ -116,8 +116,15 @@ export default function CustomerProfile() {
           <i className="fas fa-layer-group"></i>
           Dashboard
         </button>
-        <button className="nav-link" onClick={() => setActiveView("orderHistory")}>
-          Order History
+        <button
+          className="nav-link"
+          onClick={() => {
+            localStorage.removeItem("CustomerToken");
+            window.location.href = "/Login";
+          }}
+        >
+          <i className="fas fa-sign-out-alt"></i>
+          Log-out
         </button>
       </div>
 

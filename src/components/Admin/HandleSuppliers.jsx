@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Pagination as MuiPagination } from "@mui/material";
 
 export default function HandleSuppliers() {
   const [suppliers, setSuppliers] = useState([]);
@@ -44,8 +43,8 @@ export default function HandleSuppliers() {
 
   const totalPages = Math.ceil(totalSuppliers / 5);
 
-  const handlePageChange = (_, value) => {
-    setCurrentPage(value);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -99,13 +98,23 @@ export default function HandleSuppliers() {
       </div>
 
       <div className="d-flex justify-content-center mt-4">
-        <MuiPagination
-          count={totalPages}
-          page={currentPage}
-          onChange={handlePageChange}
-          variant="outlined"
-          color="success"
-        />
+        {[...Array(totalPages)].map((_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handlePageChange(index + 1)}
+            style={{
+              margin: "0 5px",
+              padding: "8px 12px",
+              backgroundColor: currentPage === index + 1 ? "#4CAF50" : "#f2f2f2",
+              color: currentPage === index + 1 ? "#fff" : "#000",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
     </div>
   );

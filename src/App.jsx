@@ -32,8 +32,6 @@ import Error404 from './pages/Error404/Error404';
 import Breadcrumb from './components/common/Breadcrumb/Breadcrumb';
 import Loader from './components/common/Loader/Loader';
 
-import AboutUs from './components/AboutUs/AboutUs';
-
 function App() {
   const [loading, setLoading] = useState(true);
 
@@ -62,19 +60,19 @@ function App() {
         <Route path="/SignUpAdmin" element={<SignUpAdmin />} />
         <Route path="/ProductDetails/:name" element={<ProductDetails />} />
         <Route path="/CustomerProfile/*" element={<CustomerProfile />}>
-        <Route path="orderhistory" element={<OrderHistory />} />
+          <Route path="orderhistory" element={<OrderHistory />} />
         </Route>
         <Route path="/SupSignUp" element={<SupSignUp />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/live-product/:id" element={<LiveProductPurchase />} />
-        <Route path="/about-us" element={<AboutUs />} />
+
         {/* Dashboard for Supplier with nested routes */}
         <Route path="/SuppDashboard/*" element={<SuppDashboard />}>
           <Route path="add" element={<AddProduct />} />
           <Route path="edit" element={<EditProduct />} />
           <Route path="live" element={<LivePurchase />} />
           <Route path="order" element={<OrderStatus />} />
-          </Route>
+        </Route>
 
         {/* Dashboard for Admin with nested routes */}
         <Route path="/AdminDashboard/*" element={<AdminDashboard />}>
@@ -83,14 +81,14 @@ function App() {
           <Route path="reports" element={<Reports />} />
           <Route path="handle-customer" element={<HandleCustomer />} />
           <Route path="handle-suppliers" element={<HandleSuppliers />} />
-          <Route path="handle-products" element={<HandleProducts />}/>
+          <Route path="handle-products" element={<HandleProducts />} />
           <Route path="categories-page" element={<CategoriesPage />} />
         </Route>
 
         {/* Protected Routes */}
         <Route path="/supplier/*" element={<Error404 />} />
         <Route path="/admin/*" element={<Error404 />} />
-        
+
         {/* 404 catch-all */}
         <Route path="*" element={<Error404 />} />
       </Routes>

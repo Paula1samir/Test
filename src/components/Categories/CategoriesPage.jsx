@@ -3,7 +3,6 @@ import axios from 'axios';
 import ProductCardApi from '../../HomePage/ProductCardApi';
 import { useSearchParams } from 'react-router-dom';
 import './Categories.css';
-import { Pagination as MuiPagination } from "@mui/material";
 
 /**
  * CategoriesPage Component
@@ -23,8 +22,6 @@ const CategoriesPage = () => {
     const [priceRange, setPriceRange] = useState({ min: 0, max: 1000000 });
     const [tempPriceRange, setTempPriceRange] = useState({ min: 0, max: 10000000 });
     const [isFilterVisible, setIsFilterVisible] = useState(false);
-    const [page, setPage] = useState(1);
-    const perPage = 9;
 
     /**
      * Fetches all available categories from the API
@@ -117,10 +114,6 @@ const CategoriesPage = () => {
     if (isLoading) {
         return <div className="loading" style={{height:"100vh"}}>Loading products...</div>;
     }
-
-    // Pagination logic
-    const paginatedProducts = filteredProducts.slice((page - 1) * perPage, page * perPage);
-    const totalPages = Math.ceil(filteredProducts.length / perPage);
 
     // Component render
     return (
@@ -224,8 +217,8 @@ const CategoriesPage = () => {
                 )}
 
                 <div className="products-grid">
-                    {paginatedProducts.length > 0 ? (
-                        paginatedProducts.map(product => (
+                    {filteredProducts.length > 0 ? (
+                        filteredProducts.map(product => (
                             <ProductCardApi
                                 key={product._id}
                                 _id={product._id}  // Add this line to pass the ID
@@ -243,15 +236,6 @@ const CategoriesPage = () => {
                     )}
                 </div>
             </div>
-                <div className="d-flex justify-content-center m-5">
-                    <MuiPagination
-                        count={totalPages}
-                        page={page}
-                        onChange={(_, value) => setPage(value)}
-                        variant="outlined"
-                        color="success"
-                    />
-                </div>
         </div>
     );
 
