@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Add useNavigate import
 import './HomePage.css';
 import ProductCard from './ProductCard';
@@ -45,32 +45,46 @@ export default function HomePage() {
         } catch (err) {
             console.error("Failed to fetch categories", err);
         }
-    };
-
-    /**
+    };    /**
      * Fetches featured products from the API
      */
-    const fetchFeaturedProducts = async () => {
+    const fetchFeaturedProducts = useCallback(async () => {
         try {
-            const response = await axios.get("https://bulkify-back-end.vercel.app/api/v1/products/regular?limit=5");
+            const headers = {
+                'Content-Type': 'application/json',
+            };
+            
+            // Add token to headers if available
+            if (CustomerToken) {
+                headers.token = CustomerToken;
+            }
+
+            const response = await axios.get("https://bulkify-back-end.vercel.app/api/v1/products/regular?limit=5", {
+                headers
+            });
             setFeaturedProducts(response.data.products || []);
         } catch (error) {
             console.error("Error fetching featured products:", error);
         }
-    };
+    }, [CustomerToken]);
 
     /**
      * Fetches initial data: products, categories, and nearby purchases
      */
     useEffect(() => {
         fetchCategories();
-        fetchFeaturedProducts();
-        // Update API call with products per page
+        fetchFeaturedProducts();        // Update API call with products per page
+        const headers = {
+            'Content-Type': 'application/json',
+        };
+        
+        // Add token to headers if available
+        if (CustomerToken) {
+            headers.token = CustomerToken;
+        }
+
         axios.get(`https://bulkify-back-end.vercel.app/api/v1/products/regular?page=${currentPage}&limit=${PRODUCTS_PER_PAGE}`, {
-            headers:
-            {
-                'Content-Type': 'application/json',
-            }
+            headers
         })
             .then(response => {
                 setProducts(response.data.products || []);
@@ -101,7 +115,7 @@ export default function HomePage() {
             console.log('No customer token found');
             setIsLoading(false);
         }
-    }, [currentPage, CustomerToken]);
+    }, [currentPage, CustomerToken, fetchFeaturedProducts]);
     /**
      * Updates current page for pagination
      */
@@ -115,7 +129,7 @@ export default function HomePage() {
 
     // Update total pages calculation to use PRODUCTS_PER_PAGE
     const totalPages = Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
-
+    
     // Loading skeleton component
     const ProductSkeleton = () => (
         <div style={{ width: '250px' }}>

@@ -13,7 +13,7 @@
 }
 
 .sidebar .nav-link.active {
-  background-color: #61AE45;
+  background-color: #10B981;
   color: #fff;
   border-radius: 8px;
 }
@@ -40,7 +40,7 @@
 }
 
 .save-btn, .change-btn {
-  background-color: #61AE45;
+  background-color: #10B981;
   color: white;
   border: none;
 }

@@ -75,7 +75,7 @@ const RatingStars = ({ productId, initialRating = 0, onRatingChange }) => {
                             <FaStar
                                 className="star"
                                 size={20}
-                                color={ratingValue <= (hover || rating) ? "#198754" : "#e4e5e9"}
+                                color={ratingValue <= (hover || rating) ? "#10B981" : "#e4e5e9"}
                                 onMouseEnter={() => setHover(ratingValue)}
                                 onMouseLeave={() => setHover(null)}
                                 style={{ cursor: 'pointer', marginRight: '2px' }}

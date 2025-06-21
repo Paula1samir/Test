@@ -186,7 +186,7 @@ export default function ProductDetails() {
                         />
                     </div>
                     <p><strong>Supplier:</strong> {product?.supplierId?.fullName || "Not found"}</p>
-                    <p><strong>Availability:</strong> <span style={{color:'#198754', fontWeight:'bold'}}>{product?.quantity > 0 ? `${product.quantity} In Stock` : "Out of Stock"} </span></p>
+                    <p><strong>Availability:</strong> <span style={{color:'#10B981', fontWeight:'bold'}}>{product?.quantity > 0 ? `${product.quantity} In Stock` : "Out of Stock"} </span></p>
                     <p><strong>Price:</strong> ${product?.price || '0.00'}</p>
                     <p>{product?.description || 'No description available'}</p>
                     <label htmlFor="quantity">Quantity</label>

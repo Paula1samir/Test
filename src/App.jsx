@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Routes, Route } from 'react-router-dom';
+import './styles/emerald-theme.css'; // Import emerald theme overrides
 
 import Login from "../src/components/Login.jsx";
 import Signup from "./components/SignUp";

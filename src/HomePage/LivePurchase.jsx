@@ -81,11 +81,10 @@ const LivePurchase = ({ nearby, isLoading }) => {
                         <p className="description">{purchase?.description || 'No description available'}</p>
                         <div className="purchase-info">
                             <p><strong>Price:</strong> ${purchase?.price || '0.00'}</p>
-                            <p><strong>Quantity:</strong> {purchase?.quantity || 0}</p>
-                            <p><strong>Status:  </strong> 
+                            <p><strong>Quantity:</strong> {purchase?.quantity || 0}</p>                            <p><strong>Status:  </strong> 
                                 <span className={`status-${(purchase?.purchaseDetails?.status || 'pending').toLowerCase()}`} style={{
                                     color: (purchase?.purchaseDetails?.status || 'pending').toLowerCase() === 'pending' ? '#ffa500' : 
-                                          (purchase?.purchaseDetails?.status || 'pending').toLowerCase() === 'completed' ? '#28a745' :
+                                          (purchase?.purchaseDetails?.status || 'pending').toLowerCase() === 'completed' ? '#10B981' :
                                           (purchase?.purchaseDetails?.status || 'pending').toLowerCase() === 'cancelled' ? '#dc3545' : '#000'
                                 }}>
                                     {purchase?.purchaseDetails?.status || 'Pending'}

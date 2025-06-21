@@ -1,0 +1,229 @@
+/* Custom Bootstrap Button Overrides - Emerald Green Theme */
+
+/* Override Bootstrap btn-success with emerald green */
+.btn-success {
+    --bs-btn-color: #fff !important;
+    --bs-btn-bg: #10B981 !important;
+    --bs-btn-border-color: #10B981 !important;
+    --bs-btn-hover-color: #fff !important;
+    --bs-btn-hover-bg: #059669 !important;
+    --bs-btn-hover-border-color: #059669 !important;
+    --bs-btn-focus-shadow-rgb: 16, 185, 129 !important;
+    --bs-btn-active-color: #fff !important;
+    --bs-btn-active-bg: #047857 !important;
+    --bs-btn-active-border-color: #047857 !important;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125) !important;
+    --bs-btn-disabled-color: #fff !important;
+    --bs-btn-disabled-bg: #10B981 !important;
+    --bs-btn-disabled-border-color: #10B981 !important;
+    
+    background-color: #10B981 !important;
+    border-color: #10B981 !important;
+    color: #fff !important;
+}
+
+.btn-success:hover {
+    background-color: #059669 !important;
+    border-color: #059669 !important;
+    color: #fff !important;
+}
+
+.btn-success:focus,
+.btn-success.focus {
+    background-color: #059669 !important;
+    border-color: #059669 !important;
+    color: #fff !important;
+    box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.5) !important;
+}
+
+.btn-success:active,
+.btn-success.active,
+.show > .btn-success.dropdown-toggle {
+    background-color: #047857 !important;
+    border-color: #047857 !important;
+    color: #fff !important;
+}
+
+.btn-success:disabled,
+.btn-success.disabled {
+    background-color: #10B981 !important;
+    border-color: #10B981 !important;
+    opacity: 0.65 !important;
+}
+
+/* Override Bootstrap btn-outline-success with emerald green */
+.btn-outline-success {
+    --bs-btn-color: #10B981 !important;
+    --bs-btn-border-color: #10B981 !important;
+    --bs-btn-hover-color: #fff !important;
+    --bs-btn-hover-bg: #10B981 !important;
+    --bs-btn-hover-border-color: #10B981 !important;
+    --bs-btn-focus-shadow-rgb: 16, 185, 129 !important;
+    --bs-btn-active-color: #fff !important;
+    --bs-btn-active-bg: #10B981 !important;
+    --bs-btn-active-border-color: #10B981 !important;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125) !important;
+    --bs-btn-disabled-color: #10B981 !important;
+    --bs-btn-disabled-bg: transparent !important;
+    --bs-btn-disabled-border-color: #10B981 !important;
+    
+    color: #10B981 !important;
+    border-color: #10B981 !important;
+}
+
+.btn-outline-success:hover {
+    color: #fff !important;
+    background-color: #10B981 !important;
+    border-color: #10B981 !important;
+}
+
+.btn-outline-success:focus,
+.btn-outline-success.focus {
+    box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.5) !important;
+}
+
+.btn-outline-success:active,
+.btn-outline-success.active,
+.show > .btn-outline-success.dropdown-toggle {
+    color: #fff !important;
+    background-color: #10B981 !important;
+    border-color: #10B981 !important;
+}
+
+.btn-outline-success:disabled,
+.btn-outline-success.disabled {
+    color: #10B981 !important;
+    background-color: transparent !important;
+    opacity: 0.65 !important;
+}
+
+/* Additional emerald theme utilities */
+.text-success {
+    color: #10B981 !important;
+}
+
+.bg-success {
+    background-color: #10B981 !important;
+}
+
+.border-success {
+    border-color: #10B981 !important;
+}
+
+/* Custom emerald utilities */
+.text-emerald {
+    color: #10B981 !important;
+}
+
+.text-emerald-dark {
+    color: #047857 !important;
+}
+
+.bg-emerald {
+    background-color: #10B981 !important;
+}
+
+.bg-emerald-light {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+}
+
+.bg-emerald-dark {
+    background-color: #047857 !important;
+}
+
+.border-emerald {
+    border-color: #10B981 !important;
+}
+
+/* Form controls with emerald theme */
+.form-control:focus {
+    border-color: #10B981 !important;
+    box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25) !important;
+}
+
+.form-check-input:checked {
+    background-color: #10B981 !important;
+    border-color: #10B981 !important;
+}
+
+/* Badge success override */
+.badge.bg-success {
+    background-color: #10B981 !important;
+}
+
+/* Alert success override */
+.alert-success {
+    color: #047857 !important;
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    border-color: rgba(16, 185, 129, 0.2) !important;
+}
+
+/* Progress bar success override */
+.progress-bar.bg-success {
+    background-color: #10B981 !important;
+}
+
+/* Link success override */
+.link-success {
+    color: #10B981 !important;
+}
+
+.link-success:hover,
+.link-success:focus {
+    color: #059669 !important;
+}
+
+/* Material-UI specific overrides for emerald theme */
+.MuiButton-containedSuccess,
+.MuiButton-root.MuiButton-containedSuccess {
+    background-color: #10B981 !important;
+    color: #fff !important;
+}
+
+.MuiButton-containedSuccess:hover,
+.MuiButton-root.MuiButton-containedSuccess:hover {
+    background-color: #059669 !important;
+}
+
+.MuiButton-containedSuccess:active,
+.MuiButton-root.MuiButton-containedSuccess:active {
+    background-color: #047857 !important;
+}
+
+.MuiButton-outlinedSuccess,
+.MuiButton-root.MuiButton-outlinedSuccess {
+    color: #10B981 !important;
+    border-color: #10B981 !important;
+}
+
+.MuiButton-outlinedSuccess:hover,
+.MuiButton-root.MuiButton-outlinedSuccess:hover {
+    background-color: rgba(16, 185, 129, 0.04) !important;
+    border-color: #059669 !important;
+}
+
+/* Pagination overrides */
+.MuiPaginationItem-root.Mui-selected {
+    background-color: #10B981 !important;
+    color: #fff !important;
+}
+
+.MuiPaginationItem-root.Mui-selected:hover {
+    background-color: #059669 !important;
+}
+
+/* Category buttons in HomePage */
+.category-section .MuiButton-root {
+    background-color: #10B981 !important;
+    color: #fff !important;
+    text-transform: uppercase !important;
+    font-weight: 600 !important;
+    border-radius: 25px !important;
+    padding: 8px 20px !important;
+}
+
+.category-section .MuiButton-root:hover {
+    background-color: #059669 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}

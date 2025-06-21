@@ -34,7 +34,7 @@ const RatingDisplay = ({ productId }) => {
                 <FaStar
                     key={index}
                     size={14}
-                    color={index < Math.round(ratingData.averageRating) ? "#198754" : "#e4e5e9"}
+                    color={index < Math.round(ratingData.averageRating) ? "#10B981" : "#e4e5e9"}
                 />
             ))}
             <small>({ratingData.ratingsCount})</small>

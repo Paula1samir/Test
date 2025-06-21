@@ -131,13 +131,12 @@ export default function CustomerProfile() {
               id="alert"
               style={{
                 padding: "20px",
-                borderRadius: "10px",
-                maxWidth: "90%",
+                borderRadius: "10px",                maxWidth: "90%",
                 width: "400px",
                 color: "#fff",
                 textAlign: "center",
                 boxShadow: "0 5px 15px rgba(0, 0, 0, 0.3)",
-                backgroundColor: msgType === "success" ? "#28a745" : "#ff4d4d",
+                backgroundColor: msgType === "success" ? "#10B981" : "#ff4d4d",
               }}
             >
               {msg}
